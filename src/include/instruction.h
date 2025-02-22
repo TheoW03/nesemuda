@@ -2,6 +2,8 @@
 #include <vector>
 #include <RomUtil.h>
 #include <stdint.h>
+#include <map>
+
 #ifndef ADDRESS_MODE_H
 #define ADDRESS_MODE_H
 enum AddressMode
@@ -35,6 +37,14 @@ public:
     uint8_t get_instr();
     uint16_t get_pc();
     void fill_instr(uint16_t new_pc);
+};
+#endif
+
+#ifndef DIS_ASM_STATE_H
+struct DisAsmState
+{
+    Bus bus;
+    std::map<uint16_t, std::string> known_lables;
 };
 #endif
 #ifndef HEADER_DISASM_H
