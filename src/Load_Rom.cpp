@@ -28,6 +28,7 @@ NESRom load_rom(std::vector<uint8_t> instructions)
 {
 
     NESHeader nes_header;
+    NESRom nes_rom;
     memcpy(&nes_header, instructions.data(), sizeof(NESHeader));
     if (                                 //
         (nes_header.ident[0] != 'N'      //
@@ -39,6 +40,24 @@ NESRom load_rom(std::vector<uint8_t> instructions)
         std::cout << "TetroidDisasm: this isnt a iNES version 1.0 header" << std::endl;
         exit(EXIT_FAILURE);
     }
+    // this sets the hader
+    nes_rom.header = nes_header;
+    uint16_t prg_start = 16 + (512 * nes_header.flag6.trainer);
 
-    return NESRom();
+    // this sets the mapper
+    nes_rom.mapper.val = nes_header.flag7.mapper_upper | nes_header.flag6.mapper_lower;
+    size_t prg_rom = nes_header.prg_size * PRG_ROM_SIZE;
+    size_t chr_rom = nes_header.chr_size * CHR_ROM_SIZE;
+    for (size_t i = prg_start; i < prg_rom + prg_start; i++)
+    {
+        nes_rom.prg_rom.push_back(instructions[i]);
+    }
+    size_t chr_start = prg_start + prg_rom;
+    size_t chr_size = prg_start + prg_rom + chr_rom;
+    for (size_t i = chr_start; i < chr_size; i++)
+    {
+        nes_rom.chr_rom.push_back(instructions[i]);
+    }
+
+    return nes_rom;
 }
