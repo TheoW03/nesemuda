@@ -6,4 +6,9 @@
 	   .byte $00
 	   .byte $00
 	   .byte $00
+.SEGMENT "VECTORS" 
+.addr reset
+.SEGMENT "STARTUP" 
+reset: 
 lda #1
+nmi: 

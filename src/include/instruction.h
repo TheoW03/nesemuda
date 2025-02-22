@@ -2,6 +2,26 @@
 #include <vector>
 #include <RomUtil.h>
 #include <stdint.h>
+#ifndef ADDRESS_MODE_H
+#define ADDRESS_MODE_H
+enum AddressMode
+{
+    ACCUMULATOR,
+    ABSOLUTE,
+    ABSOLUTE_Y,
+    ABSOLUTE_X,
+    ZERO_PAGE,
+    ZERO_PAGE_X,
+    ZERO_PAGE_Y,
+    IMMEDIATE,
+    INDIRECT,
+    INDIRECT_X,
+    INDIRECT_Y,
+    RELATIVE,
+    IMPLIED
+};
+#endif
+
 #ifndef BUS_H
 #define BUS_H
 class Bus
@@ -13,6 +33,7 @@ public:
     uint16_t pc;
     Bus(std::vector<uint8_t> instr, uint16_t pc_starting);
     uint8_t get_instr();
+    uint16_t get_pc();
     void fill_instr(uint16_t new_pc);
 };
 #endif
@@ -35,20 +56,34 @@ public:
     instr();
     virtual std::string disassm() = 0;
 };
+
+#endif
+#ifndef LABEL_H
+#define LABEL_H
+
+class Label : public instr
+{
+public:
+    std::string name;
+    Label(std::string name);
+    std::string disassm() override;
+};
+#endif
+
 #ifndef LDA_H
 #define LDA_H
 class Lda : public instr
 {
 public:
     std::vector<uint8_t> opcodes;
+    AddressMode addressMode;
     Lda();
-    Lda(std::vector<uint8_t> opcodes);
+    Lda(AddressMode addressMode, std::vector<uint8_t> opcodes);
     std::string disassm() override;
 };
 
 #endif
 
-#endif
 #ifndef PRGRAM_H
 #define PROGRAM_H
 class Program

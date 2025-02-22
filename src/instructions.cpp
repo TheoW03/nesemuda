@@ -22,6 +22,10 @@ uint8_t Bus::get_instr()
     // printf("%d \n", this->pc - reset_vector);
     return current_instruction;
 }
+uint16_t Bus::get_pc()
+{
+    return this->pc;
+}
 Header::Header(NESHeader header)
 {
     this->header = header;
@@ -54,13 +58,26 @@ Lda::Lda()
 {
 }
 
-Lda::Lda(std::vector<uint8_t> opcodes)
+Lda::Lda(AddressMode addressMode, std::vector<uint8_t> opcodes)
 {
     this->opcodes = opcodes;
+    this->addressMode = addressMode;
 }
 
 std::string Lda::disassm()
 {
-    std::string instr = "lda #" + std::to_string(opcodes[0]) + "\n";
+    std::string instr = "lda ";
+    if (addressMode == AddressMode::IMMEDIATE)
+    {
+        instr += "#" + std::to_string(opcodes[0]) + "\n";
+    }
     return instr;
+}
+Label::Label(std::string name)
+{
+    this->name = name;
+}
+std::string Label::disassm()
+{
+    return name + ": \n";
 }
