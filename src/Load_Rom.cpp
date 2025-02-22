@@ -45,7 +45,6 @@ NESRom load_rom(std::vector<uint8_t> instructions)
     uint16_t prg_start = 16 + (512 * nes_header.flag6.trainer);
 
     // this sets the mapper
-    nes_rom.mapper.val = nes_header.flag7.mapper_upper | nes_header.flag6.mapper_lower;
     size_t prg_rom = nes_header.prg_size * PRG_ROM_SIZE;
     size_t chr_rom = nes_header.chr_size * CHR_ROM_SIZE;
     for (size_t i = prg_start; i < prg_rom + prg_start; i++)

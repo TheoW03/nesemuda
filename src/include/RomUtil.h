@@ -55,15 +55,6 @@ struct NESRom
 {
 
     struct NESHeader header;
-    union
-    {
-        struct
-        {
-            unsigned mapper_upper : 4;
-            unsigned mapper_lower : 4;
-        };
-        byte_t val;
-    } mapper;
     std::vector<uint8_t> prg_rom;
     std::vector<uint8_t> chr_rom;
 };

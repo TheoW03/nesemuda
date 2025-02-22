@@ -9,5 +9,7 @@ include_directories(${EXECUTABLE_NAME} PRIVATE src/include/)
 
 add_executable(${EXECUTABLE_NAME}
                 src/main.cpp
-                src/Load_Rom.cpp)
+                src/Load_Rom.cpp
+                src/instructions.cpp
+                src/Disasm.cpp)
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/..)

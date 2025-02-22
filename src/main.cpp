@@ -1,14 +1,10 @@
 #include <iostream>
 #include <RomUtil.h>
-
+#include <Disasm.h>
 int main(int argc, char const *argv[])
 {
     /* code */
-    auto c = file_tobyte_vector("./games/TestRom1.nes");
-    printf("%c %c %c %c \n", c[0], c[1], c[2], c[3]);
-    auto parsed_rom = load_rom(c);
-
-    // auto b =
-
+    auto parsed_rom = load_rom(file_tobyte_vector("./games/TestRom1.nes"));
+    init(parsed_rom);
     return 0;
 }
