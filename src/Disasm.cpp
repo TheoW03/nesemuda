@@ -5,13 +5,9 @@
 #include <memory>
 #include <map>
 
-std::vector<std::shared_ptr<instr>> computer(Bus bus)
+std::vector<std::shared_ptr<instr>> computer(Bus bus, std::map<uint16_t, std::string> known_lables)
 {
     std::vector<std::shared_ptr<instr>> c;
-
-    std::map<uint16_t, std::string> known_lables;
-    known_lables[0x8000] = "reset";
-    known_lables[0x8002] = "nmi";
 
     bool end = false;
     while (!end)
@@ -40,14 +36,24 @@ std::vector<std::shared_ptr<instr>> computer(Bus bus)
 void init(NESRom nes)
 {
     Header h = Header(nes.header);
-    Bus bus = Bus(nes.prg_rom, 0x8000);
-    bus.fill_instr(0x8000);
-    auto prg = computer(bus);
+    uint16_t pc_start = nes.prg_rom[0xfffd - 0x8000] << 8 | nes.prg_rom[0xfffc - 0x8000];
+    uint16_t nmi = nes.prg_rom[0xfffb - 0x8000] << 8 | nes.prg_rom[0xfffa - 0x8000];
+
+    Bus bus = Bus(nes.prg_rom, pc_start);
+    printf("pc: %x \n", nmi);
+    bus.fill_instr(pc_start);
+    std::map<uint16_t, std::string> known_lables;
+    known_lables[pc_start] = "reset";
+    known_lables[nmi] = "nmi";
+    auto prg = computer(bus, known_lables);
     std::cout << h.disassm() << std::endl;
     std::ofstream outputFile("Out.s");
 
     outputFile << h.disassm();
     outputFile << ".SEGMENT \"VECTORS\" \n";
+
+    outputFile << ".addr reset \n";
+    outputFile << ".addr nmi \n";
 
     outputFile << ".SEGMENT \"STARTUP\" \n";
     for (int i = 0; i < prg.size(); i++)

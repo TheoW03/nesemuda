@@ -3,3 +3,4 @@
 
 DisassmTetroid
 *.o
+Out.s
