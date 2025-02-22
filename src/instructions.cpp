@@ -1,6 +1,27 @@
 #include <instruction.h>
 #include <util.h>
 
+Bus::Bus(std::vector<uint8_t> instr, uint16_t pc_starting)
+{
+    this->instr = instr;
+    this->reset_vector = pc_starting;
+}
+void Bus::fill_instr(uint16_t new_pc)
+{
+    this->pc = new_pc;
+
+    stored_instructions[0] = instr[(pc + 1) - reset_vector];
+    stored_instructions[1] = instr[(pc - reset_vector)];
+}
+uint8_t Bus::get_instr()
+{
+    uint8_t current_instruction = stored_instructions[1];
+    stored_instructions[1] = stored_instructions[0];
+    pc++;
+    stored_instructions[0] = instr[this->pc - reset_vector];
+    // printf("%d \n", this->pc - reset_vector);
+    return current_instruction;
+}
 Header::Header(NESHeader header)
 {
     this->header = header;
@@ -23,4 +44,23 @@ std::string Header::disassm()
     // str += "\t   .byte " + std::to_string(header.flag6.mapper_lower) ", " + "\n";
 
     return str;
+}
+
+instr::instr()
+{
+}
+
+Lda::Lda()
+{
+}
+
+Lda::Lda(std::vector<uint8_t> opcodes)
+{
+    this->opcodes = opcodes;
+}
+
+std::string Lda::disassm()
+{
+    std::string instr = "lda #" + std::to_string(opcodes[0]) + "\n";
+    return instr;
 }
