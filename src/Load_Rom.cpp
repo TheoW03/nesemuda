@@ -40,6 +40,12 @@ NESRom load_rom(std::vector<uint8_t> instructions)
         std::cout << "TetroidDisasm: this isnt a iNES version 1.0 header" << std::endl;
         exit(EXIT_FAILURE);
     }
+    printf("%d \n", instructions[6]);
+    nes_header.flag6.val = instructions[6];
+    nes_header.flag7.val = instructions[7];
+    nes_header.flag8 = instructions[8];
+    nes_header.flag9.val = instructions[9];
+
     // this sets the hader
     nes_rom.header = nes_header;
     uint16_t prg_start = 16 + (512 * nes_header.flag6.trainer);

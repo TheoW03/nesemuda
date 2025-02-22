@@ -11,5 +11,6 @@ add_executable(${EXECUTABLE_NAME}
                 src/main.cpp
                 src/Load_Rom.cpp
                 src/instructions.cpp
+                src/Util.cpp
                 src/Disasm.cpp)
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/..)

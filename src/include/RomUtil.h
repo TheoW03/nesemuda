@@ -4,6 +4,7 @@
 // easier to understand over doing bytes and bit operations
 #ifndef NES_HEADER_H
 #define NES_HEADER_H
+
 typedef uint8_t byte_t;
 
 struct NESHeader
