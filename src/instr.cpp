@@ -93,7 +93,7 @@ std::string Lda::disassm()
     }
     else if (addressMode == AddressMode::ABSOLUTE_X)
     {
-        instr += byteToHex16(opcodes[0] >> 8 | opcodes[1]) + ", X` \n";
+        instr += byteToHex16(opcodes[0] >> 8 | opcodes[1]) + ", X \n";
     }
     else if (addressMode == AddressMode::ABSOLUTE_Y)
     {
