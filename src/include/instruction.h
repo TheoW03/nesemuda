@@ -119,6 +119,21 @@ public:
 };
 #endif
 
+#ifndef RTI_h
+#define RTI_h
+
+class Rti : public instr
+{
+public:
+    std::vector<uint8_t> opcodes;
+    uint16_t pc;
+    AddressMode addressMode;
+    std::string lable_name;
+    Rti(AddressMode addressMode, uint16_t pc);
+    std::string disassm() override;
+};
+#endif
+
 #ifndef PRGRAM_H
 #define PROGRAM_H
 class Program

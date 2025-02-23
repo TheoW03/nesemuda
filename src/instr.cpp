@@ -8,12 +8,17 @@ Bus::Bus(std::vector<uint8_t> instr, uint16_t pc_starting)
 }
 void Bus::fill_instr(uint16_t new_pc)
 {
+
+    if (instr[(new_pc - reset_vector)] == 0x82)
+    {
+        return;
+    }
     this->pc = new_pc;
 
     stored_instructions[0] = instr[(pc + 1) - reset_vector];
     stored_instructions[1] = instr[(pc - reset_vector)];
-    instr[this->pc - reset_vector] = 0x0;
-    instr[(pc + 1) - reset_vector] = 0x0;
+    instr[this->pc - reset_vector] = 0x82;
+    instr[(pc + 1) - reset_vector] = 0x82;
     pc++;
 }
 uint8_t Bus::get_instr()
@@ -22,7 +27,7 @@ uint8_t Bus::get_instr()
     stored_instructions[1] = stored_instructions[0];
     pc++;
     stored_instructions[0] = instr[this->pc - reset_vector];
-    instr[this->pc - reset_vector] = 0x0;
+    instr[this->pc - reset_vector] = 0x82;
     return current_instruction;
 }
 uint16_t Bus::get_pc()
@@ -142,4 +147,13 @@ Jmp::Jmp(AddressMode addressMode, std::vector<uint8_t> opcodes, uint16_t pc) : i
 std::string Jmp::disassm()
 {
     return "jmp " + lable_name + "\n";
+}
+
+Rti::Rti(AddressMode addressMode, uint16_t pc) : instr(pc)
+{
+    this->addressMode = addressMode;
+}
+std::string Rti::disassm()
+{
+    return "rti \n";
 }

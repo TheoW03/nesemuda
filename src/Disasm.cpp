@@ -61,10 +61,7 @@ void init(NESRom nes, std::string output)
     outputFile << ".addr nmi \n";
 
     outputFile << ".SEGMENT \"STARTUP\" \n";
-    for (const auto &[key, value] : dis.known_lables)
-    {
-        std::cout << "Key: " << key << ", Value: " << value << std::endl;
-    }
+
     for (int i = 0; i < prg.size(); i++)
     {
         // printf("labe;l\n");
@@ -73,12 +70,21 @@ void init(NESRom nes, std::string output)
         {
             auto d = std::make_shared<Label>(dis.known_lables[prg[i]->pc], prg[i]->pc);
             dis.assembled.insert(std::make_pair(prg[i]->pc, dis.known_lables[prg[i]->pc - 1]));
-            printf("0x %x \n", prg[i]->pc);
-
+            // printf("0x %x \n", prg[i]->pc);
+            // dis.known_lables[]
             outputFile << d->disassm();
         }
 
         outputFile << prg[i]->disassm();
+    }
+    for (const auto &[key, value] : dis.known_lables)
+    {
+
+        if (dis.assembled.find(key) == dis.assembled.end() && value != "")
+        {
+            auto d = std::make_shared<Label>(value, 0x00);
+            outputFile << d->disassm();
+        }
     }
 
     outputFile.close();
