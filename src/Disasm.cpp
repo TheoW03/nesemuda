@@ -13,14 +13,16 @@ std::vector<std::shared_ptr<instr>> computer(DisAsmState state)
     initializeInstructionMap();
     while (!end)
     {
-        if (state.known_lables.find(state.bus.get_pc()) != state.known_lables.end())
+        if (state.known_lables.find(state.bus.get_pc() - 1) != state.known_lables.end())
         {
-            c.push_back(std::make_shared<Label>(state.known_lables[state.bus.get_pc()]));
+            c.push_back(std::make_shared<Label>(state.known_lables[state.bus.get_pc() - 1]));
         }
         uint8_t instr = state.bus.get_instr();
 
         if (instr == 0x0 || !InstructionValid(instr))
         {
+            std::cout << "instruction not valid  " << instr << std::endl;
+            printf("%x \n", instr);
             end = true;
             break;
         }

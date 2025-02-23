@@ -7,6 +7,7 @@ int main(int argc, char const *argv[])
     /* code */
     auto parsed_rom = load_rom(file_tobyte_vector("./games/TestRom1.nes"));
     init(parsed_rom);
+    // std::cout << byteToHex16(0x8000) << std::endl;
     // std::cout << byteToHex(10) << std::endl;
     return 0;
 }

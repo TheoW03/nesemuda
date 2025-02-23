@@ -63,7 +63,9 @@ public:
 class instr
 {
 public:
+    uint16_t pc;
     instr();
+    instr(uint16_t pc);
     virtual std::string disassm() = 0;
 };
 
@@ -82,13 +84,15 @@ public:
 
 #ifndef LDA_H
 #define LDA_H
+
 class Lda : public instr
 {
 public:
     std::vector<uint8_t> opcodes;
+    uint16_t pc;
     AddressMode addressMode;
     Lda();
-    Lda(AddressMode addressMode, std::vector<uint8_t> opcodes);
+    Lda(AddressMode addressMode, std::vector<uint8_t> opcodes, uint16_t pc);
     std::string disassm() override;
 };
 

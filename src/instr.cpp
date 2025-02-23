@@ -12,6 +12,7 @@ void Bus::fill_instr(uint16_t new_pc)
 
     stored_instructions[0] = instr[(pc + 1) - reset_vector];
     stored_instructions[1] = instr[(pc - reset_vector)];
+    pc++;
 }
 uint8_t Bus::get_instr()
 {
@@ -37,10 +38,10 @@ std::string Header::disassm()
     str += "\t   .byte $4E, $45, $53, $1A  \n ";
     str += "\t   .byte " + std::to_string(header.prg_size) + "\n";
     str += "\t   .byte " + std::to_string(header.chr_size) + "\n";
-    str += "\t   .byte " + byteToHex(header.flag6.val) + "," + byteToHex(header.flag7.mapper_upper) + "\n";
-    str += "\t   .byte " + byteToHex(header.flag7.val) + "\n";
-    str += "\t   .byte " + byteToHex(header.flag8) + "\n";
-    str += "\t   .byte " + byteToHex(header.flag9.val) + "\n";
+    str += "\t   .byte " + byteToHex8(header.flag6.val) + "," + byteToHex8(header.flag7.mapper_upper) + "\n";
+    str += "\t   .byte " + byteToHex8(header.flag7.val) + "\n";
+    str += "\t   .byte " + byteToHex8(header.flag8) + "\n";
+    str += "\t   .byte " + byteToHex8(header.flag9.val) + "\n";
 
     // std::stringstream stream;
     // stream << std::hex << header.flag6.mapper_lower;
@@ -54,14 +55,21 @@ instr::instr()
 {
 }
 
+instr::instr(uint16_t pc)
+{
+    this->pc = pc;
+}
+
 Lda::Lda()
 {
 }
 
-Lda::Lda(AddressMode addressMode, std::vector<uint8_t> opcodes)
+Lda::Lda(AddressMode addressMode, std::vector<uint8_t> opcodes, uint16_t pc) : instr(pc)
 {
     this->opcodes = opcodes;
     this->addressMode = addressMode;
+    this->pc = pc;
+    // Instr::pc = pc;
 }
 
 std::string Lda::disassm()
@@ -70,6 +78,34 @@ std::string Lda::disassm()
     if (addressMode == AddressMode::IMMEDIATE)
     {
         instr += "#" + std::to_string(opcodes[0]) + "\n";
+    }
+    else if (addressMode == AddressMode::ZERO_PAGE)
+    {
+        instr += byteToHex8(opcodes[0]) + "\n";
+    }
+    else if (addressMode == AddressMode::ZERO_PAGE_X)
+    {
+        instr += byteToHex8(opcodes[0]) + ", X \n";
+    }
+    else if (addressMode == AddressMode::ABSOLUTE)
+    {
+        instr += byteToHex16(opcodes[0] >> 8 | opcodes[1]) + " \n";
+    }
+    else if (addressMode == AddressMode::ABSOLUTE_X)
+    {
+        instr += byteToHex16(opcodes[0] >> 8 | opcodes[1]) + ", X` \n";
+    }
+    else if (addressMode == AddressMode::ABSOLUTE_Y)
+    {
+        instr += byteToHex16(opcodes[0] >> 8 | opcodes[1]) + ", Y \n";
+    }
+    else if (addressMode == AddressMode::INDIRECT_X)
+    {
+        instr += "(" + byteToHex16(opcodes[0] >> 8 | opcodes[1]) + ", X )\n";
+    }
+    else if (addressMode == AddressMode::INDIRECT_Y)
+    {
+        instr += "(" + byteToHex16(opcodes[0] >> 8 | opcodes[1]) + "), Y \n";
     }
     return instr;
 }
