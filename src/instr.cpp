@@ -12,6 +12,8 @@ void Bus::fill_instr(uint16_t new_pc)
 
     stored_instructions[0] = instr[(pc + 1) - reset_vector];
     stored_instructions[1] = instr[(pc - reset_vector)];
+    instr[this->pc - reset_vector] = 0x0;
+    instr[(pc + 1) - reset_vector] = 0x0;
     pc++;
 }
 uint8_t Bus::get_instr()
@@ -20,7 +22,7 @@ uint8_t Bus::get_instr()
     stored_instructions[1] = stored_instructions[0];
     pc++;
     stored_instructions[0] = instr[this->pc - reset_vector];
-
+    instr[this->pc - reset_vector] = 0x0;
     return current_instruction;
 }
 uint16_t Bus::get_pc()
@@ -109,11 +111,35 @@ std::string Lda::disassm()
     }
     return instr;
 }
-Label::Label(std::string name)
+Label::Label(std::string name, uint16_t pc) : instr(pc)
 {
     this->name = name;
+    this->pc = pc;
 }
 std::string Label::disassm()
 {
     return name + ": \n";
+}
+
+Jmp::Jmp()
+{
+}
+
+Jmp::Jmp(AddressMode addressMode, std::string lable, uint16_t pc) : instr(pc)
+{
+    this->lable_name = lable;
+    this->addressMode = addressMode;
+    this->pc = pc;
+}
+
+Jmp::Jmp(AddressMode addressMode, std::vector<uint8_t> opcodes, uint16_t pc) : instr(pc)
+{
+    this->opcodes = opcodes;
+    this->addressMode = addressMode;
+    this->pc = pc;
+}
+
+std::string Jmp::disassm()
+{
+    return "jmp " + lable_name + "\n";
 }

@@ -14,7 +14,7 @@
     .addr reset ; reset vector
 .segment "STARTUP"
 reset:
-   LDA #42        ; Immediate Mode: Load the value $42 into A
+  LDA #42        ; Immediate Mode: Load the value $42 into A
     LDA $2001       ; Absolute Mode: Load value from memory address $2000
     LDA $20         ; Zero Page Mode: Load value from address $0020
     LDA $20,X       ; Zero Page,X Mode: Load from address $0020 + X
@@ -22,6 +22,8 @@ reset:
     LDA $2000,Y     ; Absolute,Y Mode: Load from $2000 + Y
     LDA ($20,X)     ; Indirect,X Mode: Load from address stored at ($20 + X)
     LDA ($20),Y 
+    l2:
+      jmp l2
 nmi:
     rti   
 .segment "CHARS" ; for graphics

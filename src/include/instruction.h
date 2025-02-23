@@ -45,8 +45,11 @@ struct DisAsmState
 {
     Bus bus;
     std::map<uint16_t, std::string> known_lables;
+    std::map<uint16_t, std::string> assembled;
+    int label;
 };
 #endif
+
 #ifndef HEADER_DISASM_H
 #define HEADER_DISASM_H
 class Header
@@ -77,7 +80,8 @@ class Label : public instr
 {
 public:
     std::string name;
-    Label(std::string name);
+    uint16_t pc;
+    Label(std::string name, uint16_t pc);
     std::string disassm() override;
 };
 #endif
@@ -96,6 +100,23 @@ public:
     std::string disassm() override;
 };
 
+#endif
+
+#ifndef JMP_h
+#define JMP_h
+
+class Jmp : public instr
+{
+public:
+    std::vector<uint8_t> opcodes;
+    uint16_t pc;
+    AddressMode addressMode;
+    std::string lable_name;
+    Jmp();
+    Jmp(AddressMode addressMode, std::string lable, uint16_t pc);
+    Jmp(AddressMode addressMode, std::vector<uint8_t> opcodes, uint16_t pc);
+    std::string disassm() override;
+};
 #endif
 
 #ifndef PRGRAM_H

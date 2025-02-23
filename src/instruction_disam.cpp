@@ -31,3 +31,24 @@ std::shared_ptr<instr> LDA(AddressMode addressMode, DisAsmState &disasm)
     std::vector<uint8_t> data_vec = diasm_addressmode(addressMode, disasm);
     return std::make_shared<Lda>(addressMode, data_vec, pc);
 }
+std::shared_ptr<instr> JMP(AddressMode addressMode, DisAsmState &disasm)
+{
+    auto pc = disasm.bus.get_pc() - 1;
+    std::vector<uint8_t> data_vec = diasm_addressmode(addressMode, disasm);
+    if (addressMode == AddressMode::ABSOLUTE)
+    {
+        uint16_t a = data_vec[1] << 8 | data_vec[0];
+
+        if (disasm.known_lables.find(a + 1) == disasm.known_lables.end())
+        {
+            disasm.known_lables.insert(std::make_pair(a + 1, "L" + std::to_string(disasm.label++)));
+            std::cout << "tes" << std::endl;
+            printf("%x \n", a + 1);
+            // disasm.lables.insert(std::make_pair("L1", a));
+        }
+        return std::make_shared<Jmp>(addressMode, disasm.known_lables[a + 1], pc);
+    }
+
+    return std::make_shared<Jmp>(addressMode, data_vec, pc);
+    // disasm.lables.insert();
+}
