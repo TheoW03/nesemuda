@@ -20,7 +20,7 @@ uint8_t Bus::get_instr()
     stored_instructions[1] = stored_instructions[0];
     pc++;
     stored_instructions[0] = instr[this->pc - reset_vector];
-    // printf("%d \n", this->pc - reset_vector);
+
     return current_instruction;
 }
 uint16_t Bus::get_pc()
@@ -101,11 +101,11 @@ std::string Lda::disassm()
     }
     else if (addressMode == AddressMode::INDIRECT_X)
     {
-        instr += "(" + byteToHex16(opcodes[0] >> 8 | opcodes[1]) + ", X )\n";
+        instr += "(" + byteToHex16(opcodes[0]) + ", X )\n";
     }
     else if (addressMode == AddressMode::INDIRECT_Y)
     {
-        instr += "(" + byteToHex16(opcodes[0] >> 8 | opcodes[1]) + "), Y \n";
+        instr += "(" + byteToHex16(opcodes[0]) + "), Y \n";
     }
     return instr;
 }
