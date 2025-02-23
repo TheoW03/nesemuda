@@ -14,5 +14,6 @@ add_executable(${EXECUTABLE_NAME}
                 src/instruction_disam.cpp
                 src/Util.cpp
                 src/instruction_map.cpp
-                src/Disasm.cpp)
+                src/Disasm.cpp
+                src/cli.cpp)
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/..)

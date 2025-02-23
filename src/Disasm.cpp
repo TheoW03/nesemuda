@@ -33,7 +33,7 @@ std::vector<std::shared_ptr<instr>> computer(DisAsmState state)
     return c;
 }
 
-void init(NESRom nes)
+void init(NESRom nes, std::string output)
 {
     Header h = Header(nes.header);
     uint16_t pc_start = nes.prg_rom[0xfffd - 0x8000] << 8 | nes.prg_rom[0xfffc - 0x8000];
@@ -47,7 +47,7 @@ void init(NESRom nes)
     known_lables[nmi] = "nmi";
     auto prg = computer({bus, known_lables});
     std::cout << h.disassm() << std::endl;
-    std::ofstream outputFile("Out.s");
+    std::ofstream outputFile(output);
 
     outputFile << h.disassm();
     outputFile << ".SEGMENT \"VECTORS\" \n";
