@@ -22,3 +22,4 @@ lda ($20), Y
 L0: 
 jmp L0
 nmi: 
+rti 

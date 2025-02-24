@@ -42,9 +42,6 @@ std::shared_ptr<instr> JMP(AddressMode addressMode, DisAsmState &disasm)
         if (disasm.known_lables.find(a + 1) == disasm.known_lables.end())
         {
             disasm.known_lables.insert(std::make_pair(a + 1, "L" + std::to_string(disasm.label++)));
-            std::cout << "tes" << std::endl;
-            printf("%x \n", a + 1);
-            // disasm.lables.insert(std::make_pair("L1", a));
         }
         disasm.bus.fill_instr(a);
         return std::make_shared<Jmp>(addressMode, disasm.known_lables[a + 1], pc);
