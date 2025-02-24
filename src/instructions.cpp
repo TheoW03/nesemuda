@@ -6,6 +6,7 @@ Bus::Bus(std::vector<uint8_t> instr, uint16_t pc_starting)
     this->instr = instr;
     this->reset_vector = pc_starting;
 }
+
 void Bus::fill_instr(uint16_t new_pc)
 {
 
@@ -33,6 +34,21 @@ uint8_t Bus::get_instr()
 uint16_t Bus::get_pc()
 {
     return this->pc;
+}
+void Bus::add_to_queue(uint16_t addr)
+{
+    // at a jump  or branch instr
+    // what we will do is push the new PC into this queue
+    // once we run out instructions or apporach RTS, or RTI we wil set the PC to a value in this queue
+    // effectivelya allowing us to disassemble the branch
+    pc_queue.push_back(addr);
+}
+uint16_t Bus::get_next_queue()
+{
+
+    uint16_t new_pc = pc_queue[0];
+    pc_queue.erase(pc_queue.begin());
+    return new_pc;
 }
 Header::Header(NESHeader header)
 {

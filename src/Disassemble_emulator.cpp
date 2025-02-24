@@ -81,11 +81,8 @@ void init(NESRom nes, std::string output)
         {
             auto d = std::make_shared<Label>(dis.known_lables[prg[i]->pc], prg[i]->pc);
             dis.assembled.insert(std::make_pair(prg[i]->pc, dis.known_lables[prg[i]->pc - 1]));
-
-            // dis.known_lables[]
             outputFile << d->disassm();
         }
-        printf("0x %x \n", prg[i]->pc);
 
         outputFile << prg[i]->disassm();
     }

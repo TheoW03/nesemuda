@@ -31,11 +31,15 @@ class Bus
 public:
     uint8_t stored_instructions[2];
     std::vector<uint8_t> instr;
+    std::vector<uint16_t> pc_queue;
     uint16_t reset_vector;
     uint16_t pc;
+
     Bus(std::vector<uint8_t> instr, uint16_t pc_starting);
     uint8_t get_instr();
     uint16_t get_pc();
+    uint16_t get_next_queue();
+    void add_to_queue(uint16_t addr);
     void fill_instr(uint16_t new_pc);
 };
 #endif
