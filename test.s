@@ -19,7 +19,9 @@ lda $2000, X
 lda $2000, Y 
 lda ($20, X )
 lda ($20), Y 
-L0: 
+L1: 
 jmp L0
+L0: 
+jmp L1
 nmi: 
 rti 

@@ -22,8 +22,10 @@ reset:
     LDA $2000,Y     ; Absolute,Y Mode: Load from $2000 + Y
     LDA ($20,X)     ; Indirect,X Mode: Load from address stored at ($20 + X)
     LDA ($20),Y 
-    l2:      
+    l3: 
       jmp l2
+    l2:      
+      jmp l3
 nmi:
 rti
 .segment "CHARS" ; for graphics

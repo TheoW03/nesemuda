@@ -69,6 +69,17 @@ public:
     uint16_t pc;
     instr();
     instr(uint16_t pc);
+    // bool operator<(const instr &obj) const
+    // {
+    //     printf("pc: %x obj.pc: %x \n", this->pc, obj.pc);
+    //     return this->pc < obj.pc;
+    // }
+    // virtual bool operator<(const instr &obj) const
+    // {
+    //     printf("pc: %x obj.pc: %x \n", this->pc, obj.pc);
+
+    //     return obj.pc < this->pc;
+    // }
     virtual std::string disassm() = 0;
 };
 

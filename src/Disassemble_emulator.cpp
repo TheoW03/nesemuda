@@ -2,6 +2,7 @@
 #include <fstream>
 #include <instruction_map.h>
 // #include <instruction.h>
+#include <algorithm>
 #include <memory>
 #include <map>
 
@@ -35,7 +36,7 @@ std::vector<std::shared_ptr<instr>> computer(DisAsmState &state)
     }
     return c;
 }
-
+// bool myfunction(instr i, instr j) { return (i.pc < j.pc); }
 void init(NESRom nes, std::string output)
 {
     Header h = Header(nes.header);
@@ -62,6 +63,16 @@ void init(NESRom nes, std::string output)
 
     outputFile << ".SEGMENT \"STARTUP\" \n";
 
+    for (int i = 0; i < prg.size() - 1; i++)
+    {
+        for (int j = 0; j < prg.size() - i - 1; j++)
+        {
+
+            if (prg[j]->pc > prg[j + 1]->pc)
+
+                std::swap(prg[j], prg[j + 1]);
+        }
+    }
     for (int i = 0; i < prg.size(); i++)
     {
         // printf("labe;l\n");
@@ -70,10 +81,11 @@ void init(NESRom nes, std::string output)
         {
             auto d = std::make_shared<Label>(dis.known_lables[prg[i]->pc], prg[i]->pc);
             dis.assembled.insert(std::make_pair(prg[i]->pc, dis.known_lables[prg[i]->pc - 1]));
-            // printf("0x %x \n", prg[i]->pc);
+
             // dis.known_lables[]
             outputFile << d->disassm();
         }
+        printf("0x %x \n", prg[i]->pc);
 
         outputFile << prg[i]->disassm();
     }

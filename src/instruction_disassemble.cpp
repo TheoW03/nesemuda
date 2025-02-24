@@ -34,6 +34,7 @@ std::shared_ptr<instr> LDA(AddressMode addressMode, DisAsmState &disasm)
 std::shared_ptr<instr> JMP(AddressMode addressMode, DisAsmState &disasm)
 {
     auto pc = disasm.bus.get_pc() - 1;
+    printf("pc: 0x%x \n", pc);
     std::vector<uint8_t> data_vec = diasm_addressmode(addressMode, disasm);
     if (addressMode == AddressMode::ABSOLUTE)
     {
