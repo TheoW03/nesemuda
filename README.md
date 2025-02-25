@@ -1,6 +1,6 @@
-# TetroidNESDisAssembler 
+# NESEmuDASM 
 
-TetroidNESDisAssembler 
+NESEmuDASM 
 
 is a dynamic NES ROM disassembler with a ca65 target 
 how it works is that instead of statically disassembling ROMs 
