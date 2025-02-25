@@ -4,8 +4,22 @@
 // #include <instruction.h>
 #include <algorithm>
 #include <memory>
+// #include <util.h>
 #include <map>
 
+void sort_by_PC(std::vector<std::shared_ptr<instr>> prg)
+{
+    for (int i = 0; i < prg.size() - 1; i++)
+    {
+        for (int j = 0; j < prg.size() - i - 1; j++)
+        {
+
+            if (prg[j]->pc > prg[j + 1]->pc)
+
+                std::swap(prg[j], prg[j + 1]);
+        }
+    }
+}
 std::vector<std::shared_ptr<instr>> computer(DisAsmState &state)
 {
     std::vector<std::shared_ptr<instr>> c;
@@ -52,6 +66,8 @@ void init(NESRom nes, std::string output)
     known_lables[nmi] = "nmi";
     DisAsmState dis = {bus, known_lables, assembled, 0};
     auto prg = computer(dis);
+    sort_by_PC(prg);
+
     std::cout << h.disassm() << std::endl;
     std::ofstream outputFile(output);
 
@@ -63,16 +79,16 @@ void init(NESRom nes, std::string output)
 
     outputFile << ".SEGMENT \"STARTUP\" \n";
 
-    for (int i = 0; i < prg.size() - 1; i++)
-    {
-        for (int j = 0; j < prg.size() - i - 1; j++)
-        {
+    // for (int i = 0; i < prg.size() - 1; i++)
+    // {
+    //     for (int j = 0; j < prg.size() - i - 1; j++)
+    //     {
 
-            if (prg[j]->pc > prg[j + 1]->pc)
+    //         if (prg[j]->pc > prg[j + 1]->pc)
 
-                std::swap(prg[j], prg[j + 1]);
-        }
-    }
+    //             std::swap(prg[j], prg[j + 1]);
+    //     }
+    // }
     for (int i = 0; i < prg.size(); i++)
     {
         // printf("labe;l\n");
