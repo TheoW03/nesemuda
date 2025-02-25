@@ -25,7 +25,6 @@ std::vector<std::shared_ptr<instr>> computer(DisAsmState &state)
     std::vector<std::shared_ptr<instr>> c;
 
     bool end = false;
-    initializeInstructionMap();
     while (!end)
     {
         if (state.known_lables.find(state.bus.get_pc() - 1) != state.known_lables.end() //
@@ -39,20 +38,28 @@ std::vector<std::shared_ptr<instr>> computer(DisAsmState &state)
 
         if (instr == 0x0 || !InstructionValid(instr))
         {
-            std::cout << "instruction not valid  " << instr << std::endl;
-            printf("%x \n", instr);
-            end = true;
-            break;
+            auto new_pc = state.bus.get_next_queue();
+            if (new_pc == 0)
+            {
+                end = true;
+                break;
+            }
+            state.bus.fill_instr(new_pc);
         }
-        auto current_instr = GetInstruction(instr);
-        auto disassmble = current_instr.i(current_instr.addressmode, state);
-        c.push_back(disassmble);
+        else
+        {
+            auto current_instr = GetInstruction(instr);
+            auto disassmble = current_instr.i(current_instr.addressmode, state);
+            c.push_back(disassmble);
+        }
     }
     return c;
 }
 // bool myfunction(instr i, instr j) { return (i.pc < j.pc); }
 void init(NESRom nes, std::string output)
 {
+    initializeInstructionMap();
+
     Header h = Header(nes.header);
     uint16_t pc_start = nes.prg_rom[0xfffd - 0x8000] << 8 | nes.prg_rom[0xfffc - 0x8000];
     uint16_t nmi = nes.prg_rom[0xfffb - 0x8000] << 8 | nes.prg_rom[0xfffa - 0x8000];
@@ -65,6 +72,7 @@ void init(NESRom nes, std::string output)
     known_lables[pc_start] = "reset";
     known_lables[nmi] = "nmi";
     DisAsmState dis = {bus, known_lables, assembled, 0};
+    dis.bus.add_to_queue(nmi);
     auto prg = computer(dis);
     sort_by_PC(prg);
 
@@ -102,6 +110,7 @@ void init(NESRom nes, std::string output)
 
         outputFile << prg[i]->disassm();
     }
+
     for (const auto &[key, value] : dis.known_lables)
     {
 
@@ -111,6 +120,7 @@ void init(NESRom nes, std::string output)
             outputFile << d->disassm();
         }
     }
+    outputFile << ".SEGMENT \"CHARS\" \n";
 
     outputFile.close();
 }

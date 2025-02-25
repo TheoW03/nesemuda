@@ -45,6 +45,7 @@ public:
 #endif
 
 #ifndef DIS_ASM_STATE_H
+#define DIS_ASM_STATE_H
 struct DisAsmState
 {
     Bus bus;
@@ -149,15 +150,15 @@ public:
 };
 #endif
 
-#ifndef PRGRAM_H
-#define PROGRAM_H
-class Program
-{
-public:
-    Header header;
-    std::vector<instr> instrunctions;
+// #ifndef PRGRAM_H
+// #define PROGRAM_H
+// class Program
+// {
+// public:
+//     Header header;
+//     std::vector<instr> instrunctions;
 
-    Program(Header header, std::vector<instr> instrunctions);
-    std::string disassm();
-};
-#endif
+//     Program(Header header, std::vector<instr> instrunctions);
+//     std::string disassm();
+// };
+// #endif

@@ -24,9 +24,11 @@ reset:
     LDA ($20),Y 
     l3: 
       jmp l2
-    l2:      
-      jmp l3
+    .byte $82, $29
 nmi:
 rti
+
+l2:      
+  jmp l3
 .segment "CHARS" ; for graphics
 ; .incbin  "rom.chr"

@@ -34,7 +34,6 @@ std::shared_ptr<instr> LDA(AddressMode addressMode, DisAsmState &disasm)
 std::shared_ptr<instr> JMP(AddressMode addressMode, DisAsmState &disasm)
 {
     auto pc = disasm.bus.get_pc() - 1;
-    printf("pc: 0x%x \n", pc);
     std::vector<uint8_t> data_vec = diasm_addressmode(addressMode, disasm);
     if (addressMode == AddressMode::ABSOLUTE)
     {
@@ -44,7 +43,8 @@ std::shared_ptr<instr> JMP(AddressMode addressMode, DisAsmState &disasm)
         {
             disasm.known_lables.insert(std::make_pair(a + 1, "L" + std::to_string(disasm.label++)));
         }
-        disasm.bus.fill_instr(a);
+        disasm.bus.add_to_queue(a);
+        // disasm.bus.fill_instr(a);
         return std::make_shared<Jmp>(addressMode, disasm.known_lables[a + 1], pc);
     }
 
@@ -54,6 +54,10 @@ std::shared_ptr<instr> JMP(AddressMode addressMode, DisAsmState &disasm)
 std::shared_ptr<instr> RTI(AddressMode addressMode, DisAsmState &disasm)
 {
     auto pc = disasm.bus.get_pc() - 1;
-
+    uint16_t c = disasm.bus.get_next_queue();
+    if (c != 0)
+    {
+        disasm.bus.fill_instr(c);
+    }
     return std::make_shared<Rti>(addressMode, pc);
 }

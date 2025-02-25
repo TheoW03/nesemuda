@@ -14,6 +14,7 @@ add_executable(${EXECUTABLE_NAME}
                 src/Disassemble_emulator.cpp
                 src/Util.cpp
                 src/instruction_map.cpp
+                src/instr_bus.cpp
                 src/instructions.cpp
                 src/cli.cpp)
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/..)
