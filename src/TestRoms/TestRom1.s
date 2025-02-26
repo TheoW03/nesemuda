@@ -24,7 +24,9 @@ reset:
     LDA ($20),Y 
     l3: 
       jmp l2
-    .byte $82, $29
+      lda #1
+    ; .byte $82, $29
+    ; .byte $1
 nmi:
 rti
 

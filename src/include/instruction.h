@@ -152,6 +152,22 @@ public:
 };
 #endif
 
+#ifndef DEFINED_BYTE_H
+#define DEFINED_BYTE_H
+
+class DefinedByte : public instr
+{
+public:
+    // std::vector<uint8_t> opcodes;
+    uint16_t pc;
+    uint8_t byte;
+    // AddressMode addressMode;
+    // std::string lable_name;
+    DefinedByte(uint8_t byte, uint16_t pc);
+    std::string disassm() override;
+};
+#endif
+
 // #ifndef PRGRAM_H
 // #define PROGRAM_H
 // class Program

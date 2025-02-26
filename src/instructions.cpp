@@ -125,3 +125,14 @@ std::string Rti::disassm()
 {
     return "rti \n";
 }
+
+DefinedByte::DefinedByte(uint8_t byte, uint16_t pc) : instr(pc)
+{
+    this->byte = byte;
+    this->pc = pc;
+}
+
+std::string DefinedByte::disassm()
+{
+    return ".byte " + byteToHex8(byte) + "\n";
+}
