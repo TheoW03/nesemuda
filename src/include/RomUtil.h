@@ -1,6 +1,7 @@
 #include <stdint.h>
 #include <vector>
 #include <iostream>
+#include <optional>
 // easier to understand over doing bytes and bit operations
 #ifndef NES_HEADER_H
 #define NES_HEADER_H
@@ -63,6 +64,6 @@ struct NESRom
 #endif
 
 std::vector<uint8_t>
-file_tobyte_vector(std::string file_name);
+file_tobyte_vector(std::optional<std::string> file_name);
 
 NESRom load_rom(std::vector<uint8_t> instructions);

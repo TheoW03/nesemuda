@@ -22,6 +22,12 @@ void Bus::fill_instr(uint16_t new_pc)
     // instr[this->pc - reset_vector] = 0x82;
     pc++;
 }
+uint16_t Bus::read_rom_mem(uint16_t mem_address)
+{
+    uint8_t byte1 = instr[(mem_address + 1) - reset_vector];
+    uint8_t byte2 = instr[(mem_address)-reset_vector];
+    return byte1 << 8 | byte2;
+}
 uint8_t Bus::get_instr()
 {
     uint8_t current_instruction = stored_instructions[1];

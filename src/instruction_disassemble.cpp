@@ -47,9 +47,7 @@ std::shared_ptr<instr> JMP(AddressMode addressMode, DisAsmState &disasm)
         // disasm.bus.fill_instr(a);
         return std::make_shared<Jmp>(addressMode, disasm.known_lables[a + 1], pc);
     }
-
     return std::make_shared<Jmp>(addressMode, data_vec, pc);
-    // disasm.lables.insert();
 }
 std::shared_ptr<instr> RTI(AddressMode addressMode, DisAsmState &disasm)
 {

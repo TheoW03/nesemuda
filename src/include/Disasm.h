@@ -1,3 +1,3 @@
 #include <RomUtil.h>
 
-void init(NESRom nes, std::string output);
+void init(NESRom nes, std::optional<std::string> output);

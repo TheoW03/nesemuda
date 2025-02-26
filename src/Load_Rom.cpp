@@ -11,10 +11,15 @@
 #define PRG_ROM_SIZE 16384
 #define CHR_ROM_SIZE 8192
 
-std::vector<uint8_t> file_tobyte_vector(std::string file_name)
+std::vector<uint8_t> file_tobyte_vector(std::optional<std::string> file_name)
 {
+    if (!file_name.has_value())
+    {
+        std::cout << "hazelc:  requires file" << std::endl;
+        exit(EXIT_FAILURE);
+    }
     std::vector<uint8_t> instructions;
-    std::ifstream infile(file_name, std::ios::binary); // Open the file for reading
+    std::ifstream infile(file_name.value(), std::ios::binary); // Open the file for reading
     std::string line;
     while (infile)
     {

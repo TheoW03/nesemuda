@@ -1,12 +1,13 @@
 #include <vector>
 #include <iostream>
+#include <optional>
 
 #ifndef OUT_H
 #define OUT_H
 struct Output
 {
-    std::string files;
-    std::string output_files;
+    std::optional<std::string> files;
+    std::optional<std::string> output_files;
 };
 
 #endif

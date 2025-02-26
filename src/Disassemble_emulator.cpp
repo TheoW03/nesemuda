@@ -56,8 +56,12 @@ std::vector<std::shared_ptr<instr>> computer(DisAsmState &state)
     return c;
 }
 // bool myfunction(instr i, instr j) { return (i.pc < j.pc); }
-void init(NESRom nes, std::string output)
+void init(NESRom nes, std::optional<std::string> output)
 {
+    if (!output.has_value())
+    {
+        output = "./TestOutPut/Test.s";
+    }
     initializeInstructionMap();
 
     Header h = Header(nes.header);
@@ -77,7 +81,7 @@ void init(NESRom nes, std::string output)
     sort_by_PC(prg);
 
     std::cout << h.disassm() << std::endl;
-    std::ofstream outputFile(output);
+    std::ofstream outputFile(output.value());
 
     outputFile << h.disassm();
     outputFile << ".SEGMENT \"VECTORS\" \n";
@@ -86,17 +90,6 @@ void init(NESRom nes, std::string output)
     outputFile << ".addr nmi \n";
 
     outputFile << ".SEGMENT \"STARTUP\" \n";
-
-    // for (int i = 0; i < prg.size() - 1; i++)
-    // {
-    //     for (int j = 0; j < prg.size() - i - 1; j++)
-    //     {
-
-    //         if (prg[j]->pc > prg[j + 1]->pc)
-
-    //             std::swap(prg[j], prg[j + 1]);
-    //     }
-    // }
     for (int i = 0; i < prg.size(); i++)
     {
         // printf("labe;l\n");

@@ -41,6 +41,8 @@ public:
     uint16_t get_next_queue();
     void add_to_queue(uint16_t addr);
     void fill_instr(uint16_t new_pc);
+
+    uint16_t read_rom_mem(uint16_t mem_address);
 };
 #endif
 
