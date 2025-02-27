@@ -61,7 +61,7 @@ uint16_t Bus::get_next_queue()
     }
     uint16_t new_pc = pc_queue[0];
     pc_queue.erase(pc_queue.begin());
-    if (!InstructionValid(instr[new_pc - reset_vector]) || pc_visited.find(new_pc) != pc_visited.end())
+    if (pc_visited.find(new_pc) != pc_visited.end())
     {
         printf("rejected: %x \n", new_pc);
         return get_next_queue();
