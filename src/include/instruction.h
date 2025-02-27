@@ -3,6 +3,7 @@
 #include <RomUtil.h>
 #include <stdint.h>
 #include <map>
+#include <unordered_set>
 
 #ifndef ADDRESS_MODE_H
 #define ADDRESS_MODE_H
@@ -31,6 +32,7 @@ class Bus
 public:
     uint8_t stored_instructions[2];
     std::vector<uint8_t> instr;
+    std::unordered_set<uint16_t> pc_visited;
     std::vector<uint16_t> pc_queue;
     uint16_t reset_vector;
     uint16_t pc;
