@@ -22,11 +22,14 @@ void Bus::fill_instr(uint16_t new_pc)
 }
 uint8_t Bus::get_instr()
 {
+
     uint8_t current_instruction = stored_instructions[1];
     stored_instructions[1] = stored_instructions[0];
     stored_instructions[0] = instr[(this->pc + 1) - reset_vector];
     pc_visited.insert(pc);
+    // printf("%x \n", instr[0xfffa - reset_vector]);
     pc++;
+
     return current_instruction;
 }
 
@@ -62,8 +65,17 @@ uint16_t Bus::get_next_queue()
     {
         return 0;
     }
+
     uint16_t new_pc = pc_queue[0];
+
+    // printf("%x %d \n", new_pc, pc_visited.find(new_pc) != pc_visited.end());
+    // printf("%x \n", pc);
     pc_queue.erase(pc_queue.begin());
+    // a bit hacky but if its in the range of being the PC it will constitute it as the PC
+    if ((new_pc + 1) == pc || new_pc == pc)
+    {
+        return new_pc;
+    }
     if (pc_visited.find(new_pc) != pc_visited.end())
     {
         return get_next_queue();

@@ -54,7 +54,8 @@ std::shared_ptr<instr> JMP(AddressMode addressMode, DisAsmState &disasm)
             disasm.known_lables.insert(std::make_pair(a + 1, "L" + std::to_string(disasm.label++)));
         }
         disasm.bus.add_to_queue(a);
-        // disasm.bus.fill_instr(a);
+        auto new_pc = disasm.bus.get_next_queue();
+        disasm.bus.fill_instr(new_pc);
         return std::make_shared<Jmp>(addressMode, disasm.known_lables[a + 1], pc);
     }
     return std::make_shared<Jmp>(addressMode, data_vec, pc);
@@ -63,11 +64,9 @@ std::shared_ptr<instr> RTI(AddressMode addressMode, DisAsmState &disasm)
 {
     auto pc = disasm.bus.get_pc() - 1;
     uint16_t c = disasm.bus.get_next_queue();
-    if (c != 0)
-    {
-        disasm.bus.fill_instr(c);
-    }
-    return std::make_shared<Rti>(addressMode, pc);
+    disasm.bus.fill_instr(c);
+
+    return std::make_shared<oneByteInstr>("rti", pc);
 }
 
 std::shared_ptr<instr> BEQ(AddressMode addressMode, DisAsmState &disasm)

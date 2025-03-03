@@ -52,6 +52,11 @@ Output parse_cmd(std::vector<std::string> args)
                                       std::cout << "1.0.0" << std::endl;
                                   },
                                   "prints version", 0};
+    option_handlers["print-file"] = {[](std::string &value, Output &o)
+                                     {
+                                         o.print_file = true;
+                                     },
+                                     "print the output instead of storing it in .s file", 0};
 
     // func_c(2017);
     std::optional<ParseFunction> current;

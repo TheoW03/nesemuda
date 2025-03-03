@@ -143,6 +143,16 @@ public:
 };
 #endif
 
+#ifndef ONE_BYTE_H
+#define ONE_BYTE_H
+class oneByteInstr : public instr
+{
+public:
+    std::string instr_name;
+    oneByteInstr(std::string instr_name, uint16_t pc);
+    std::string disassm() override;
+};
+#endif
 #ifndef DEFINED_BYTE_H
 #define DEFINED_BYTE_H
 

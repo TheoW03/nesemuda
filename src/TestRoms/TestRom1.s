@@ -23,14 +23,22 @@ reset:
     LDA ($20,X)     ; Indirect,X Mode: Load from address stored at ($20 + X)
     LDA ($20),Y 
     l3: 
-      jmp l3
-      lda #1
-    .byte $82, $29
+      jmp l2
+      ; lda #1
+    ; .byte $82, $29
     ; .byte $1
 nmi:
+lda #1
+lda #2
+
 rti
 
+  lda #2
+
 l2:      
+  lda $01
   jmp l3
+.byte $01, $03, $05
+
 .segment "CHARS" ; for graphics
 ; .incbin  "rom.chr"

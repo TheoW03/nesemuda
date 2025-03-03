@@ -64,7 +64,7 @@ std::vector<std::shared_ptr<instr>> computer(DisAsmState &state)
     return disassembled_rom;
 }
 
-void init(NESRom nes, std::optional<std::string> output)
+void init(NESRom nes, std::optional<std::string> output, bool print)
 {
     if (!output.has_value())
     {
@@ -84,11 +84,13 @@ void init(NESRom nes, std::optional<std::string> output)
     known_lables[pc_start] = "reset";
     known_lables[nmi] = "nmi";
     DisAsmState dis = {bus, known_lables, assembled, 0};
+    // printf("%x \n", nmi);
     dis.bus.add_to_queue(nmi);
     auto prg = computer(dis);
     sort_by_PC(prg);
-
-    std::cout << h.disassm() << std::endl;
+    // if()
+    if (print)
+        std::cout << h.disassm() << std::endl;
     std::ofstream outputFile(output.value());
 
     outputFile << h.disassm();
@@ -107,8 +109,11 @@ void init(NESRom nes, std::optional<std::string> output)
             auto d = std::make_shared<Label>(dis.known_lables[prg[i]->pc], prg[i]->pc);
             dis.assembled.insert(std::make_pair(prg[i]->pc, dis.known_lables[prg[i]->pc - 1]));
             outputFile << d->disassm();
+            if (print)
+                std::cout << d->disassm();
         }
-
+        if (print)
+            std::cout << prg[i]->disassm();
         outputFile << prg[i]->disassm();
     }
 
@@ -121,7 +126,10 @@ void init(NESRom nes, std::optional<std::string> output)
             outputFile << d->disassm();
         }
     }
-    outputFile << ".SEGMENT \"CHARS\" \n";
 
+    outputFile << ".SEGMENT \"CHARS\" \n";
+    if (print)
+        std::cout << ".SEGMENT \"CHARS\" \n";
+    std::cout << "TedroidDisasm: file succesfully disassemled" << std::endl;
     outputFile.close();
 }

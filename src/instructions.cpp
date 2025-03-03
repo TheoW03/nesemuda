@@ -136,3 +136,14 @@ std::string DefinedByte::disassm()
 {
     return ".byte " + byteToHex8(byte) + "\n";
 }
+
+oneByteInstr::oneByteInstr(std::string instr_name, uint16_t pc) : instr(pc)
+{
+    this->instr_name = instr_name;
+
+    this->pc = pc;
+}
+std::string oneByteInstr::disassm()
+{
+    return this->instr_name + "\n";
+}

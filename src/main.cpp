@@ -17,7 +17,7 @@ int main(int argc, char const *argv[])
     /* code */
     // std::cout << p.files << std::endl;
     auto parsed_rom = load_rom(file_tobyte_vector(p.files));
-    init(parsed_rom, p.output_files);
+    init(parsed_rom, p.output_files, p.print_file);
     // std::cout << byteToHex16(0x8000) << std::endl;
     // std::cout << byteToHex(10) << std::endl;
     return 0;

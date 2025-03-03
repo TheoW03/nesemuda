@@ -15,7 +15,7 @@ std::vector<uint8_t> file_tobyte_vector(std::optional<std::string> file_name)
 {
     if (!file_name.has_value())
     {
-        std::cout << "hazelc:  requires file" << std::endl;
+        std::cout << "TetroidDisasm:  requires file" << std::endl;
         exit(EXIT_FAILURE);
     }
     std::vector<uint8_t> instructions;
