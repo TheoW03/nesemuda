@@ -1,6 +1,7 @@
 
 #include <memory>
 #include <instruction.h>
+#include "instruction_disam.h"
 
 std::vector<uint8_t> diasm_addressmode(AddressMode addressMode, DisAsmState &disasm)
 {
@@ -31,6 +32,15 @@ std::shared_ptr<instr> LDA(AddressMode addressMode, DisAsmState &disasm)
     std::vector<uint8_t> data_vec = diasm_addressmode(addressMode, disasm);
     return std::make_shared<Lda>(addressMode, data_vec, pc);
 }
+
+// TODO
+//  what Jump should do instead of pushing the address into the queue
+//  to be disassembled later. jump to the address, if the address is already disassembled
+// goto an address in the queue
+
+// if JMP INDIRECT. if the address is in the rom we will jump to its contents
+//  if not work our way down the queue
+
 std::shared_ptr<instr> JMP(AddressMode addressMode, DisAsmState &disasm)
 {
     auto pc = disasm.bus.get_pc() - 1;
@@ -58,4 +68,34 @@ std::shared_ptr<instr> RTI(AddressMode addressMode, DisAsmState &disasm)
         disasm.bus.fill_instr(c);
     }
     return std::make_shared<Rti>(addressMode, pc);
+}
+
+std::shared_ptr<instr> BEQ(AddressMode addressMode, DisAsmState &disasm)
+{
+    return std::shared_ptr<instr>();
+}
+
+std::shared_ptr<instr> BNE(AddressMode addressMode, DisAsmState &disasm)
+{
+    return std::shared_ptr<instr>();
+}
+
+std::shared_ptr<instr> BCC(AddressMode addressMode, DisAsmState &disasm)
+{
+    return std::shared_ptr<instr>();
+}
+
+std::shared_ptr<instr> BCS(AddressMode addressMode, DisAsmState &disasm)
+{
+    return std::shared_ptr<instr>();
+}
+
+std::shared_ptr<instr> BPL(AddressMode addressMode, DisAsmState &disasm)
+{
+    return std::shared_ptr<instr>();
+}
+
+std::shared_ptr<instr> BMI(AddressMode addressMode, DisAsmState &disasm)
+{
+    return std::shared_ptr<instr>();
 }

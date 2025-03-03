@@ -6,7 +6,7 @@ using instructionPointer = std::shared_ptr<instr> (*)(AddressMode, DisAsmState &
 #define INSTRUCT_H
 struct Instruction
 {
-    instructionPointer i;
+    instructionPointer instructionFunction;
     AddressMode addressmode;
 };
 #endif

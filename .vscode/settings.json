@@ -50,6 +50,7 @@
         "fstream": "cpp",
         "cinttypes": "cpp",
         "set": "cpp",
-        "map": "cpp"
+        "map": "cpp",
+        "unordered_set": "cpp"
     }
 }
