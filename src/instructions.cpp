@@ -147,3 +147,15 @@ std::string oneByteInstr::disassm()
 {
     return this->instr_name + "\n";
 }
+
+BranchInstr::BranchInstr(std::string instr_name, std::string label, uint16_t pc) : instr(pc)
+{
+    this->instr_name = instr_name;
+    this->label = label;
+    this->pc = pc;
+}
+
+std::string BranchInstr::disassm()
+{
+    return instr_name + " " + label + "\n";
+}

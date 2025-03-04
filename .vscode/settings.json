@@ -52,5 +52,7 @@
         "set": "cpp",
         "map": "cpp",
         "unordered_set": "cpp"
-    }
+    },
+    "editor.fontFamily": "'Droid Sans Mono', 'monospace', monospace",
+    "editor.fontLigatures": false
 }

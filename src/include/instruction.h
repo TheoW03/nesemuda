@@ -153,6 +153,21 @@ public:
     std::string disassm() override;
 };
 #endif
+
+#ifndef BRANCH_INSTR_h
+#define BRANCH_INSTR_h
+
+class BranchInstr : public instr
+{
+public:
+    std::string instr_name;
+    std::string label;
+    uint16_t pc;
+    BranchInstr(std::string instr_name, std::string label, uint16_t pc);
+    std::string disassm() override;
+};
+#endif
+
 #ifndef DEFINED_BYTE_H
 #define DEFINED_BYTE_H
 

@@ -13,6 +13,7 @@ std::vector<uint8_t> diasm_addressmode(AddressMode addressMode, DisAsmState &dis
         || addressMode == AddressMode::ZERO_PAGE_Y //
         || addressMode == AddressMode::INDIRECT_X  //
         || addressMode == AddressMode::INDIRECT_Y  //
+        || addressMode == AddressMode::RELATIVE
 
     )
     {
@@ -47,6 +48,7 @@ std::shared_ptr<instr> JMP(AddressMode addressMode, DisAsmState &disasm)
     std::vector<uint8_t> data_vec = diasm_addressmode(addressMode, disasm);
     if (addressMode == AddressMode::ABSOLUTE)
     {
+
         uint16_t a = data_vec[1] << 8 | data_vec[0];
 
         if (disasm.known_lables.find(a + 1) == disasm.known_lables.end())
@@ -71,7 +73,13 @@ std::shared_ptr<instr> RTI(AddressMode addressMode, DisAsmState &disasm)
 
 std::shared_ptr<instr> BEQ(AddressMode addressMode, DisAsmState &disasm)
 {
-    return std::shared_ptr<instr>();
+    auto pc = disasm.bus.get_pc() - 1;
+
+    std::vector<uint8_t> data_vec = diasm_addressmode(addressMode, disasm);
+    int8_t new_branch = (int8_t)data_vec[0];
+    std::string pc_branch = disasm.known_lables[(disasm.bus.get_pc() + new_branch) - 1];
+
+    return std::make_shared<BranchInstr>("BEQ", "L1", pc);
 }
 
 std::shared_ptr<instr> BNE(AddressMode addressMode, DisAsmState &disasm)

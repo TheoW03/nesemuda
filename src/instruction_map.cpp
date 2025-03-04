@@ -25,6 +25,8 @@ void initializeInstructionMap()
     instructionMap.insert(std::make_pair(0xB1, Instruction{(instructionPointer)LDA, AddressMode::INDIRECT_Y}));
     instructionMap.insert(std::make_pair(0x4C, Instruction{(instructionPointer)JMP, AddressMode::ABSOLUTE}));
     instructionMap.insert(std::make_pair(0x40, Instruction{(instructionPointer)RTI, AddressMode::ABSOLUTE}));
+
+    instructionMap.insert(std::make_pair(0xF0, Instruction{(instructionPointer)BEQ, AddressMode::RELATIVE}));
 }
 Instruction GetInstruction(uint8_t opcode)
 {
