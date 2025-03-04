@@ -1,5 +1,9 @@
 # NESEmuDASM 
 
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+
+
+
 NESEmuDASM 
 
 is a dynamic NES ROM disassembler with a ca65 target 
