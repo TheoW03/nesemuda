@@ -5,12 +5,8 @@
 
 nesemuda 
 
-is a dynamic NES ROM disassembler with a ca65 macro assembler target 
-how it works is that instead of statically disassembling ROMs like most disassemblers 
-
-it simulates the execution flow of the PC by using a special type of emulator, an
-emulator that does "fetch decode disassemble" as opposed to "fetch decode execute store". and with that  it can disassemble a ROM into source code that will
-infact run on the machines hardware.  
+is a recursive decent NES ROM disassembler. 
+with a ca65 macro assembler target. 
 
 ## build instructions 
 

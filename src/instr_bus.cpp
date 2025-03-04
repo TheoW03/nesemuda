@@ -1,7 +1,7 @@
 #include <memory>
 #include <instruction.h>
 #include <instruction_map.h>
-
+#define NES_START 0x8000 // this is the smallest a NES ROM can be
 Bus::Bus(std::vector<uint8_t> instr, uint16_t pc_starting)
 {
     this->instr = instr;
@@ -25,7 +25,7 @@ uint8_t Bus::get_instr()
 
     uint8_t current_instruction = stored_instructions[1];
     stored_instructions[1] = stored_instructions[0];
-    stored_instructions[0] = instr[(this->pc + 1) - reset_vector];
+    stored_instructions[0] = instr[(this->pc + 1) - NES_START];
     pc_visited.insert(pc);
     // printf("%x \n", instr[0xfffa - reset_vector]);
     pc++;
@@ -35,8 +35,8 @@ uint8_t Bus::get_instr()
 
 uint16_t Bus::read_rom_mem(uint16_t mem_address)
 {
-    uint8_t byte1 = instr[(mem_address + 1) - reset_vector];
-    uint8_t byte2 = instr[(mem_address)-reset_vector];
+    uint8_t byte1 = instr[(mem_address + 1) - NES_START];
+    uint8_t byte2 = instr[mem_address - NES_START];
     return byte1 << 8 | byte2;
 }
 

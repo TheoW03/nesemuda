@@ -25,6 +25,7 @@ std::vector<std::shared_ptr<instr>> computer(DisAsmState &state)
     std::vector<std::shared_ptr<instr>> disassembled_rom;
 
     bool end = false;
+
     while (!end)
     {
         // disassembles labels
@@ -83,8 +84,9 @@ void init(NESRom nes, std::optional<std::string> output, bool print)
 
     known_lables[pc_start] = "reset";
     known_lables[nmi] = "nmi";
+
     DisAsmState dis = {bus, known_lables, assembled, 0};
-    printf("%x \n", nmi);
+
     dis.bus.add_to_queue(nmi);
 
     auto prg = computer(dis);
