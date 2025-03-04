@@ -27,6 +27,21 @@ std::vector<uint8_t> diasm_addressmode(AddressMode addressMode, DisAsmState &dis
         return ret;
     }
 }
+std::string handle_labels(DisAsmState &disasm, uint16_t label_pc)
+{
+    if (disasm.known_lables.find(label_pc) == disasm.known_lables.end())
+    {
+        disasm.known_lables.insert(std::make_pair(label_pc, "L" + std::to_string(disasm.label++)));
+    }
+    return disasm.known_lables[label_pc];
+}
+std::string handle_branch(DisAsmState &disasm, int8_t new_branch)
+{
+    uint16_t branched_pc = (disasm.bus.get_pc() + new_branch) - 1;
+    std::string label = handle_labels(disasm, branched_pc);
+    disasm.bus.add_to_queue(branched_pc);
+    return label;
+}
 std::shared_ptr<instr> LDA(AddressMode addressMode, DisAsmState &disasm)
 {
     auto pc = disasm.bus.get_pc() - 1;
@@ -49,16 +64,12 @@ std::shared_ptr<instr> JMP(AddressMode addressMode, DisAsmState &disasm)
     if (addressMode == AddressMode::ABSOLUTE)
     {
 
-        uint16_t a = data_vec[1] << 8 | data_vec[0];
-
-        if (disasm.known_lables.find(a + 1) == disasm.known_lables.end())
-        {
-            disasm.known_lables.insert(std::make_pair(a + 1, "L" + std::to_string(disasm.label++)));
-        }
-        disasm.bus.add_to_queue(a);
+        uint16_t jmp_pc = data_vec[1] << 8 | data_vec[0];
+        std::string label = handle_labels(disasm, jmp_pc + 1);
+        disasm.bus.add_to_queue(jmp_pc);
         auto new_pc = disasm.bus.get_next_queue();
         disasm.bus.fill_instr(new_pc);
-        return std::make_shared<Jmp>(addressMode, disasm.known_lables[a + 1], pc);
+        return std::make_shared<Jmp>(addressMode, label, pc);
     }
     return std::make_shared<Jmp>(addressMode, data_vec, pc);
 }
@@ -74,17 +85,20 @@ std::shared_ptr<instr> RTI(AddressMode addressMode, DisAsmState &disasm)
 std::shared_ptr<instr> BEQ(AddressMode addressMode, DisAsmState &disasm)
 {
     auto pc = disasm.bus.get_pc() - 1;
-
     std::vector<uint8_t> data_vec = diasm_addressmode(addressMode, disasm);
     int8_t new_branch = (int8_t)data_vec[0];
-    std::string pc_branch = disasm.known_lables[(disasm.bus.get_pc() + new_branch) - 1];
-
-    return std::make_shared<BranchInstr>("BEQ", "L1", pc);
+    auto label = handle_branch(disasm, new_branch);
+    return std::make_shared<BranchInstr>("beq", label, pc);
 }
 
 std::shared_ptr<instr> BNE(AddressMode addressMode, DisAsmState &disasm)
 {
-    return std::shared_ptr<instr>();
+
+    auto pc = disasm.bus.get_pc() - 1;
+    std::vector<uint8_t> data_vec = diasm_addressmode(addressMode, disasm);
+    int8_t new_branch = (int8_t)data_vec[0];
+    auto label = handle_branch(disasm, new_branch);
+    return std::make_shared<BranchInstr>("bne", label, pc);
 }
 
 std::shared_ptr<instr> BCC(AddressMode addressMode, DisAsmState &disasm)

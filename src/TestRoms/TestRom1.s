@@ -39,7 +39,7 @@ l2:
   lda $01
   ; jmp l3
   beq nmi
-.byte $01, $03, $05
+  bne nmi
 
 .segment "CHARS" ; for graphics
 ; .incbin  "rom.chr"
