@@ -20,6 +20,11 @@ std::vector<uint8_t> file_tobyte_vector(std::optional<std::string> file_name)
     }
     std::vector<uint8_t> instructions;
     std::ifstream infile(file_name.value(), std::ios::binary); // Open the file for reading
+    if (!infile)
+    {
+        std::cout << "TetroidDisasm: file " << file_name.value() << " doesnt exist" << std::endl;
+        exit(EXIT_FAILURE);
+    }
     std::string line;
     while (infile)
     {
