@@ -24,6 +24,11 @@ reset:
     LDA ($20),Y 
     l3: 
       jmp l2
+      bne nmi
+      bpl nmi
+      bcc nmi
+      bcs nmi
+      bmi nmi
       ; lda #1
     ; .byte $82, $29
     ; .byte $1

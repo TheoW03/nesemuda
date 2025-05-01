@@ -108,7 +108,7 @@ std::shared_ptr<instr> BCC(AddressMode addressMode, DisAsmState &disasm)
     std::vector<uint8_t> data_vec = diasm_addressmode(addressMode, disasm);
     int8_t new_branch = (int8_t)data_vec[0];
     auto label = handle_branch(disasm, new_branch);
-    return std::make_shared<BranchInstr>("bne", label, pc);
+    return std::make_shared<BranchInstr>("bcc", label, pc);
 }
 
 std::shared_ptr<instr> BCS(AddressMode addressMode, DisAsmState &disasm)
