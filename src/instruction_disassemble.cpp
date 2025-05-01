@@ -81,7 +81,7 @@ std::shared_ptr<instr> JMP(AddressMode addressMode, DisAsmState &disasm)
     {
 
         uint16_t jmp_pc = data_vec[1] << 8 | data_vec[0];
-        std::string label = handle_labels(disasm, jmp_pc + 1);
+        std::string label = handle_labels(disasm, jmp_pc);
         disasm.bus.add_to_queue(jmp_pc);
         auto new_pc = disasm.bus.get_next_queue();
         disasm.bus.fill_instr(new_pc);
