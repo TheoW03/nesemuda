@@ -49,6 +49,22 @@ std::shared_ptr<instr> LDA(AddressMode addressMode, DisAsmState &disasm)
     return std::make_shared<Lda>(addressMode, data_vec, pc);
 }
 
+std::shared_ptr<instr> LDY(AddressMode addressMode, DisAsmState &disasm)
+{
+
+    auto pc = disasm.bus.get_pc() - 1;
+    std::vector<uint8_t> data_vec = diasm_addressmode(addressMode, disasm);
+    return std::make_shared<Ldy>(addressMode, data_vec, pc);
+}
+
+std::shared_ptr<instr> LDX(AddressMode addressMode, DisAsmState &disasm)
+{
+
+    auto pc = disasm.bus.get_pc() - 1;
+    std::vector<uint8_t> data_vec = diasm_addressmode(addressMode, disasm);
+    return std::make_shared<Ldx>(addressMode, data_vec, pc);
+}
+
 // TODO
 //  what Jump should do instead of pushing the address into the queue
 //  to be disassembled later. jump to the address, if the address is already disassembled

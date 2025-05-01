@@ -23,7 +23,10 @@ reset:
     LDA ($20,X)     ; Indirect,X Mode: Load from address stored at ($20 + X)
     LDA ($20),Y 
     l3: 
-      jmp l2
+      ldy #1
+      ldx #2
+      ; jmp l2
+      
       bne nmi
       bpl nmi
       bcc nmi

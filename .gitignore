@@ -6,3 +6,4 @@ DisassmTetroid
 *.o
 Out.s
 nesemuda
+t.s

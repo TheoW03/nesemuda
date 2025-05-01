@@ -7,6 +7,46 @@ Header::Header(NESHeader header)
     this->header = header;
 }
 
+Ldx::Ldx()
+{
+}
+
+Ldx::Ldx(AddressMode addressMode, std::vector<uint8_t> opcodes, uint16_t pc) : instr(pc)
+{
+    this->addressMode = addressMode;
+    this->opcodes = opcodes;
+    this->pc = pc;
+}
+std::string Ldx::disassm()
+{
+    std::string instr = "ldx ";
+    if (addressMode == AddressMode::IMMEDIATE)
+    {
+        instr += "#" + std::to_string(opcodes[0]) + "\n";
+    }
+    return instr;
+}
+
+Ldy::Ldy()
+{
+}
+
+Ldy::Ldy(AddressMode addressMode, std::vector<uint8_t> opcodes, uint16_t pc) : instr(pc)
+{
+    this->addressMode = addressMode;
+    this->opcodes = opcodes;
+    this->pc = pc;
+}
+std::string Ldy::disassm()
+{
+    std::string instr = "ldy ";
+    if (addressMode == AddressMode::IMMEDIATE)
+    {
+        instr += "#" + std::to_string(opcodes[0]) + "\n";
+    }
+    return instr;
+}
+
 std::string Header::disassm()
 {
     std::string str = ".SEGMENT \"HEADER\" \n";

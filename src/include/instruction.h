@@ -111,6 +111,38 @@ public:
 
 #endif
 
+#ifndef LDX_H
+#define LDX_H
+
+class Ldx : public instr
+{
+public:
+    std::vector<uint8_t> opcodes;
+    uint16_t pc;
+    AddressMode addressMode;
+    Ldx();
+    Ldx(AddressMode addressMode, std::vector<uint8_t> opcodes, uint16_t pc);
+    std::string disassm() override;
+};
+
+#endif
+
+#ifndef LDY_H
+#define LDY_H
+
+class Ldy : public instr
+{
+public:
+    std::vector<uint8_t> opcodes;
+    uint16_t pc;
+    AddressMode addressMode;
+    Ldy();
+    Ldy(AddressMode addressMode, std::vector<uint8_t> opcodes, uint16_t pc);
+    std::string disassm() override;
+};
+
+#endif
+
 #ifndef JMP_h
 #define JMP_h
 
