@@ -26,12 +26,13 @@ reset:
       ldy #1
       ldx #2
       ; jmp l2
-      
-      bne nmi
+      L4:
+      bne L4
       bpl nmi
       bcc nmi
       bcs nmi
       bmi nmi
+      jmp l2
       ; lda #1
     ; .byte $82, $29
     ; .byte $1
@@ -41,13 +42,12 @@ lda #2
 
 rti
 
-  lda #2
-
 l2:      
   lda $01
   ; jmp l3
   beq nmi
   bne nmi
+  jmp l3
 
 .segment "CHARS" ; for graphics
 ; .incbin  "rom.chr"

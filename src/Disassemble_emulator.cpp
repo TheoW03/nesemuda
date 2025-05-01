@@ -7,15 +7,14 @@
 // #include <util.h>
 #include <map>
 
-void sort_by_PC(std::vector<std::shared_ptr<instr>> prg)
+void sort_by_PC(std::vector<std::shared_ptr<instr>> &prg)
 {
-    for (int i = 0; i < prg.size() - 1; i++)
+
+    for (int i = 0; i < prg.size(); i++)
     {
         for (int j = 0; j < prg.size() - i - 1; j++)
         {
-
             if (prg[j]->pc > prg[j + 1]->pc)
-
                 std::swap(prg[j], prg[j + 1]);
         }
     }
@@ -29,13 +28,13 @@ std::vector<std::shared_ptr<instr>> computer(DisAsmState &state)
     while (!end)
     {
         // disassembles labels
-        if (state.known_lables.find(state.bus.get_pc() - 1) != state.known_lables.end() //
-            && state.assembled.find(state.bus.get_pc() - 1) == state.assembled.end())
-        {
-            disassembled_rom.push_back(std::make_shared<Label>(state.known_lables[state.bus.get_pc() - 1], state.bus.get_pc() - 1));
-            state.assembled.insert(std::make_pair(state.bus.get_pc() - 1, state.known_lables[state.bus.get_pc() - 1]));
-            // state.known_lables.erase(state.bus.get_pc() - 1);
-        }
+        // if (state.known_lables.find(state.bus.get_pc() - 1) != state.known_lables.end() //
+        // && state.assembled.find(state.bus.get_pc() - 1) == state.assembled.end())
+        // {
+        // disassembled_rom.push_back(std::make_shared<Label>(state.known_lables[state.bus.get_pc() - 1], state.bus.get_pc() - 1));
+        // state.assembled.insert(std::make_pair(state.bus.get_pc() - 1, state.known_lables[state.bus.get_pc() - 1]));
+        // state.known_lables.erase(state.bus.get_pc() - 1);
+        // }
         uint8_t instr = state.bus.get_instr();
 
         if (instr == 0x0 || !InstructionValid(instr))
@@ -56,7 +55,6 @@ std::vector<std::shared_ptr<instr>> computer(DisAsmState &state)
         }
         else
         {
-
             auto current_instr = GetInstruction(instr);
             auto disassmble = current_instr.instructionFunction(current_instr.addressmode, state);
             disassembled_rom.push_back(disassmble);
@@ -90,6 +88,12 @@ void init(NESRom nes, std::optional<std::string> output, bool print)
     dis.bus.add_to_queue(nmi);
 
     auto prg = computer(dis);
+    for (const auto &pair : dis.known_lables)
+    {
+        uint16_t pc = pair.first;
+        std::string n = pair.second;
+        prg.push_back(std::make_shared<Label>(n, pc - 1));
+    }
 
     sort_by_PC(prg);
     // if()
@@ -107,29 +111,29 @@ void init(NESRom nes, std::optional<std::string> output, bool print)
     for (int i = 0; i < prg.size(); i++)
     {
         // printf("labe;l\n");
-        if (dis.known_lables.find(prg[i]->pc) != dis.known_lables.end() //
-            && dis.assembled.find(prg[i]->pc) == dis.assembled.end())
-        {
-            auto d = std::make_shared<Label>(dis.known_lables[prg[i]->pc], prg[i]->pc);
-            dis.assembled.insert(std::make_pair(prg[i]->pc, dis.known_lables[prg[i]->pc - 1]));
-            outputFile << d->disassm();
-            if (print)
-                std::cout << d->disassm();
-        }
+        // if (dis.known_lables.find(prg[i]->pc) != dis.known_lables.end() //
+        //     && dis.assembled.find(prg[i]->pc) == dis.assembled.end())
+        // {
+        //     auto d = std::make_shared<Label>(dis.known_lables[prg[i]->pc], prg[i]->pc);
+        //     dis.assembled.insert(std::make_pair(prg[i]->pc, dis.known_lables[prg[i]->pc - 1]));
+        //     outputFile << d->disassm();
+        //     if (print)
+        //         std::cout << d->disassm();
+        // }
         if (print)
             std::cout << prg[i]->disassm();
         outputFile << prg[i]->disassm();
     }
 
-    for (const auto &[key, value] : dis.known_lables)
-    {
+    // for (const auto &[key, value] : dis.known_lables)
+    // {
 
-        if (dis.assembled.find(key) == dis.assembled.end() && value != "")
-        {
-            auto d = std::make_shared<Label>(value, 0x00);
-            outputFile << d->disassm();
-        }
-    }
+    //     if (dis.assembled.find(key) == dis.assembled.end() && value != "")
+    //     {
+    //         auto d = std::make_shared<Label>(value, 0x00);
+    //         outputFile << d->disassm();
+    //     }
+    // }
 
     outputFile << ".SEGMENT \"CHARS\" \n";
     if (print)
