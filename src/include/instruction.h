@@ -160,6 +160,22 @@ public:
 };
 #endif
 
+#ifndef JSR_H
+#define JSR_H
+
+class Jsr : public instr
+{
+public:
+    std::vector<uint8_t> opcodes;
+    uint16_t pc;
+    AddressMode addressMode;
+    std::string lable_name;
+    Jsr();
+    Jsr(AddressMode addressMode, std::string lable, uint16_t pc);
+    std::string disassm() override;
+};
+#endif
+
 #ifndef RTI_h
 #define RTI_h
 

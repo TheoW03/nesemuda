@@ -79,6 +79,18 @@ std::string Ldy::disassm()
     return instr;
 }
 
+Jsr::Jsr()
+{
+}
+
+Jsr::Jsr(AddressMode addressMode, std::string lable, uint16_t pc) : instr(pc)
+{
+    this->lable_name = lable;
+}
+std::string Jsr::disassm()
+{
+    return "jsr " + this->lable_name + "\n";
+}
 std::string Header::disassm()
 {
     std::string str = ".SEGMENT \"HEADER\" \n";

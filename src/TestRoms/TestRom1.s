@@ -13,63 +13,76 @@
     ;; When the processor first turns on or is reset, it will jump to the label reset:
     .addr reset ; reset vector
 .segment "STARTUP"
+
 reset:
-  LDA #42        ; Immediate Mode: Load the value $42 into A
-    LDA $2001       ; Absolute Mode: Load value from memory address $2000
-    LDA $20         ; Zero Page Mode: Load value from address $0020
-    LDA $20,X       ; Zero Page,X Mode: Load from address $0020 + X
-    LDA $2000,X     ; Absolute,X Mode: Load from $2000 + X
-    LDA $2000,Y     ; Absolute,Y Mode: Load from $2000 + Y
-    LDA ($20,X)     ; Indirect,X Mode: Load from address stored at ($20 + X)
-    LDA ($20),Y 
+  lda #42
+  jsr test
+  ldx #1
+  jsr test
+  jmp test
+  .byte $12, $32, $22, $32
 
-    ; LDY #1
-    ; LDY $20
-    ; LDY $20, X
-    ; LDY $2000
-    ; LDY $2000, X
+; reset:
+;   LDA #42        ; Immediate Mode: Load the value $42 into A
+;     LDA $2001       ; Absolute Mode: Load value from memory address $2000
+;     LDA $20         ; Zero Page Mode: Load value from address $0020
+;     LDA $20,X       ; Zero Page,X Mode: Load from address $0020 + X
+;     LDA $2000,X     ; Absolute,X Mode: Load from $2000 + X
+;     LDA $2000,Y     ; Absolute,Y Mode: Load from $2000 + Y
+;     LDA ($20,X)     ; Indirect,X Mode: Load from address stored at ($20 + X)
+;     LDA ($20),Y 
+;     ; jsr test
+
+;     ; LDY #1
+;     ; LDY $20
+;     ; LDY $20, X
+;     ; LDY $2000
+;     ; LDY $2000, X
 
 
-    ; LDX #1
-    ; LDX $20
-    ; LDX $20, Y
-    ; LDX $2000
-    ; LDX $2000, Y
+;     ; LDX #1
+;     ; LDX $20
+;     ; LDX $20, Y
+;     ; LDX $2000
+;     ; LDX $2000, Y
 
-    clc
-    sec
-    cld
-    sed
-    cli
-    sei
-    clv
+;     clc
+;     sec
+;     cld
+;     sed
+;     cli
+;     sei
+;     clv
 
-    jmp reset 
-    l3: 
-      lda #1
-      ; rti
-      ; jmp l2
-      L4:
-      bne L4
-      bpl nmi
-      bcc nmi
-      bcs nmi
-      bmi nmi
-      jmp l2
-      ; lda #1
-    ; .byte $82, $29
-    ; .byte $1
+;     jmp reset 
+;     l3: 
+;       lda #1
+;       ; rti
+;       ; jmp l2
+;       L4:
+;       bne L4
+;       bpl nmi
+;       bcc nmi
+;       bcs nmi
+;       bmi nmi
+;       jmp l2
+;       ; lda #1
+;     ; .byte $82, $29
+;     ; .byte $1
 nmi:
 lda #1
 lda #2
 rti
 
-l2:      
-  lda $01
-  ; jmp l3
-  beq nmi
-  bne nmi
-  jmp l3
+; l2:      
+;   lda $01
+;   ; jmp l3
+;   beq nmi
+;   bne nmi
+;   jmp l3
 
+test:
+  lda #1
+  rts
 .segment "CHARS" ; for graphics
 ; .incbin  "rom.chr"

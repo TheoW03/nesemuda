@@ -92,7 +92,7 @@ void init(NESRom nes, std::optional<std::string> output, bool print)
     {
         uint16_t pc = pair.first;
         std::string n = pair.second;
-        prg.push_back(std::make_shared<Label>(n, pc - 1));
+        prg.push_back(std::make_shared<Label>(n, pc));
     }
 
     sort_by_PC(prg);
@@ -103,10 +103,16 @@ void init(NESRom nes, std::optional<std::string> output, bool print)
 
     outputFile << h.disassm();
     outputFile << ".SEGMENT \"VECTORS\" \n";
+    if (print)
+    {
+        std::cout << ".SEGMENT \"VECTORS\"" << std::endl;
 
+        std::cout << "      .addr reset" << std::endl;
+
+        std::cout << "      .addr nmi" << std::endl;
+    }
     outputFile << ".addr reset \n";
     outputFile << ".addr nmi \n";
-
     outputFile << ".SEGMENT \"STARTUP\" \n";
     for (int i = 0; i < prg.size(); i++)
     {

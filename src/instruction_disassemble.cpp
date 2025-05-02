@@ -18,14 +18,13 @@ std::vector<uint8_t> diasm_addressmode(AddressMode addressMode, DisAsmState &dis
     )
     {
         ret.push_back(disasm.bus.get_instr());
-        return ret;
     }
     else if (addressMode == AddressMode::ABSOLUTE || addressMode == AddressMode::ABSOLUTE_X || addressMode == AddressMode::ABSOLUTE_Y)
     {
         ret.push_back(disasm.bus.get_instr());
         ret.push_back(disasm.bus.get_instr());
-        return ret;
     }
+    return ret;
 }
 std::string handle_labels(DisAsmState &disasm, uint16_t label_pc)
 {
@@ -200,12 +199,15 @@ std::shared_ptr<instr> INC(AddressMode addressMode, DisAsmState &disasm)
 
 std::shared_ptr<instr> INX(AddressMode addressMode, DisAsmState &disasm)
 {
-    return std::shared_ptr<instr>();
+
+    auto pc = disasm.bus.get_pc() - 1;
+    return std::make_shared<oneByteInstr>("inx", pc);
 }
 
 std::shared_ptr<instr> INY(AddressMode addressMode, DisAsmState &disasm)
 {
-    return std::shared_ptr<instr>();
+    auto pc = disasm.bus.get_pc() - 1;
+    return std::make_shared<oneByteInstr>("iny", pc);
 }
 
 std::shared_ptr<instr> BVC(AddressMode addressMode, DisAsmState &disasm)
@@ -224,6 +226,33 @@ std::shared_ptr<instr> BVS(AddressMode addressMode, DisAsmState &disasm)
     int8_t new_branch = (int8_t)data_vec[0];
     auto label = handle_branch(disasm, new_branch);
     return std::make_shared<BranchInstr>("bvs", label, pc);
+}
+
+std::shared_ptr<instr> JSR(AddressMode addressMode, DisAsmState &disasm)
+{
+
+    auto pc = disasm.bus.get_pc() - 1;
+    std::vector<uint8_t> data_vec = diasm_addressmode(addressMode, disasm);
+    uint16_t jmp_pc = data_vec[1] << 8 | data_vec[0];
+    std::string label = handle_labels(disasm, jmp_pc);
+    // disasm.bus.add_to_queue(disasm.bus.get_pc() - 1);
+    disasm.bus.add_to_queue(jmp_pc);
+    // printf("jsr pc instr: %x \n", disasm.bus.instr[(disasm.bus.get_pc()) - 0x8000]);
+    // printf("jsr PC %x \n", jmp_pc);
+    // printf("current_pc %x \n", disasm.bus.get_pc() - 1);
+
+    // auto new_pc = disasm.bus.get_next_queue();
+    // disasm.bus.fill_instr(new_pc);
+    return std::make_shared<Jsr>(addressMode, label, pc);
+}
+
+std::shared_ptr<instr> RTS(AddressMode addressMode, DisAsmState &disasm)
+{
+
+    auto pc = disasm.bus.get_pc() - 1;
+    uint16_t c = disasm.bus.get_next_queue();
+    disasm.bus.fill_instr(c);
+    return std::make_shared<oneByteInstr>("rts", pc);
 }
 
 std::shared_ptr<instr> SEI(AddressMode addressMode, DisAsmState &disasm)

@@ -239,13 +239,11 @@ void initializeInstructionMap()
     instructionMap.insert(make_pair(0x70, Instruction{(instructionPointer)BVS, AddressMode::RELATIVE}));
 #pragma endregion
 
-    /*
-    #pragma region Subroutine
-        instructionMap.insert(make_pair(0x20, Instruction{(instructionPointer)JSR, AddressMode::ABSOLUTE}));
+#pragma region Subroutine
+    instructionMap.insert(make_pair(0x20, Instruction{(instructionPointer)JSR, AddressMode::ABSOLUTE}));
 
-        instructionMap.insert(make_pair(0x60, Instruction{(instructionPointer)RTS, AddressMode::IMPLIED}));
-    #pragma endregion
-    */
+    instructionMap.insert(make_pair(0x60, Instruction{(instructionPointer)RTS, AddressMode::IMPLIED}));
+#pragma endregion
 
     /*
     #pragma region Pull register from stack

@@ -68,8 +68,9 @@ uint16_t Bus::get_next_queue()
 
     uint16_t new_pc = pc_queue[0];
 
-    // printf("%x %d \n", new_pc, pc_visited.find(new_pc) != pc_visited.end());
+    // printf("%x %d \n", new_pc, (pc_visited.find(new_pc) != pc_visited.end()));
     // printf("%x \n", pc);
+    // printf("%x \n", this->instr[(this->pc - 0x8000) - 1]);
     pc_queue.erase(pc_queue.begin());
     // a bit hacky but if its in the range of being the PC it will constitute it as the PC
     if ((new_pc + 1) == pc || new_pc == pc)

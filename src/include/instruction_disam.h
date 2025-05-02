@@ -33,3 +33,5 @@ std::shared_ptr<instr> INY(AddressMode addressMode, DisAsmState &disasm);
 
 std::shared_ptr<instr> BVC(AddressMode addressMode, DisAsmState &disasm);
 std::shared_ptr<instr> BVS(AddressMode addressMode, DisAsmState &disasm);
+std::shared_ptr<instr> JSR(AddressMode addressMode, DisAsmState &disasm);
+std::shared_ptr<instr> RTS(AddressMode addressMode, DisAsmState &disasm);
