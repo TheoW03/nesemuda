@@ -22,6 +22,29 @@ reset:
     LDA $2000,Y     ; Absolute,Y Mode: Load from $2000 + Y
     LDA ($20,X)     ; Indirect,X Mode: Load from address stored at ($20 + X)
     LDA ($20),Y 
+
+    ; LDY #1
+    ; LDY $20
+    ; LDY $20, X
+    ; LDY $2000
+    ; LDY $2000, X
+
+
+    ; LDX #1
+    ; LDX $20
+    ; LDX $20, Y
+    ; LDX $2000
+    ; LDX $2000, Y
+
+    clc
+    sec
+    cld
+    sed
+    cli
+    sei
+    clv
+
+    jmp reset 
     l3: 
       lda #1
       ; rti
@@ -39,7 +62,6 @@ reset:
 nmi:
 lda #1
 lda #2
-jmp nmi
 rti
 
 l2:      

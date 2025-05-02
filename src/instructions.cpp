@@ -24,6 +24,22 @@ std::string Ldx::disassm()
     {
         instr += "#" + std::to_string(opcodes[0]) + "\n";
     }
+    else if (addressMode == AddressMode::ZERO_PAGE)
+    {
+        instr += byteToHex8(opcodes[0]) + "\n";
+    }
+    else if (addressMode == AddressMode::ZERO_PAGE_Y)
+    {
+        instr += byteToHex8(opcodes[0]) + ", Y \n";
+    }
+    else if (addressMode == AddressMode::ABSOLUTE)
+    {
+        instr += byteToHex16(opcodes[1] << 8 | opcodes[0]) + " \n";
+    }
+    else if (addressMode == AddressMode::ABSOLUTE_Y)
+    {
+        instr += byteToHex16(opcodes[1] << 8 | opcodes[0]) + ", Y \n";
+    }
     return instr;
 }
 
@@ -43,6 +59,22 @@ std::string Ldy::disassm()
     if (addressMode == AddressMode::IMMEDIATE)
     {
         instr += "#" + std::to_string(opcodes[0]) + "\n";
+    }
+    else if (addressMode == AddressMode::ZERO_PAGE)
+    {
+        instr += byteToHex8(opcodes[0]) + "\n";
+    }
+    else if (addressMode == AddressMode::ZERO_PAGE_X)
+    {
+        instr += byteToHex8(opcodes[0]) + ", X \n";
+    }
+    else if (addressMode == AddressMode::ABSOLUTE)
+    {
+        instr += byteToHex16(opcodes[1] << 8 | opcodes[0]) + " \n";
+    }
+    else if (addressMode == AddressMode::ABSOLUTE_X)
+    {
+        instr += byteToHex16(opcodes[1] << 8 | opcodes[0]) + ", X \n";
     }
     return instr;
 }

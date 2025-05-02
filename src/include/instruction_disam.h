@@ -14,3 +14,22 @@ std::shared_ptr<instr> BCC(AddressMode addressMode, DisAsmState &disasm);
 std::shared_ptr<instr> BCS(AddressMode addressMode, DisAsmState &disasm);
 std::shared_ptr<instr> BPL(AddressMode addressMode, DisAsmState &disasm);
 std::shared_ptr<instr> BMI(AddressMode addressMode, DisAsmState &disasm);
+
+std::shared_ptr<instr> CLC(AddressMode addressMode, DisAsmState &disasm);
+std::shared_ptr<instr> SEC(AddressMode addressMode, DisAsmState &disasm);
+
+std::shared_ptr<instr> CLD(AddressMode addressMode, DisAsmState &disasm);
+std::shared_ptr<instr> SED(AddressMode addressMode, DisAsmState &disasm);
+
+std::shared_ptr<instr> CLI(AddressMode addressMode, DisAsmState &disasm);
+std::shared_ptr<instr> SEI(AddressMode addressMode, DisAsmState &disasm);
+
+std::shared_ptr<instr> CLI(AddressMode addressMode, DisAsmState &disasm);
+std::shared_ptr<instr> CLV(AddressMode addressMode, DisAsmState &disasm);
+
+std::shared_ptr<instr> INC(AddressMode addressMode, DisAsmState &disasm);
+std::shared_ptr<instr> INX(AddressMode addressMode, DisAsmState &disasm);
+std::shared_ptr<instr> INY(AddressMode addressMode, DisAsmState &disasm);
+
+std::shared_ptr<instr> BVC(AddressMode addressMode, DisAsmState &disasm);
+std::shared_ptr<instr> BVS(AddressMode addressMode, DisAsmState &disasm);

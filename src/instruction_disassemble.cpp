@@ -156,3 +156,78 @@ std::shared_ptr<instr> BMI(AddressMode addressMode, DisAsmState &disasm)
     auto label = handle_branch(disasm, new_branch);
     return std::make_shared<BranchInstr>("bmi", label, pc);
 }
+
+std::shared_ptr<instr> CLC(AddressMode addressMode, DisAsmState &disasm)
+{
+    auto pc = disasm.bus.get_pc() - 1;
+    return std::make_shared<oneByteInstr>("clc", pc);
+}
+
+std::shared_ptr<instr> SEC(AddressMode addressMode, DisAsmState &disasm)
+{
+    auto pc = disasm.bus.get_pc() - 1;
+    return std::make_shared<oneByteInstr>("sec", pc);
+}
+
+std::shared_ptr<instr> CLD(AddressMode addressMode, DisAsmState &disasm)
+{
+    auto pc = disasm.bus.get_pc() - 1;
+    return std::make_shared<oneByteInstr>("cld", pc);
+}
+
+std::shared_ptr<instr> SED(AddressMode addressMode, DisAsmState &disasm)
+{
+    auto pc = disasm.bus.get_pc() - 1;
+    return std::make_shared<oneByteInstr>("sed", pc);
+}
+
+std::shared_ptr<instr> CLI(AddressMode addressMode, DisAsmState &disasm)
+{
+    auto pc = disasm.bus.get_pc() - 1;
+    return std::make_shared<oneByteInstr>("cli", pc);
+}
+
+std::shared_ptr<instr> CLV(AddressMode addressMode, DisAsmState &disasm)
+{
+    auto pc = disasm.bus.get_pc() - 1;
+    return std::make_shared<oneByteInstr>("clv", pc);
+}
+
+std::shared_ptr<instr> INC(AddressMode addressMode, DisAsmState &disasm)
+{
+    return std::shared_ptr<instr>();
+}
+
+std::shared_ptr<instr> INX(AddressMode addressMode, DisAsmState &disasm)
+{
+    return std::shared_ptr<instr>();
+}
+
+std::shared_ptr<instr> INY(AddressMode addressMode, DisAsmState &disasm)
+{
+    return std::shared_ptr<instr>();
+}
+
+std::shared_ptr<instr> BVC(AddressMode addressMode, DisAsmState &disasm)
+{
+    auto pc = disasm.bus.get_pc() - 1;
+    std::vector<uint8_t> data_vec = diasm_addressmode(addressMode, disasm);
+    int8_t new_branch = (int8_t)data_vec[0];
+    auto label = handle_branch(disasm, new_branch);
+    return std::make_shared<BranchInstr>("bvc", label, pc);
+}
+
+std::shared_ptr<instr> BVS(AddressMode addressMode, DisAsmState &disasm)
+{
+    auto pc = disasm.bus.get_pc() - 1;
+    std::vector<uint8_t> data_vec = diasm_addressmode(addressMode, disasm);
+    int8_t new_branch = (int8_t)data_vec[0];
+    auto label = handle_branch(disasm, new_branch);
+    return std::make_shared<BranchInstr>("bvs", label, pc);
+}
+
+std::shared_ptr<instr> SEI(AddressMode addressMode, DisAsmState &disasm)
+{
+    auto pc = disasm.bus.get_pc() - 1;
+    return std::make_shared<oneByteInstr>("sei", pc);
+}
