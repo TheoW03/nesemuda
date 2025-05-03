@@ -16,6 +16,6 @@ and just converts each byte it sees to assembler without any thought.
 ```sh 
 cmake -S . -B build 
 cmake --build build --config Release
-./DisassmTetroid --help
+./nesda --help
 ```
 
