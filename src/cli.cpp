@@ -33,11 +33,11 @@ Output parse_cmd(std::vector<std::string> args)
 
     option_handlers["help"] = {[&option_handlers](std::string &value, Output &o)
                                {
-                                   std::cout << "TetroidDisasm v1.0.0" << std::endl;
+                                   std::cout << "nesda v1.0.0" << std::endl;
                                    std::cout << "" << std::endl;
                                    std::cout << "   TetroidDisasm is a NESROm Disassembler." << std::endl;
                                    std::cout << "" << std::endl;
-                                   std::cout << "usage: TetroidDisasm file [options]" << std::endl;
+                                   std::cout << "usage: nesda file [options]" << std::endl;
                                    std::cout << "" << std::endl;
 
                                    for (const auto &[key, value] : option_handlers)
@@ -81,7 +81,7 @@ Output parse_cmd(std::vector<std::string> args)
             }
             else
             {
-                std::cout << "TetroidDisasm: unknown option \"" << short_optop << "\" run -h or --help for a list of commands" << std::endl;
+                std::cout << "nesda: unknown option \"" << short_optop << "\" run -h or --help for a list of commands" << std::endl;
                 exit(EXIT_FAILURE);
             }
         }
@@ -99,7 +99,7 @@ Output parse_cmd(std::vector<std::string> args)
             }
             else
             {
-                std::cout << "TetroidDisasm: unknown option \"" << optop << "\"run -h or --help for a list of commands" << std::endl;
+                std::cout << "nesda: unknown option \"" << optop << "\"run -h or --help for a list of commands" << std::endl;
                 exit(EXIT_FAILURE);
             }
         }

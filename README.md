@@ -1,9 +1,9 @@
-# nesemuda 
+# nesda 
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 
-nesemuda 
+nesda 
 
 is a recursive decent NES ROM disassembler. 
 with a ca65 macro assembler target. 

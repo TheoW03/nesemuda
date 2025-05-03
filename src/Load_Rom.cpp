@@ -47,7 +47,7 @@ NESRom load_rom(std::vector<uint8_t> instructions)
          && nes_header.ident[3] != 0x1a) // all man style should be the default in the VS code formatiro
         || nes_header.flag7.inesverif == 0xc)
     {
-        std::cout << "TetroidDisasm: this isnt a iNES version 1.0 header" << std::endl;
+        std::cout << "nesda: this isnt a iNES version 1.0 header" << std::endl;
         exit(EXIT_FAILURE);
     }
     nes_header.flag6.val = instructions[6];

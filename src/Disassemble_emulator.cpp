@@ -144,6 +144,6 @@ void init(NESRom nes, std::optional<std::string> output, bool print)
     outputFile << ".SEGMENT \"CHARS\" \n";
     if (print)
         std::cout << ".SEGMENT \"CHARS\" \n";
-    std::cout << "TedroidDisasm: file succesfully disassemled" << std::endl;
+    std::cout << "nesda: file succesfully disassemled" << std::endl;
     outputFile.close();
 }
