@@ -30,12 +30,16 @@ Output parse_cmd(std::vector<std::string> args)
                                           o.output_files = value;
                                       },
                                       "output file", 1};
-
+    option_handlers["chr-file"] = {[](std::string &value, Output &o)
+                                   {
+                                       o.chr_file = value;
+                                   },
+                                   "character rom", 1};
     option_handlers["help"] = {[&option_handlers](std::string &value, Output &o)
                                {
                                    std::cout << "nesda v1.0.0" << std::endl;
                                    std::cout << "" << std::endl;
-                                   std::cout << "   TetroidDisasm is a NESROm Disassembler." << std::endl;
+                                   std::cout << "   nesda is an accurate iNESv1.0 ROM Disassembler. Its primary assembler target is ca65" << std::endl;
                                    std::cout << "" << std::endl;
                                    std::cout << "usage: nesda file [options]" << std::endl;
                                    std::cout << "" << std::endl;
