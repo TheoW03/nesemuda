@@ -8,6 +8,8 @@ struct Output
 {
     std::optional<std::string> files;
     std::optional<std::string> output_files;
+    std::optional<std::string> chr_file;
+
     bool print_file;
 };
 

@@ -64,8 +64,6 @@ uint16_t Bus::get_next_queue()
     {
         return 0;
     }
-    printf("new queue %x \n", pc_queue[0]);
-    printf("current %x \n", pc);
 
     uint16_t new_pc = pc_queue[0];
 

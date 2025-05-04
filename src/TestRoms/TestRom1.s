@@ -28,6 +28,10 @@ reset:
   jsr nmi
   ; jsr test
   ldx #1
+  ldy #1
+  jmp reset
+      .byte $12, $32, $22, $32
+
   ; jsr test
   ; .byte $12, $32, $22, $32 T
 
@@ -74,7 +78,7 @@ reset:
 nmi:
 lda #1
 lda #2
-rts
+rti
 
 ; l2:      
 ;   lda $01
