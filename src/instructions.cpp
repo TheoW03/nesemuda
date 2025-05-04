@@ -119,6 +119,56 @@ instr::instr(uint16_t pc)
     this->pc = pc;
 }
 
+MultiByteInstr::MultiByteInstr()
+{
+}
+
+MultiByteInstr::MultiByteInstr(std::string instr_name, AddressMode address, std::vector<uint8_t> opcodes, uint16_t pc) : instr(pc)
+{
+    this->instr_name = instr_name;
+    this->opcodes = opcodes;
+    this->addressMode = address;
+    this->pc = pc;
+}
+
+std::string MultiByteInstr::disassm()
+{
+    std::string instr = instr_name + " ";
+    if (addressMode == AddressMode::IMMEDIATE)
+    {
+        instr += "#" + std::to_string(opcodes[0]) + "\n";
+    }
+    else if (addressMode == AddressMode::ZERO_PAGE)
+    {
+        instr += byteToHex8(opcodes[0]) + "\n";
+    }
+    else if (addressMode == AddressMode::ZERO_PAGE_X)
+    {
+        instr += byteToHex8(opcodes[0]) + ", X \n";
+    }
+    else if (addressMode == AddressMode::ABSOLUTE)
+    {
+        instr += byteToHex16(opcodes[1] << 8 | opcodes[0]) + " \n";
+    }
+    else if (addressMode == AddressMode::ABSOLUTE_X)
+    {
+        instr += byteToHex16(opcodes[1] << 8 | opcodes[0]) + ", X \n";
+    }
+    else if (addressMode == AddressMode::ABSOLUTE_Y)
+    {
+        instr += byteToHex16(opcodes[1] << 8 | opcodes[0]) + ", Y \n";
+    }
+    else if (addressMode == AddressMode::INDIRECT_X)
+    {
+        instr += "(" + byteToHex16(opcodes[0]) + ", X )\n";
+    }
+    else if (addressMode == AddressMode::INDIRECT_Y)
+    {
+        instr += "(" + byteToHex16(opcodes[0]) + "), Y \n";
+    }
+    return instr;
+}
+
 Lda::Lda()
 {
 }
@@ -130,7 +180,6 @@ Lda::Lda(AddressMode addressMode, std::vector<uint8_t> opcodes, uint16_t pc) : i
     this->pc = pc;
     // Instr::pc = pc;
 }
-
 std::string Lda::disassm()
 {
     std::string instr = "lda ";

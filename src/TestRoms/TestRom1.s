@@ -15,23 +15,25 @@
 .segment "STARTUP"
 
 reset:
+
+    LDA #42        ; Immediate Mode: Load the value $42 into A
+    LDA $2001       ; Absolute Mode: Load value from memory address $2000
+    LDA $20         ; Zero Page Mode: Load value from address $0020
+    LDA $20,X       ; Zero Page,X Mode: Load from address $0020 + X
+    LDA $2000, X     ; Absolute,X Mode: Load from $2000 + X
+    LDA $2000,Y     ; Absolute,Y Mode: Load from $2000 + Y
+    LDA ($20,X)     ; Indirect,X Mode: Load from address stored at ($20 + X)
+    LDA ($20),Y 
   lda #42
-  jsr test
+  jsr nmi
+  ; jsr test
   ldx #1
-  jsr test
-  jmp test
-  .byte $12, $32, $22, $32
+  ; jsr test
+  ; .byte $12, $32, $22, $32 T
 
 ; reset:
-;   LDA #42        ; Immediate Mode: Load the value $42 into A
-;     LDA $2001       ; Absolute Mode: Load value from memory address $2000
-;     LDA $20         ; Zero Page Mode: Load value from address $0020
-;     LDA $20,X       ; Zero Page,X Mode: Load from address $0020 + X
-;     LDA $2000,X     ; Absolute,X Mode: Load from $2000 + X
-;     LDA $2000,Y     ; Absolute,Y Mode: Load from $2000 + Y
-;     LDA ($20,X)     ; Indirect,X Mode: Load from address stored at ($20 + X)
-;     LDA ($20),Y 
-;     ; jsr test
+
+    ; jsr test
 
 ;     ; LDY #1
 ;     ; LDY $20
@@ -42,7 +44,7 @@ reset:
 
 ;     ; LDX #1
 ;     ; LDX $20
-;     ; LDX $20, Y
+    ; LDX $20, Y
 ;     ; LDX $2000
 ;     ; LDX $2000, Y
 
@@ -72,7 +74,7 @@ reset:
 nmi:
 lda #1
 lda #2
-rti
+rts
 
 ; l2:      
 ;   lda $01
@@ -81,8 +83,8 @@ rti
 ;   bne nmi
 ;   jmp l3
 
-test:
-  lda #1
-  rts
+; test:
+  ; lda #1
+  ; rts
 .segment "CHARS" ; for graphics
 ; .incbin  "rom.chr"

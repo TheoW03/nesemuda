@@ -27,7 +27,6 @@ uint8_t Bus::get_instr()
     stored_instructions[1] = stored_instructions[0];
     stored_instructions[0] = instr[(this->pc + 1) - NES_START];
     pc_visited.insert(pc);
-    // printf("%x \n", instr[0xfffa - reset_vector]);
     pc++;
 
     return current_instruction;
@@ -65,6 +64,8 @@ uint16_t Bus::get_next_queue()
     {
         return 0;
     }
+    printf("new queue %x \n", pc_queue[0]);
+    printf("current %x \n", pc);
 
     uint16_t new_pc = pc_queue[0];
 

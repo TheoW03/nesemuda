@@ -228,6 +228,25 @@ public:
     // AddressMode addressMode;
     // std::string lable_name;
     DefinedByte(uint8_t byte, uint16_t pc);
+    // BranchInstr(std::string instr_name, std::string label, uint16_t pc);
+    std::string disassm() override;
+};
+#endif
+
+#ifndef MULTI_BYTE_H
+#define MULTI_BYTE_H
+
+class MultiByteInstr : public instr
+{
+public:
+    std::vector<uint8_t> opcodes;
+    uint16_t pc;
+    // uint8_t byte;
+    AddressMode addressMode;
+    std::string instr_name;
+    MultiByteInstr();
+    MultiByteInstr(std::string instr_name,
+                   AddressMode address, std::vector<uint8_t> opcodes, uint16_t pc);
     std::string disassm() override;
 };
 #endif
