@@ -4,6 +4,7 @@
 // #include <instruction.h>
 #include <algorithm>
 #include <memory>
+#include <cli.h>
 // #include <util.h>
 #include <map>
 
@@ -66,12 +67,13 @@ std::vector<std::shared_ptr<instr>> computer(DisAsmState &state)
     return disassembled_rom;
 }
 
-void init(NESRom nes, std::optional<std::string> output, bool print)
+void init(NESRom nes, Output o)
 {
-    if (!output.has_value())
+    if (!o.output_files.has_value())
     {
-        output = "./TestOutPut/Test.s";
+        o.output_files = "./TestOutPut/Test.s";
     }
+
     initializeInstructionMap();
 
     Header h = Header(nes.header);
@@ -100,13 +102,14 @@ void init(NESRom nes, std::optional<std::string> output, bool print)
 
     sort_by_PC(prg);
     // if()
-    if (print)
+    if (o.print_file)
         std::cout << h.disassm() << std::endl;
-    std::ofstream outputFile(output.value());
+
+    std::ofstream outputFile(o.output_files.value());
 
     outputFile << h.disassm();
     outputFile << ".SEGMENT \"VECTORS\" \n";
-    if (print)
+    if (o.print_file)
     {
         std::cout << ".SEGMENT \"VECTORS\"" << std::endl;
 
@@ -129,7 +132,7 @@ void init(NESRom nes, std::optional<std::string> output, bool print)
         //     if (print)
         //         std::cout << d->disassm();
         // }
-        if (print)
+        if (o.print_file)
             std::cout << prg[i]->disassm();
         outputFile << prg[i]->disassm();
     }
@@ -145,8 +148,16 @@ void init(NESRom nes, std::optional<std::string> output, bool print)
     // }
 
     outputFile << ".SEGMENT \"CHARS\" \n";
-    if (print)
-        std::cout << ".SEGMENT \"CHARS\" \n";
+    if (o.chr_file.has_value())
+        outputFile << ".incbin  \"" << o.chr_file.value() << "\" ; the sprites \n";
+    if (o.print_file)
+    {
+        std::cout << ".SEGMENT \"CHARS\" " << std::endl;
+    }
+    if (o.print_file && o.chr_file.has_value())
+    {
+        std::cout << ".incbin  \"" << o.chr_file.value() << "\" \n";
+    }
     std::cout << "nesda: file succesfully disassemled" << std::endl;
     outputFile.close();
 }
