@@ -101,63 +101,53 @@ void init(NESRom nes, Output o)
     }
 
     sort_by_PC(prg);
-    // if()
-    if (o.print_file)
-        std::cout << h.disassm() << std::endl;
 
-    std::ofstream outputFile(o.output_files.value());
-
-    outputFile << h.disassm();
-    outputFile << ".SEGMENT \"VECTORS\" \n";
     if (o.print_file)
     {
+        std::cout << h.disassm() << std::endl;
         std::cout << ".SEGMENT \"VECTORS\"" << std::endl;
 
         std::cout << "      .addr reset" << std::endl;
 
         std::cout << "      .addr nmi" << std::endl;
-    }
-    outputFile << ".addr reset \n";
-    outputFile << ".addr nmi \n";
-    outputFile << ".SEGMENT \"STARTUP\" \n";
-    for (int i = 0; i < prg.size(); i++)
-    {
-        // printf("labe;l\n");
-        // if (dis.known_lables.find(prg[i]->pc) != dis.known_lables.end() //
-        //     && dis.assembled.find(prg[i]->pc) == dis.assembled.end())
-        // {
-        //     auto d = std::make_shared<Label>(dis.known_lables[prg[i]->pc], prg[i]->pc);
-        //     dis.assembled.insert(std::make_pair(prg[i]->pc, dis.known_lables[prg[i]->pc - 1]));
-        //     outputFile << d->disassm();
-        //     if (print)
-        //         std::cout << d->disassm();
-        // }
-        if (o.print_file)
+
+        for (int i = 0; i < prg.size(); i++)
+        {
             std::cout << prg[i]->disassm();
-        outputFile << prg[i]->disassm();
-    }
-
-    // for (const auto &[key, value] : dis.known_lables)
-    // {
-
-    //     if (dis.assembled.find(key) == dis.assembled.end() && value != "")
-    //     {
-    //         auto d = std::make_shared<Label>(value, 0x00);
-    //         outputFile << d->disassm();
-    //     }
-    // }
-
-    outputFile << ".SEGMENT \"CHARS\" \n";
-    if (o.chr_file.has_value())
-        outputFile << ".incbin  \"" << o.chr_file.value() << "\" ; the sprites \n";
-    if (o.print_file)
-    {
+        }
         std::cout << ".SEGMENT \"CHARS\" " << std::endl;
+        if (o.chr_file.has_value())
+            std::cout << ".incbin  \"" << o.chr_file.value() << "\" \n";
     }
-    if (o.print_file && o.chr_file.has_value())
+    if (o.output_files.has_value())
     {
-        std::cout << ".incbin  \"" << o.chr_file.value() << "\" \n";
+
+        std::ofstream outputFile(o.output_files.value());
+        outputFile << h.disassm();
+        outputFile << ".SEGMENT \"VECTORS\"";
+        outputFile << ".addr reset \n";
+        outputFile << ".addr nmi \n";
+        outputFile << ".SEGMENT \"STARTUP\" \n";
+        for (int i = 0; i < prg.size(); i++)
+        {
+            outputFile << prg[i]->disassm();
+        }
+        outputFile << ".SEGMENT \"CHARS\" \n";
+
+        if (o.print_file && o.chr_file.has_value())
+        {
+            outputFile << ".incbin  \"" << o.chr_file.value() << "\" ; the sprites \n";
+        }
+
+        outputFile.close();
     }
-    std::cout << "nesda: file succesfully disassemled" << std::endl;
-    outputFile.close();
+    if (o.chr_file.has_value())
+    {
+        std::ofstream outputFile(o.chr_file.value());
+        for (int i = 0; i < nes.chr_rom.size(); i++)
+        {
+            outputFile << nes.chr_rom[i];
+        }
+        outputFile.close();
+    }
 }
