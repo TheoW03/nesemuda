@@ -57,7 +57,7 @@ void Bus::add_to_queue(uint16_t addr)
     // we will set the PC to a value in this queue
     // effectivelya allowing us to disassemble the branch
     uint16_t new_pc = addr;
-    printf("pc adding to quue: 0x%x instr at the addr: 0x%x 0x%x \n", new_pc, this->get_pc(), this->instr[(this->get_pc() - 1) - 0x8000]);
+    // printf("pc adding to quue: 0x%x instr at the addr: 0x%x 0x%x \n", new_pc, this->get_pc(), this->instr[(this->get_pc() - 1) - 0x8000]);
     // printf("%d \n", InstructionValid(instr[new_pc - reset_vector]));
     if (pc_visited.find(new_pc) == pc_visited.end())
     {
@@ -84,10 +84,10 @@ uint16_t Bus::get_next_queue()
     // printf("%x \n", this->instr[(this->pc - 0x8000) - 1]);
     pc_queue.erase(pc_queue.begin());
     // printf("%d \n", pc_queue.size());
-    for (int i = 0; i < pc_queue.size(); i++)
-    {
-        printf("pc quee: %x \n", pc_queue[i]);
-    }
+    // for (int i = 0; i < pc_queue.size(); i++)
+    // {
+    //     printf("pc quee: %x \n", pc_queue[i]);
+    // }
     if (new_pc == pc && new_pc == (pc + 1))
     {
         return new_pc;

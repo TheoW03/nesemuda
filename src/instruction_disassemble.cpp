@@ -123,7 +123,7 @@ std::shared_ptr<instr> RTI(AddressMode addressMode, DisAsmState &disasm)
 {
 
     auto pc = disasm.bus.get_pc() - 1;
-    printf("rti: %x \n", pc);
+    // printf("rti: %x \n", pc);
 
     HandleJMP(disasm);
     // uint16_t c = disasm.bus.get_next_queue();
