@@ -83,13 +83,14 @@ Jsr::Jsr()
 {
 }
 
-Jsr::Jsr(AddressMode addressMode, std::string lable, uint16_t pc) : instr(pc)
+Jsr::Jsr(AddressMode addressMode, InstrData data, uint16_t pc) : instr(pc)
 {
-    this->lable_name = lable;
+    this->data = data;
+    // this->lable_name = lable;
 }
 std::string Jsr::disassm()
 {
-    return "jsr " + this->lable_name + "\n";
+    return "jsr " + this->data.label.value() + "\n";
 }
 std::string Header::disassm()
 {
@@ -123,10 +124,10 @@ MultiByteInstr::MultiByteInstr()
 {
 }
 
-MultiByteInstr::MultiByteInstr(std::string instr_name, AddressMode address, std::vector<uint8_t> opcodes, uint16_t pc) : instr(pc)
+MultiByteInstr::MultiByteInstr(std::string instr_name, AddressMode address, InstrData data, uint16_t pc) : instr(pc)
 {
     this->instr_name = instr_name;
-    this->opcodes = opcodes;
+    this->data = data;
     this->addressMode = address;
     this->pc = pc;
 }
@@ -136,35 +137,58 @@ std::string MultiByteInstr::disassm()
     std::string instr = instr_name + " ";
     if (addressMode == AddressMode::IMMEDIATE)
     {
-        instr += "#" + std::to_string(opcodes[0]) + "\n";
+        instr += "#" + std::to_string(data.instr_data[0]) + "\n";
     }
     else if (addressMode == AddressMode::ZERO_PAGE)
     {
-        instr += byteToHex8(opcodes[0]) + "\n";
+        instr += byteToHex8(data.instr_data[0]) + "\n";
     }
     else if (addressMode == AddressMode::ZERO_PAGE_X)
     {
-        instr += byteToHex8(opcodes[0]) + ", X \n";
+        instr += byteToHex8(data.instr_data[0]) + ", X \n";
     }
     else if (addressMode == AddressMode::ABSOLUTE)
     {
-        instr += byteToHex16(opcodes[1] << 8 | opcodes[0]) + " \n";
+        if (data.label.has_value())
+        {
+            instr += data.label.value() + "\n";
+        }
+        else
+        {
+            instr += byteToHex16(data.instr_data[1] << 8 | data.instr_data[0]) + " \n";
+        }
     }
     else if (addressMode == AddressMode::ABSOLUTE_X)
     {
-        instr += byteToHex16(opcodes[1] << 8 | opcodes[0]) + ",X \n";
+        if (data.label.has_value())
+        {
+            instr += data.label.value() + ", X\n";
+        }
+        else
+        {
+            instr += byteToHex16(data.instr_data[1] << 8 | data.instr_data[0]) + ",X \n";
+        }
     }
     else if (addressMode == AddressMode::ABSOLUTE_Y)
     {
-        instr += byteToHex16(opcodes[1] << 8 | opcodes[0]) + ",Y \n";
+        if (data.label.has_value())
+        {
+            instr += data.label.value() + ", Y \n";
+        }
+        else
+        {
+            instr += byteToHex16(data.instr_data[1] << 8 | data.instr_data[0]) + ",Y \n";
+        }
     }
     else if (addressMode == AddressMode::INDIRECT_X)
     {
-        instr += "(" + byteToHex16(opcodes[0]) + ", X)\n";
+        instr += "(" + byteToHex8(data.instr_data[0]) + ",X) \n";
+        // instr += "(" + byteToHex16(opcodes[0]) + ", X)\n";
     }
     else if (addressMode == AddressMode::INDIRECT_Y)
     {
-        instr += "(" + byteToHex16(opcodes[0]) + "), Y \n";
+        instr += "(" + byteToHex8(data.instr_data[0]) + "), Y \n";
+        // instr += "(" + byteToHex16(opcodes[0]) + "), Y \n";
     }
     return instr;
 }
@@ -180,6 +204,7 @@ Lda::Lda(AddressMode addressMode, std::vector<uint8_t> opcodes, uint16_t pc) : i
     this->pc = pc;
     // Instr::pc = pc;
 }
+
 std::string Lda::disassm()
 {
     std::string instr = "lda ";
@@ -231,23 +256,24 @@ Jmp::Jmp()
 {
 }
 
-Jmp::Jmp(AddressMode addressMode, std::string lable, uint16_t pc) : instr(pc)
+Jmp::Jmp(AddressMode addressMode, InstrData data, uint16_t pc) : instr(pc)
 {
-    this->lable_name = lable;
+    // this->lable_name = lable;
     this->addressMode = addressMode;
+    this->data = data;
     this->pc = pc;
 }
 
-Jmp::Jmp(AddressMode addressMode, std::vector<uint8_t> opcodes, uint16_t pc) : instr(pc)
-{
-    this->opcodes = opcodes;
-    this->addressMode = addressMode;
-    this->pc = pc;
-}
+// Jmp::Jmp(AddressMode addressMode, std::vector<uint8_t> opcodes, uint16_t pc) : instr(pc)
+// {
+//     this->opcodes = opcodes;
+//     this->addressMode = addressMode;
+//     this->pc = pc;
+// }
 
 std::string Jmp::disassm()
 {
-    return "jmp " + lable_name + "\n";
+    return "jmp " + data.label.value() + "\n";
 }
 
 Rti::Rti(AddressMode addressMode, uint16_t pc) : instr(pc)

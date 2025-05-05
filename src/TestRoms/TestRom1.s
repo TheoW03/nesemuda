@@ -24,12 +24,13 @@ reset:
     LDA $2000,Y     ; Absolute,Y Mode: Load from $2000 + Y
     LDA ($20,X)     ; Indirect,X Mode: Load from address stored at ($20 + X)
     LDA ($20),Y 
-  lda #42
-  jsr nmi
+  lda test
+  ; jmp test
   ; jsr test
   ldx #1
   ldy #1
-  jmp reset
+  jsr test
+  jmp test
       .byte $12, $32, $22, $32
 
   ; jsr test
@@ -79,6 +80,13 @@ nmi:
 lda #1
 lda #2
 rti
+t2:
+  lda #32
+test:
+  lda #11
+  beq t2
+
+
 
 ; l2:      
 ;   lda $01

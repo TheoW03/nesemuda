@@ -127,6 +127,8 @@ void init(NESRom nes, Output o)
         uint16_t pc = pair.first;
         std::string n = pair.second;
         prg.push_back(std::make_shared<Label>(n, pc));
+        std::cout << pc << std::endl;
+        printf("%x \n", pc);
     }
     qsort_pc(prg, 0, prg.size() - 1);
     if (o.print_file)

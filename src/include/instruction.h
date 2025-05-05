@@ -160,10 +160,9 @@ public:
     std::vector<uint8_t> opcodes;
     uint16_t pc;
     AddressMode addressMode;
-    std::string lable_name;
+    InstrData data;
     Jmp();
-    Jmp(AddressMode addressMode, std::string lable, uint16_t pc);
-    Jmp(AddressMode addressMode, std::vector<uint8_t> opcodes, uint16_t pc);
+    Jmp(AddressMode addressMode, InstrData data, uint16_t pc);
     std::string disassm() override;
 };
 #endif
@@ -178,8 +177,9 @@ public:
     uint16_t pc;
     AddressMode addressMode;
     std::string lable_name;
+    InstrData data;
     Jsr();
-    Jsr(AddressMode addressMode, std::string lable, uint16_t pc);
+    Jsr(AddressMode addressMode, InstrData data, uint16_t pc);
     std::string disassm() override;
 };
 #endif
@@ -250,11 +250,12 @@ public:
     std::vector<uint8_t> opcodes;
     uint16_t pc;
     // uint8_t byte;
+    InstrData data;
     AddressMode addressMode;
     std::string instr_name;
     MultiByteInstr();
     MultiByteInstr(std::string instr_name,
-                   AddressMode address, std::vector<uint8_t> opcodes, uint16_t pc);
+                   AddressMode address, InstrData data, uint16_t pc);
     std::string disassm() override;
 };
 #endif
