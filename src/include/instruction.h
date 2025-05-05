@@ -5,6 +5,15 @@
 #include <map>
 #include <unordered_set>
 
+#ifndef INSTR_DATA_H
+#define INSTR_DATA_H
+struct InstrData
+{
+    std::vector<uint8_t> instr_data;
+    std::optional<std::string> label;
+};
+#endif
+
 #ifndef ADDRESS_MODE_H
 #define ADDRESS_MODE_H
 enum AddressMode
@@ -54,7 +63,6 @@ struct DisAsmState
 {
     Bus bus;
     std::map<uint16_t, std::string> known_lables;
-    std::map<uint16_t, std::string> assembled;
     int label;
 };
 #endif

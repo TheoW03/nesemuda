@@ -117,7 +117,7 @@ void init(NESRom nes, Output o)
     known_lables[pc_start] = "reset";
     known_lables[nmi] = "nmi";
 
-    DisAsmState dis = {bus, known_lables, assembled, 0};
+    DisAsmState dis = {bus, known_lables, 0};
 
     dis.bus.add_to_queue(nmi);
 

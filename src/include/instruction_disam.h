@@ -1,5 +1,6 @@
 #include <instruction.h>
 #include <memory>
+#include <vector>
 
 std::shared_ptr<instr> LDA(AddressMode addressMode, DisAsmState &disasm);
 std::shared_ptr<instr> LDY(AddressMode addressMode, DisAsmState &disasm);

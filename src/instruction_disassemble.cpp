@@ -3,6 +3,8 @@
 #include <instruction.h>
 #include "instruction_disam.h"
 
+// InstrData diasm_addressmode()
+
 std::vector<uint8_t> diasm_addressmode(AddressMode addressMode, DisAsmState &disasm)
 {
     std::vector<uint8_t> ret;
