@@ -152,15 +152,15 @@ std::string MultiByteInstr::disassm()
     }
     else if (addressMode == AddressMode::ABSOLUTE_X)
     {
-        instr += byteToHex16(opcodes[1] << 8 | opcodes[0]) + ", X \n";
+        instr += byteToHex16(opcodes[1] << 8 | opcodes[0]) + ",X \n";
     }
     else if (addressMode == AddressMode::ABSOLUTE_Y)
     {
-        instr += byteToHex16(opcodes[1] << 8 | opcodes[0]) + ", Y \n";
+        instr += byteToHex16(opcodes[1] << 8 | opcodes[0]) + ",Y \n";
     }
     else if (addressMode == AddressMode::INDIRECT_X)
     {
-        instr += "(" + byteToHex16(opcodes[0]) + ", X )\n";
+        instr += "(" + byteToHex16(opcodes[0]) + ", X)\n";
     }
     else if (addressMode == AddressMode::INDIRECT_Y)
     {
