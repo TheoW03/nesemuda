@@ -64,7 +64,22 @@ std::vector<std::shared_ptr<instr>> computer(DisAsmState &state)
         // state.assembled.insert(std::make_pair(state.bus.get_pc() - 1, state.known_lables[state.bus.get_pc() - 1]));
         // state.known_lables.erase(state.bus.get_pc() - 1);
         // }
-        uint8_t instr = state.bus.get_instr();
+        // if (state.bus.pc_visited.find(state.bus.get_pc()) != state.bus.pc_visited.end())
+        // {
+        //     auto new_pc = state.bus.get_next_queue();
+        //     if (new_pc == 0)
+        //     {
+        //         // if they are no more instructions to disassemble
+        //         // both in the queue and the next PC.
+        //         // we assume the ROM as fully disassembled
+        //         return disassembled_rom;
+        //     }
+        //     state.bus.fill_instr(new_pc);
+        //     continue;
+        // }
+        uint8_t instr = state.bus.get_instr(true);
+        // printf("%x \n", instr);
+        // printf("%x \n", state.bus.get_pc());
 
         if (instr == 0x0 || !InstructionValid(instr))
         {
@@ -126,9 +141,9 @@ void init(NESRom nes, Output o)
     {
         uint16_t pc = pair.first;
         std::string n = pair.second;
-        prg.push_back(std::make_shared<Label>(n, pc));
-        std::cout << pc << std::endl;
-        printf("%x \n", pc);
+        prg.push_back(std::make_shared<Label>(n, pc + 1));
+        // std::cout << pc << std::endl;
+        // printf("label pc: %x \n", pc);
     }
     qsort_pc(prg, 0, prg.size() - 1);
     if (o.print_file)

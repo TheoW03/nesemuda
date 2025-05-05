@@ -47,7 +47,7 @@ public:
     uint16_t pc;
 
     Bus(std::vector<uint8_t> instr, uint16_t pc_starting);
-    uint8_t get_instr();
+    uint8_t get_instr(bool checkifdisassembled);
     uint16_t get_pc();
     uint16_t get_next_queue();
     void add_to_queue(uint16_t addr);

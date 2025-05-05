@@ -15,18 +15,24 @@ void Bus::fill_instr(uint16_t new_pc)
 {
 
     this->pc = new_pc;
-    stored_instructions[0] = instr[(pc + 1) - reset_vector];
     stored_instructions[1] = instr[(pc - reset_vector)];
-    pc_visited.insert(pc);
+    stored_instructions[0] = instr[(pc + 1) - reset_vector];
+    pc_visited.insert(new_pc);
     pc++;
 }
-uint8_t Bus::get_instr()
+uint8_t Bus::get_instr(bool checkifdisassembled)
 {
+    if (checkifdisassembled && this->pc_visited.find(pc) != this->pc_visited.end())
+    {
+        return 0;
+    }
 
     uint8_t current_instruction = stored_instructions[1];
     stored_instructions[1] = stored_instructions[0];
-    stored_instructions[0] = instr[(this->pc + 1) - NES_START];
-    pc_visited.insert(pc);
+    pc_visited.insert(pc - 1);
+    stored_instructions[0] = instr[(this->pc + 1) - reset_vector];
+    // printf("visted oc %x \n", pc - 1);
+    // printf("current instr %x \n", current_instruction);
     pc++;
 
     return current_instruction;
@@ -51,12 +57,17 @@ void Bus::add_to_queue(uint16_t addr)
     // we will set the PC to a value in this queue
     // effectivelya allowing us to disassemble the branch
     uint16_t new_pc = addr;
-    // printf("pc adding to quue: 0x%x instr at the addr: 0x%x \n", new_pc, instr[new_pc - reset_vector]);
+    printf("pc adding to quue: 0x%x instr at the addr: 0x%x 0x%x \n", new_pc, this->get_pc(), this->instr[(this->get_pc() - 1) - 0x8000]);
     // printf("%d \n", InstructionValid(instr[new_pc - reset_vector]));
     if (pc_visited.find(new_pc) == pc_visited.end())
     {
+        // printf("added: %x\n", new_pc);
         pc_queue.push_back(addr);
     }
+    // else
+    // {
+    //     printf("failed to add: %x\n", new_pc);
+    // }
 }
 uint16_t Bus::get_next_queue()
 {
@@ -66,13 +77,18 @@ uint16_t Bus::get_next_queue()
     }
 
     uint16_t new_pc = pc_queue[0];
+    // printf("pc == %x \n", new_pc);
 
     // printf("%x %d \n", new_pc, (pc_visited.find(new_pc) != pc_visited.end()));
     // printf("%x \n", pc);
     // printf("%x \n", this->instr[(this->pc - 0x8000) - 1]);
     pc_queue.erase(pc_queue.begin());
-    // a bit hacky but if its in the range of being the PC it will constitute it as the PC
-    if ((new_pc + 1) == pc || new_pc == pc)
+    // printf("%d \n", pc_queue.size());
+    for (int i = 0; i < pc_queue.size(); i++)
+    {
+        printf("pc quee: %x \n", pc_queue[i]);
+    }
+    if (new_pc == pc && new_pc == (pc + 1))
     {
         return new_pc;
     }
