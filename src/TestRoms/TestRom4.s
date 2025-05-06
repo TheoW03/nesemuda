@@ -14,9 +14,9 @@
     .addr reset ; reset vector
 .segment "STARTUP"
 reset:
-  jmp test
+  jsr test
 nmi:
-  lda test
+  lda t2
   ; jmp test2
   rti
 t2:
@@ -24,10 +24,10 @@ t2:
   lda #11
 test:
   lda #64
-  beq test2
+  jsr t2
+  jmp test2
 
 test2:
-  bne test
-  rti
+  jsr test
+  rts
 .segment "CHARS" ; for graphics
-; .incbin  "rom.chr"

@@ -5,6 +5,15 @@
 #include <map>
 #include <unordered_set>
 
+#ifndef INSTR_DATA_H
+#define INSTR_DATA_H
+struct InstrData
+{
+    std::vector<uint8_t> instr_data;
+    std::optional<std::string> label;
+};
+#endif
+
 #ifndef ADDRESS_MODE_H
 #define ADDRESS_MODE_H
 enum AddressMode
@@ -38,7 +47,7 @@ public:
     uint16_t pc;
 
     Bus(std::vector<uint8_t> instr, uint16_t pc_starting);
-    uint8_t get_instr();
+    uint8_t get_instr(bool checkifdisassembled);
     uint16_t get_pc();
     uint16_t get_next_queue();
     void add_to_queue(uint16_t addr);
@@ -54,7 +63,6 @@ struct DisAsmState
 {
     Bus bus;
     std::map<uint16_t, std::string> known_lables;
-    std::map<uint16_t, std::string> assembled;
     int label;
 };
 #endif
@@ -152,10 +160,9 @@ public:
     std::vector<uint8_t> opcodes;
     uint16_t pc;
     AddressMode addressMode;
-    std::string lable_name;
+    InstrData data;
     Jmp();
-    Jmp(AddressMode addressMode, std::string lable, uint16_t pc);
-    Jmp(AddressMode addressMode, std::vector<uint8_t> opcodes, uint16_t pc);
+    Jmp(AddressMode addressMode, InstrData data, uint16_t pc);
     std::string disassm() override;
 };
 #endif
@@ -170,8 +177,9 @@ public:
     uint16_t pc;
     AddressMode addressMode;
     std::string lable_name;
+    InstrData data;
     Jsr();
-    Jsr(AddressMode addressMode, std::string lable, uint16_t pc);
+    Jsr(AddressMode addressMode, InstrData data, uint16_t pc);
     std::string disassm() override;
 };
 #endif
@@ -242,11 +250,12 @@ public:
     std::vector<uint8_t> opcodes;
     uint16_t pc;
     // uint8_t byte;
+    InstrData data;
     AddressMode addressMode;
     std::string instr_name;
     MultiByteInstr();
     MultiByteInstr(std::string instr_name,
-                   AddressMode address, std::vector<uint8_t> opcodes, uint16_t pc);
+                   AddressMode address, InstrData data, uint16_t pc);
     std::string disassm() override;
 };
 #endif

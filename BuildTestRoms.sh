@@ -7,6 +7,8 @@ build() {
     RomList=(
         "nya~"
         "./src/TestRoms/TestRom1.s -o ./games/TestRom1.nes"
+        "./src/TestRoms/TestRom4.s -o ./games/TestRom4.nes"
+        "./src/TestRoms/TestRom2.s -o ./games/TestRom2.nes"
 
     )
 
