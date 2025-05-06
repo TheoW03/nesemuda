@@ -134,6 +134,7 @@ void init(NESRom nes, Output o)
     bus.fill_instr(pc_start);
     std::map<uint16_t, std::string> known_lables;
     std::map<uint16_t, std::string> assembled;
+    printf("%x \n", nmi);
 
     known_lables[pc_start] = "reset";
     known_lables[nmi] = "nmi";
@@ -148,14 +149,15 @@ void init(NESRom nes, Output o)
         uint16_t pc = pair.first;
         std::string n = pair.second;
         prg.push_back(std::make_shared<Label>(n, pc + 1));
+        std::cout << n << std::endl;
         // std::cout << pc << std::endl;
-        // printf("label pc: %x \n", pc);
+        printf("label pc: %x \n", pc);
     }
     qsort_pc(prg, 0, prg.size() - 1);
-    // for (int i = 0; i < prg.size(); i++)
-    // {
-    //     printf("%x \n", prg[i]->pc);
-    // }
+    for (int i = 0; i < prg.size(); i++)
+    {
+        printf("%x \n", prg[i]->pc);
+    }
     if (o.print_file)
     {
         std::cout << h.disassm() << std::endl;

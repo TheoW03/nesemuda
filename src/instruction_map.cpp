@@ -136,29 +136,29 @@ void initializeInstructionMap()
     // #pragma endregion
 
 #pragma region ADC
-/*
-    instructionMap.insert(make_pair(0x69, Instruction{(instructionPointer)ADC, AddressMode::IMMEDIATE}));
-    instructionMap.insert(make_pair(0x65, Instruction{(instructionPointer)ADC, AddressMode::ZERO_PAGE}));
-    instructionMap.insert(make_pair(0x75, Instruction{(instructionPointer)ADC, AddressMode::ZERO_PAGE_X}));
-    instructionMap.insert(make_pair(0x6D, Instruction{(instructionPointer)ADC, AddressMode::ABSOLUTE}));
-    instructionMap.insert(make_pair(0x7D, Instruction{(instructionPointer)ADC, AddressMode::ABSOLUTE_X}));
-    instructionMap.insert(make_pair(0x79, Instruction{(instructionPointer)ADC, AddressMode::ABSOLUTE_Y}));
-    instructionMap.insert(make_pair(0x71, Instruction{(instructionPointer)ADC, AddressMode::INDIRECT_X}));
-    instructionMap.insert(make_pair(0x61, Instruction{(instructionPointer)ADC, AddressMode::INDIRECT_Y}));
-    */
+
+    instructionMap.insert(make_pair(0x69, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::IMMEDIATE, "adc"}));
+    instructionMap.insert(make_pair(0x65, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::ZERO_PAGE, "adc"}));
+    instructionMap.insert(make_pair(0x75, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::ZERO_PAGE_X, "adc"}));
+    instructionMap.insert(make_pair(0x6D, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::ABSOLUTE, "adc"}));
+    instructionMap.insert(make_pair(0x7D, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::ABSOLUTE_X, "adc"}));
+    instructionMap.insert(make_pair(0x79, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::ABSOLUTE_Y, "adc"}));
+    instructionMap.insert(make_pair(0x71, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::INDIRECT_X, "adc"}));
+    instructionMap.insert(make_pair(0x61, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::INDIRECT_Y, "adc"}));
+
 #pragma endregion
 
 #pragma region SBC
-/*
-    instructionMap.insert(make_pair(0xE9, Instruction{(instructionPointer)SBC, AddressMode::IMMEDIATE}));
-    instructionMap.insert(make_pair(0xE5, Instruction{(instructionPointer)SBC, AddressMode::ZERO_PAGE}));
-    instructionMap.insert(make_pair(0xF5, Instruction{(instructionPointer)SBC, AddressMode::ZERO_PAGE_X}));
-    instructionMap.insert(make_pair(0xED, Instruction{(instructionPointer)SBC, AddressMode::ABSOLUTE}));
-    instructionMap.insert(make_pair(0xFD, Instruction{(instructionPointer)SBC, AddressMode::ABSOLUTE_X}));
-    instructionMap.insert(make_pair(0xF9, Instruction{(instructionPointer)SBC, AddressMode::ABSOLUTE_Y}));
-    instructionMap.insert(make_pair(0xF1, Instruction{(instructionPointer)SBC, AddressMode::INDIRECT_X}));
-    instructionMap.insert(make_pair(0xE1, Instruction{(instructionPointer)SBC, AddressMode::INDIRECT_Y}));
-    */
+
+    instructionMap.insert(make_pair(0xE9, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::IMMEDIATE, "sbc"}));
+    instructionMap.insert(make_pair(0xE5, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::ZERO_PAGE, "sbc"}));
+    instructionMap.insert(make_pair(0xF5, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::ZERO_PAGE_X, "sbc"}));
+    instructionMap.insert(make_pair(0xED, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::ABSOLUTE, "sbc"}));
+    instructionMap.insert(make_pair(0xFD, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::ABSOLUTE_X, "sbc"}));
+    instructionMap.insert(make_pair(0xF9, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::ABSOLUTE_Y, "sbc"}));
+    instructionMap.insert(make_pair(0xE1, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::INDIRECT_X, "sbc"}));
+    instructionMap.insert(make_pair(0xF1, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::INDIRECT_Y, "sbc"}));
+
 #pragma endregion
 
     /*
