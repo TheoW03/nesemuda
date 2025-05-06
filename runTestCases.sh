@@ -5,9 +5,9 @@ cmake --build build --config Release -j8
 mkdir -p ./results/
 RomList=(
         "nya~"
-        "./games/TestRom1.nes -o ./results/TestRom1.s"
-        "./games/TestRom4.nes -o ./results/TestRom4.s"
-        "./games/TestRom2.nes -o ./results/TestRom2.s"
+        "./games/TestRom1.nes --print-file  -o ./results/TestRom1.s"
+        "./games/TestRom4.nes --print-file  -o ./results/TestRom4.s"
+        "./games/TestRom2.nes  --print-file  -o ./results/TestRom2.s"
 )
 
 for p in "${RomList[@]}"; do
