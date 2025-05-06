@@ -4,11 +4,17 @@
 
 // std::shared_ptr<instr> (AddressMode addressMode, DisAsmState &disasm);
 
+std::shared_ptr<instr> disassemble_MultiByteInstr(AddressMode addressMode, DisAsmState &disasm, std::string name);
+std::shared_ptr<instr> disassemble_Branch(AddressMode addressMode, DisAsmState &disasm, std::string name);
+std::shared_ptr<instr> disassemble_Onebyte(AddressMode addressMode, DisAsmState &disasm, std::string name);
+std::shared_ptr<instr> disassemble_RtsRti(AddressMode addressMode, DisAsmState &disasm, std::string name);
+std::shared_ptr<instr> JSR(AddressMode addressMode, DisAsmState &disasm, std::string name);
+std::shared_ptr<instr> JMP(AddressMode addressMode, DisAsmState &disasm, std::string name);
+
 std::shared_ptr<instr> LDA(AddressMode addressMode, DisAsmState &disasm);
 std::shared_ptr<instr> LDY(AddressMode addressMode, DisAsmState &disasm);
 std::shared_ptr<instr> LDX(AddressMode addressMode, DisAsmState &disasm);
 
-std::shared_ptr<instr> JMP(AddressMode addressMode, DisAsmState &disasm);
 std::shared_ptr<instr> RTI(AddressMode addressMode, DisAsmState &disasm);
 
 std::shared_ptr<instr> BEQ(AddressMode addressMode, DisAsmState &disasm);
@@ -36,5 +42,4 @@ std::shared_ptr<instr> INY(AddressMode addressMode, DisAsmState &disasm);
 
 std::shared_ptr<instr> BVC(AddressMode addressMode, DisAsmState &disasm);
 std::shared_ptr<instr> BVS(AddressMode addressMode, DisAsmState &disasm);
-std::shared_ptr<instr> JSR(AddressMode addressMode, DisAsmState &disasm);
 std::shared_ptr<instr> RTS(AddressMode addressMode, DisAsmState &disasm);

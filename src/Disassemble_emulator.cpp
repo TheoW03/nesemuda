@@ -78,7 +78,7 @@ std::vector<std::shared_ptr<instr>> computer(DisAsmState &state)
         //     continue;
         // }
         uint8_t instr = state.bus.get_instr(true);
-        // printf("%x \n", instr);
+        printf("%x \n", instr);
         // printf("%x \n", state.bus.get_pc());
 
         if (instr == 0x0 || !InstructionValid(instr))
@@ -101,9 +101,15 @@ std::vector<std::shared_ptr<instr>> computer(DisAsmState &state)
         else
         {
             auto current_instr = GetInstruction(instr);
-            auto disassmble = current_instr.instructionFunction(current_instr.addressmode, state);
+            auto disassmble = current_instr.instructionFunction(current_instr.addressmode, state, current_instr.name);
             disassembled_rom.push_back(disassmble);
         }
+        // while (!state.bus.work_list.empty())
+        // {
+        //     state.bus.pc_visited.insert(state.bus.work_list.top());
+        //     state.bus.work_list.pop();
+        //     /* code */
+        // }
     }
     return disassembled_rom;
 }
@@ -146,6 +152,10 @@ void init(NESRom nes, Output o)
         // printf("label pc: %x \n", pc);
     }
     qsort_pc(prg, 0, prg.size() - 1);
+    for (int i = 0; i < prg.size(); i++)
+    {
+        printf("%x \n", prg[i]->pc);
+    }
     if (o.print_file)
     {
         std::cout << h.disassm() << std::endl;

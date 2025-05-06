@@ -14,6 +14,12 @@
     .addr reset ; reset vector
 .segment "STARTUP"
 reset:
+lda #1
+
+lda #1
+lda #1
+lda #1
+lda #1
   jsr test
 nmi:
   lda t2
@@ -22,12 +28,22 @@ nmi:
 t2:
   lda #32
   lda #11
+  sei
+  cli 
+  sed
+  cld
+  clc
+  sec
+  clv
 test:
+  
+
   lda #64
   jsr t2
-  jmp test2
+  jsr test2  
+  rts
 
 test2:
-  jsr test
+  jmp test
   rts
 .segment "CHARS" ; for graphics

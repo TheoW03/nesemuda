@@ -3,7 +3,8 @@
 #include <RomUtil.h>
 #include <stdint.h>
 #include <map>
-#include <unordered_set>
+#include <stack>
+#include <set>
 
 #ifndef INSTR_DATA_H
 #define INSTR_DATA_H
@@ -41,7 +42,8 @@ class Bus
 public:
     uint8_t stored_instructions[2];
     std::vector<uint8_t> instr;
-    std::unordered_set<uint16_t> pc_visited;
+    std::stack<uint16_t> work_list;
+    std::set<uint16_t> pc_visited;
     std::vector<uint16_t> pc_queue;
     uint16_t reset_vector;
     uint16_t pc;
