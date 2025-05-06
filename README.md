@@ -5,7 +5,8 @@
 
 nesda 
 
-is a recursive decent NES ROM disassembler. 
+is a CFG (control flow graph) aided NES ROM disassembler.
+
 with a ca65 macro assembler target. 
 
 It is way more accurate then your typical disassembler, Which takes any Assembled file 
