@@ -2,12 +2,14 @@
 #include <map>
 #include <instruction_disam.h>
 
-using instructionPointer = std::shared_ptr<instr> (*)(AddressMode, DisAsmState &);
+// using instructionPointer = std::shared_ptr<instr> (*)(AddressMode, DisAsmState &);
+using InstructionProcedure = std::shared_ptr<instr> (*)(AddressMode, DisAsmState &, std::string);
 
 struct Instruction
 {
-    instructionPointer i;
+    InstructionProcedure i;
     AddressMode addressmode;
+    std::string name;
 };
 
 std::map<uint8_t, Instruction> instructionMap;
@@ -16,60 +18,147 @@ void initializeInstructionMap()
 {
     using std::make_pair;
 #pragma region LDA
-    instructionMap.insert(make_pair(0xA9, Instruction{(instructionPointer)LDA, AddressMode::IMMEDIATE}));
-    instructionMap.insert(make_pair(0xA5, Instruction{(instructionPointer)LDA, AddressMode::ZERO_PAGE}));
-    instructionMap.insert(make_pair(0xB5, Instruction{(instructionPointer)LDA, AddressMode::ZERO_PAGE_X}));
-    instructionMap.insert(make_pair(0xAD, Instruction{(instructionPointer)LDA, AddressMode::ABSOLUTE}));
-    instructionMap.insert(make_pair(0xBD, Instruction{(instructionPointer)LDA, AddressMode::ABSOLUTE_X}));
-    instructionMap.insert(make_pair(0xB9, Instruction{(instructionPointer)LDA, AddressMode::ABSOLUTE_Y}));
-    instructionMap.insert(make_pair(0xA1, Instruction{(instructionPointer)LDA, AddressMode::INDIRECT_X}));
-    instructionMap.insert(make_pair(0xB1, Instruction{(instructionPointer)LDA, AddressMode::INDIRECT_Y}));
-#pragma endregion
 
+    instructionMap.insert(make_pair(0xA9, Instruction{
+                                              (InstructionProcedure)disassemble_MultiByteInstr,
+                                              AddressMode::IMMEDIATE,
+                                              "lda"}));
+    instructionMap.insert(make_pair(0xA5, Instruction{
+                                              (InstructionProcedure)disassemble_MultiByteInstr,
+                                              AddressMode::ZERO_PAGE,
+                                              "lda"}));
+
+    instructionMap.insert(make_pair(0xB5, Instruction{
+                                              (InstructionProcedure)disassemble_MultiByteInstr,
+                                              AddressMode::ZERO_PAGE_X,
+                                              "lda"}));
+
+    instructionMap.insert(make_pair(0xAD, Instruction{
+                                              (InstructionProcedure)disassemble_MultiByteInstr,
+                                              AddressMode::ABSOLUTE,
+                                              "lda"}));
+
+    instructionMap.insert(make_pair(0xBD, Instruction{
+                                              (InstructionProcedure)disassemble_MultiByteInstr,
+                                              AddressMode::ABSOLUTE_X,
+                                              "lda"}));
+    instructionMap.insert(make_pair(0xB9, Instruction{
+                                              (InstructionProcedure)disassemble_MultiByteInstr,
+                                              AddressMode::ABSOLUTE_Y,
+                                              "lda"}));
+    instructionMap.insert(make_pair(0xA1, Instruction{
+                                              (InstructionProcedure)disassemble_MultiByteInstr,
+                                              AddressMode::INDIRECT_X,
+                                              "lda"}));
+    instructionMap.insert(make_pair(0xB1, Instruction{
+                                              (InstructionProcedure)disassemble_MultiByteInstr,
+                                              AddressMode::INDIRECT_Y,
+                                              "lda"}));
+#pragma endregion
 #pragma region LDX
 
-    instructionMap.insert(make_pair(0xA2, Instruction{(instructionPointer)LDX, AddressMode::IMMEDIATE}));
-    instructionMap.insert(make_pair(0xA6, Instruction{(instructionPointer)LDX, AddressMode::ZERO_PAGE}));
-    instructionMap.insert(make_pair(0xB6, Instruction{(instructionPointer)LDX, AddressMode::ZERO_PAGE_Y}));
-    instructionMap.insert(make_pair(0xAE, Instruction{(instructionPointer)LDX, AddressMode::ABSOLUTE}));
-    instructionMap.insert(make_pair(0xBE, Instruction{(instructionPointer)LDX, AddressMode::ABSOLUTE_Y}));
-
+    instructionMap.insert(make_pair(0xA2, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::IMMEDIATE, "ldx"}));
+    instructionMap.insert(make_pair(0xA6, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::ZERO_PAGE, "ldx"}));
+    instructionMap.insert(make_pair(0xB6, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::ZERO_PAGE_Y, "ldx"}));
+    instructionMap.insert(make_pair(0xAE, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::ABSOLUTE, "ldx"}));
+    instructionMap.insert(make_pair(0xBE, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::ABSOLUTE_Y, "ldx"}));
 #pragma endregion
 
 #pragma region LDY
 
-    instructionMap.insert(make_pair(0xA0, Instruction{(instructionPointer)LDY, AddressMode::IMMEDIATE}));
-    instructionMap.insert(make_pair(0xA4, Instruction{(instructionPointer)LDY, AddressMode::ZERO_PAGE}));
-    instructionMap.insert(make_pair(0xB4, Instruction{(instructionPointer)LDY, AddressMode::ZERO_PAGE_X}));
-    instructionMap.insert(make_pair(0xAC, Instruction{(instructionPointer)LDY, AddressMode::ABSOLUTE}));
-    instructionMap.insert(make_pair(0xBC, Instruction{(instructionPointer)LDY, AddressMode::ABSOLUTE_X}));
-
+    instructionMap.insert(make_pair(0xA0, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::IMMEDIATE, "ldy"}));
+    instructionMap.insert(make_pair(0xA4, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::ZERO_PAGE, "ldy"}));
+    instructionMap.insert(make_pair(0xB4, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::ZERO_PAGE_X, "ldy"}));
+    instructionMap.insert(make_pair(0xAC, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::ABSOLUTE, "ldy"}));
+    instructionMap.insert(make_pair(0xBC, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::ABSOLUTE_X, "ldy"}));
 #pragma endregion
+    instructionMap.insert(std::make_pair(0x4C, Instruction{(InstructionProcedure)JMP, AddressMode::ABSOLUTE, ""}));
+    instructionMap.insert(make_pair(0x20, Instruction{(InstructionProcedure)JSR, AddressMode::ABSOLUTE, ""}));
+
+    instructionMap.insert(make_pair(0xF0, Instruction{(InstructionProcedure)disassemble_Branch, AddressMode::RELATIVE, "beq"}));
+    instructionMap.insert(make_pair(0xD0, Instruction{(InstructionProcedure)disassemble_Branch, AddressMode::RELATIVE, "bne"}));
+
+    instructionMap.insert(make_pair(0x90, Instruction{(InstructionProcedure)disassemble_Branch, AddressMode::RELATIVE, "bcc"}));
+
+    instructionMap.insert(make_pair(0xB0, Instruction{(InstructionProcedure)disassemble_Branch, AddressMode::RELATIVE, "bcs"}));
+
+    instructionMap.insert(make_pair(0x10, Instruction{(InstructionProcedure)disassemble_Branch, AddressMode::RELATIVE, "bpl"}));
+
+    instructionMap.insert(make_pair(0x30, Instruction{(InstructionProcedure)disassemble_Branch, AddressMode::RELATIVE, "bmi"}));
+
+    instructionMap.insert(make_pair(0x50, Instruction{(InstructionProcedure)disassemble_Branch, AddressMode::RELATIVE, "bvc"}));
+
+    instructionMap.insert(make_pair(0x70, Instruction{(InstructionProcedure)disassemble_Branch, AddressMode::RELATIVE, "bvs"}));
+    instructionMap.insert(make_pair(0x40, Instruction{(InstructionProcedure)disassemble_RtsRti, AddressMode::IMPLIED, "rti"}));
+    instructionMap.insert(make_pair(0x60, Instruction{(InstructionProcedure)disassemble_RtsRti, AddressMode::IMPLIED, "rts"}));
+
+    //     instructionMap.insert(make_pair(0xA5, Instruction{(instructionPointer)LDA, AddressMode::ZERO_PAGE}));
+    //     instructionMap.insert(make_pair(0xB5, Instruction{(instructionPointer)LDA, AddressMode::ZERO_PAGE_X}));
+    // instructionMap.insert(make_pair(0xAD, Instruction{(instructionPointer)LDA, AddressMode::ABSOLUTE}));
+    //     instructionMap.insert(make_pair(0xBD, Instruction{(instructionPointer)LDA, AddressMode::ABSOLUTE_X}));
+    //     instructionMap.insert(make_pair(0xB9, Instruction{(instructionPointer)LDA, AddressMode::ABSOLUTE_Y}));
+    //     instructionMap.insert(make_pair(0xA1, Instruction{(instructionPointer)LDA, AddressMode::INDIRECT_X}));
+    //     instructionMap.insert(make_pair(0xB1, Instruction{(instructionPointer)LDA, AddressMode::INDIRECT_Y}));
+    // #pragma endregion
+    instructionMap.insert(make_pair(0x18, Instruction{(InstructionProcedure)disassemble_Onebyte, AddressMode::IMPLIED, "clc"})); //"implied"
+
+    instructionMap.insert(make_pair(0x38, Instruction{(InstructionProcedure)disassemble_Onebyte, AddressMode::IMPLIED, "sec"}));
+
+    instructionMap.insert(make_pair(0xD8, Instruction{(InstructionProcedure)disassemble_Onebyte, AddressMode::IMPLIED, "cld"}));
+
+    instructionMap.insert(make_pair(0xF8, Instruction{(InstructionProcedure)disassemble_Onebyte, AddressMode::IMPLIED, "sed"}));
+
+    instructionMap.insert(make_pair(0x78, Instruction{(InstructionProcedure)disassemble_Onebyte, AddressMode::IMPLIED, "sei"}));
+
+    instructionMap.insert(make_pair(0x58, Instruction{(InstructionProcedure)disassemble_Onebyte, AddressMode::IMPLIED, "cli"}));
+
+    instructionMap.insert(make_pair(0xB8, Instruction{(InstructionProcedure)disassemble_Onebyte, AddressMode::IMPLIED, "clv"}));
+
+    // instructionMap.insert(make_pair(0x40, Instruction{(instructionPointer)RTI, AddressMode::IMPLIED}));
+    // #pragma region LDX
+
+    //     instructionMap.insert(make_pair(0xA2, Instruction{(instructionPointer)LDX, AddressMode::IMMEDIATE}));
+    //     instructionMap.insert(make_pair(0xA6, Instruction{(instructionPointer)LDX, AddressMode::ZERO_PAGE}));
+    //     instructionMap.insert(make_pair(0xB6, Instruction{(instructionPointer)LDX, AddressMode::ZERO_PAGE_Y}));
+    //     instructionMap.insert(make_pair(0xAE, Instruction{(instructionPointer)LDX, AddressMode::ABSOLUTE}));
+    //     instructionMap.insert(make_pair(0xBE, Instruction{(instructionPointer)LDX, AddressMode::ABSOLUTE_Y}));
+
+    // #pragma endregion
+
+    // #pragma region LDY
+
+    //     instructionMap.insert(make_pair(0xA0, Instruction{(instructionPointer)LDY, AddressMode::IMMEDIATE}));
+    //     instructionMap.insert(make_pair(0xA4, Instruction{(instructionPointer)LDY, AddressMode::ZERO_PAGE}));
+    //     instructionMap.insert(make_pair(0xB4, Instruction{(instructionPointer)LDY, AddressMode::ZERO_PAGE_X}));
+    //     instructionMap.insert(make_pair(0xAC, Instruction{(instructionPointer)LDY, AddressMode::ABSOLUTE}));
+    //     instructionMap.insert(make_pair(0xBC, Instruction{(instructionPointer)LDY, AddressMode::ABSOLUTE_X}));
+
+    // #pragma endregion
 
 #pragma region ADC
-/*
-    instructionMap.insert(make_pair(0x69, Instruction{(instructionPointer)ADC, AddressMode::IMMEDIATE}));
-    instructionMap.insert(make_pair(0x65, Instruction{(instructionPointer)ADC, AddressMode::ZERO_PAGE}));
-    instructionMap.insert(make_pair(0x75, Instruction{(instructionPointer)ADC, AddressMode::ZERO_PAGE_X}));
-    instructionMap.insert(make_pair(0x6D, Instruction{(instructionPointer)ADC, AddressMode::ABSOLUTE}));
-    instructionMap.insert(make_pair(0x7D, Instruction{(instructionPointer)ADC, AddressMode::ABSOLUTE_X}));
-    instructionMap.insert(make_pair(0x79, Instruction{(instructionPointer)ADC, AddressMode::ABSOLUTE_Y}));
-    instructionMap.insert(make_pair(0x71, Instruction{(instructionPointer)ADC, AddressMode::INDIRECT_X}));
-    instructionMap.insert(make_pair(0x61, Instruction{(instructionPointer)ADC, AddressMode::INDIRECT_Y}));
-    */
+
+    instructionMap.insert(make_pair(0x69, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::IMMEDIATE, "adc"}));
+    instructionMap.insert(make_pair(0x65, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::ZERO_PAGE, "adc"}));
+    instructionMap.insert(make_pair(0x75, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::ZERO_PAGE_X, "adc"}));
+    instructionMap.insert(make_pair(0x6D, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::ABSOLUTE, "adc"}));
+    instructionMap.insert(make_pair(0x7D, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::ABSOLUTE_X, "adc"}));
+    instructionMap.insert(make_pair(0x79, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::ABSOLUTE_Y, "adc"}));
+    instructionMap.insert(make_pair(0x71, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::INDIRECT_X, "adc"}));
+    instructionMap.insert(make_pair(0x61, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::INDIRECT_Y, "adc"}));
+
 #pragma endregion
 
 #pragma region SBC
-/*
-    instructionMap.insert(make_pair(0xE9, Instruction{(instructionPointer)SBC, AddressMode::IMMEDIATE}));
-    instructionMap.insert(make_pair(0xE5, Instruction{(instructionPointer)SBC, AddressMode::ZERO_PAGE}));
-    instructionMap.insert(make_pair(0xF5, Instruction{(instructionPointer)SBC, AddressMode::ZERO_PAGE_X}));
-    instructionMap.insert(make_pair(0xED, Instruction{(instructionPointer)SBC, AddressMode::ABSOLUTE}));
-    instructionMap.insert(make_pair(0xFD, Instruction{(instructionPointer)SBC, AddressMode::ABSOLUTE_X}));
-    instructionMap.insert(make_pair(0xF9, Instruction{(instructionPointer)SBC, AddressMode::ABSOLUTE_Y}));
-    instructionMap.insert(make_pair(0xF1, Instruction{(instructionPointer)SBC, AddressMode::INDIRECT_X}));
-    instructionMap.insert(make_pair(0xE1, Instruction{(instructionPointer)SBC, AddressMode::INDIRECT_Y}));
-    */
+
+    instructionMap.insert(make_pair(0xE9, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::IMMEDIATE, "sbc"}));
+    instructionMap.insert(make_pair(0xE5, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::ZERO_PAGE, "sbc"}));
+    instructionMap.insert(make_pair(0xF5, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::ZERO_PAGE_X, "sbc"}));
+    instructionMap.insert(make_pair(0xED, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::ABSOLUTE, "sbc"}));
+    instructionMap.insert(make_pair(0xFD, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::ABSOLUTE_X, "sbc"}));
+    instructionMap.insert(make_pair(0xF9, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::ABSOLUTE_Y, "sbc"}));
+    instructionMap.insert(make_pair(0xE1, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::INDIRECT_X, "sbc"}));
+    instructionMap.insert(make_pair(0xF1, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::INDIRECT_Y, "sbc"}));
+
 #pragma endregion
 
     /*
@@ -163,87 +252,87 @@ void initializeInstructionMap()
     #pragma endregion
     */
 
-#pragma region INC
-    instructionMap.insert(make_pair(0xE8, Instruction{(instructionPointer)INX, AddressMode::IMPLIED}));
+    // #pragma region INC
+    //     instructionMap.insert(make_pair(0xE8, Instruction{(instructionPointer)INX, AddressMode::IMPLIED}));
 
-    instructionMap.insert(make_pair(0xC8, Instruction{(instructionPointer)INY, AddressMode::IMPLIED}));
+    //     instructionMap.insert(make_pair(0xC8, Instruction{(instructionPointer)INY, AddressMode::IMPLIED}));
 
-    instructionMap.insert(make_pair(0xE6, Instruction{(instructionPointer)INC, AddressMode::ZERO_PAGE}));
-    instructionMap.insert(make_pair(0xF6, Instruction{(instructionPointer)INC, AddressMode::ZERO_PAGE_X}));
-    instructionMap.insert(make_pair(0xEE, Instruction{(instructionPointer)INC, AddressMode::ABSOLUTE}));
-    instructionMap.insert(make_pair(0xFE, Instruction{(instructionPointer)INC, AddressMode::ABSOLUTE_X}));
-#pragma endregion
+    //     instructionMap.insert(make_pair(0xE6, Instruction{(instructionPointer)INC, AddressMode::ZERO_PAGE}));
+    //     instructionMap.insert(make_pair(0xF6, Instruction{(instructionPointer)INC, AddressMode::ZERO_PAGE_X}));
+    //     instructionMap.insert(make_pair(0xEE, Instruction{(instructionPointer)INC, AddressMode::ABSOLUTE}));
+    //     instructionMap.insert(make_pair(0xFE, Instruction{(instructionPointer)INC, AddressMode::ABSOLUTE_X}));
+    // #pragma endregion
 
-#pragma region Clear/set Flags
-    instructionMap.insert(make_pair(0x18, Instruction{(instructionPointer)CLC, AddressMode::IMPLIED})); //"implied"
+    // #pragma region Clear/set Flags
+    //     instructionMap.insert(make_pair(0x18, Instruction{(instructionPointer)CLC, AddressMode::IMPLIED})); //"implied"
 
-    instructionMap.insert(make_pair(0x38, Instruction{(instructionPointer)SEC, AddressMode::IMPLIED}));
+    //     instructionMap.insert(make_pair(0x38, Instruction{(instructionPointer)SEC, AddressMode::IMPLIED}));
 
-    instructionMap.insert(make_pair(0xD8, Instruction{(instructionPointer)CLD, AddressMode::IMPLIED}));
+    //     instructionMap.insert(make_pair(0xD8, Instruction{(instructionPointer)CLD, AddressMode::IMPLIED}));
 
-    instructionMap.insert(make_pair(0xF8, Instruction{(instructionPointer)SED, AddressMode::IMPLIED}));
+    //     instructionMap.insert(make_pair(0xF8, Instruction{(instructionPointer)SED, AddressMode::IMPLIED}));
 
-    instructionMap.insert(make_pair(0x78, Instruction{(instructionPointer)SEI, AddressMode::IMPLIED}));
+    //     instructionMap.insert(make_pair(0x78, Instruction{(instructionPointer)SEI, AddressMode::IMPLIED}));
 
-    instructionMap.insert(make_pair(0x58, Instruction{(instructionPointer)CLI, AddressMode::IMPLIED}));
+    //     instructionMap.insert(make_pair(0x58, Instruction{(instructionPointer)CLI, AddressMode::IMPLIED}));
 
-    instructionMap.insert(make_pair(0xB8, Instruction{(instructionPointer)CLV, AddressMode::IMPLIED}));
+    //     instructionMap.insert(make_pair(0xB8, Instruction{(instructionPointer)CLV, AddressMode::IMPLIED}));
 
-    instructionMap.insert(make_pair(0x40, Instruction{(instructionPointer)RTI, AddressMode::IMPLIED}));
-#pragma endregion
+    //     instructionMap.insert(make_pair(0x40, Instruction{(instructionPointer)RTI, AddressMode::IMPLIED}));
+    // #pragma endregion
 
-#pragma region JMP
-    instructionMap.insert(make_pair(0x4C, Instruction{(instructionPointer)JMP, AddressMode::ABSOLUTE}));
-    instructionMap.insert(make_pair(0x6C, Instruction{(instructionPointer)JMP, AddressMode::INDIRECT}));
-#pragma endregion
+    // #pragma region JMP
+    //     instructionMap.insert(make_pair(0x4C, Instruction{(instructionPointer)JMP, AddressMode::ABSOLUTE}));
+    //     instructionMap.insert(make_pair(0x6C, Instruction{(instructionPointer)JMP, AddressMode::INDIRECT}));
+    // #pragma endregion
 
-/*
-#pragma region Compare
-    instructionMap.insert(make_pair(0xC9, Instruction{(instructionPointer)CMP, AddressMode::IMMEDIATE}));
-    instructionMap.insert(make_pair(0xC5, Instruction{(instructionPointer)CMP, AddressMode::ZERO_PAGE}));
-    instructionMap.insert(make_pair(0xD5, Instruction{(instructionPointer)CMP, AddressMode::ZERO_PAGE_X}));
-    instructionMap.insert(make_pair(0xCD, Instruction{(instructionPointer)CMP, AddressMode::ABSOLUTE}));
-    instructionMap.insert(make_pair(0xDD, Instruction{(instructionPointer)CMP, AddressMode::ABSOLUTE_X}));
-    instructionMap.insert(make_pair(0xD9, Instruction{(instructionPointer)CMP, AddressMode::ABSOLUTE_Y}));
-    instructionMap.insert(make_pair(0xC1, Instruction{(instructionPointer)CMP, AddressMode::INDIRECT_X}));
-    instructionMap.insert(make_pair(0xD1, Instruction{(instructionPointer)CMP, AddressMode::INDIRECT_Y}));
+    /*
+    #pragma region Compare
+        instructionMap.insert(make_pair(0xC9, Instruction{(instructionPointer)CMP, AddressMode::IMMEDIATE}));
+        instructionMap.insert(make_pair(0xC5, Instruction{(instructionPointer)CMP, AddressMode::ZERO_PAGE}));
+        instructionMap.insert(make_pair(0xD5, Instruction{(instructionPointer)CMP, AddressMode::ZERO_PAGE_X}));
+        instructionMap.insert(make_pair(0xCD, Instruction{(instructionPointer)CMP, AddressMode::ABSOLUTE}));
+        instructionMap.insert(make_pair(0xDD, Instruction{(instructionPointer)CMP, AddressMode::ABSOLUTE_X}));
+        instructionMap.insert(make_pair(0xD9, Instruction{(instructionPointer)CMP, AddressMode::ABSOLUTE_Y}));
+        instructionMap.insert(make_pair(0xC1, Instruction{(instructionPointer)CMP, AddressMode::INDIRECT_X}));
+        instructionMap.insert(make_pair(0xD1, Instruction{(instructionPointer)CMP, AddressMode::INDIRECT_Y}));
 
-    instructionMap.insert(make_pair(0xC0, Instruction{(instructionPointer)CPY, AddressMode::IMMEDIATE}));
-    instructionMap.insert(make_pair(0xC4, Instruction{(instructionPointer)CPY, AddressMode::ZERO_PAGE}));
-    instructionMap.insert(make_pair(0xCC, Instruction{(instructionPointer)CPY, AddressMode::ABSOLUTE}));
+        instructionMap.insert(make_pair(0xC0, Instruction{(instructionPointer)CPY, AddressMode::IMMEDIATE}));
+        instructionMap.insert(make_pair(0xC4, Instruction{(instructionPointer)CPY, AddressMode::ZERO_PAGE}));
+        instructionMap.insert(make_pair(0xCC, Instruction{(instructionPointer)CPY, AddressMode::ABSOLUTE}));
 
-    instructionMap.insert(make_pair(0xE0, Instruction{(instructionPointer)CPX, AddressMode::IMMEDIATE}));
-    instructionMap.insert(make_pair(0xE4, Instruction{(instructionPointer)CPX, AddressMode::ZERO_PAGE}));
-    instructionMap.insert(make_pair(0xEC, Instruction{(instructionPointer)CPX, AddressMode::ABSOLUTE}));
+        instructionMap.insert(make_pair(0xE0, Instruction{(instructionPointer)CPX, AddressMode::IMMEDIATE}));
+        instructionMap.insert(make_pair(0xE4, Instruction{(instructionPointer)CPX, AddressMode::ZERO_PAGE}));
+        instructionMap.insert(make_pair(0xEC, Instruction{(instructionPointer)CPX, AddressMode::ABSOLUTE}));
 
-    instructionMap.insert(make_pair(0x24, Instruction{(instructionPointer)BIT, AddressMode::ZERO_PAGE}));
-    instructionMap.insert(make_pair(0x2C, Instruction{(instructionPointer)BIT, AddressMode::ABSOLUTE}));
+        instructionMap.insert(make_pair(0x24, Instruction{(instructionPointer)BIT, AddressMode::ZERO_PAGE}));
+        instructionMap.insert(make_pair(0x2C, Instruction{(instructionPointer)BIT, AddressMode::ABSOLUTE}));
 
-#pragma endregion
-*/
-#pragma region Conditional Branching
-    instructionMap.insert(make_pair(0xF0, Instruction{(instructionPointer)BEQ, AddressMode::RELATIVE}));
+    #pragma endregion
+    */
+    // #pragma region Conditional Branching
+    //     instructionMap.insert(make_pair(0xF0, Instruction{(instructionPointer)BEQ, AddressMode::RELATIVE}));
 
-    instructionMap.insert(make_pair(0xD0, Instruction{(instructionPointer)BNE, AddressMode::RELATIVE}));
+    //     instructionMap.insert(make_pair(0xD0, Instruction{(instructionPointer)BNE, AddressMode::RELATIVE}));
 
-    instructionMap.insert(make_pair(0x90, Instruction{(instructionPointer)BCC, AddressMode::RELATIVE}));
+    //     instructionMap.insert(make_pair(0x90, Instruction{(instructionPointer)BCC, AddressMode::RELATIVE}));
 
-    instructionMap.insert(make_pair(0xB0, Instruction{(instructionPointer)BCS, AddressMode::RELATIVE}));
+    //     instructionMap.insert(make_pair(0xB0, Instruction{(instructionPointer)BCS, AddressMode::RELATIVE}));
 
-    instructionMap.insert(make_pair(0x10, Instruction{(instructionPointer)BPL, AddressMode::RELATIVE}));
+    //     instructionMap.insert(make_pair(0x10, Instruction{(instructionPointer)BPL, AddressMode::RELATIVE}));
 
-    instructionMap.insert(make_pair(0x30, Instruction{(instructionPointer)BMI, AddressMode::RELATIVE}));
+    //     instructionMap.insert(make_pair(0x30, Instruction{(instructionPointer)BMI, AddressMode::RELATIVE}));
 
-    instructionMap.insert(make_pair(0x50, Instruction{(instructionPointer)BVC, AddressMode::RELATIVE}));
+    //     instructionMap.insert(make_pair(0x50, Instruction{(instructionPointer)BVC, AddressMode::RELATIVE}));
 
-    instructionMap.insert(make_pair(0x70, Instruction{(instructionPointer)BVS, AddressMode::RELATIVE}));
-#pragma endregion
+    //     instructionMap.insert(make_pair(0x70, Instruction{(instructionPointer)BVS, AddressMode::RELATIVE}));
+    // #pragma endregion
 
-#pragma region Subroutine
-    instructionMap.insert(make_pair(0x20, Instruction{(instructionPointer)JSR, AddressMode::ABSOLUTE}));
+    // #pragma region Subroutine
+    //     instructionMap.insert(make_pair(0x20, Instruction{(instructionPointer)JSR, AddressMode::ABSOLUTE}));
 
-    instructionMap.insert(make_pair(0x60, Instruction{(instructionPointer)RTS, AddressMode::IMPLIED}));
-#pragma endregion
+    //     instructionMap.insert(make_pair(0x60, Instruction{(instructionPointer)RTS, AddressMode::IMPLIED}));
+    // #pragma endregion
 
     /*
     #pragma region Pull register from stack

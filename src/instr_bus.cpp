@@ -13,25 +13,39 @@ Bus::Bus(std::vector<uint8_t> instr, uint16_t pc_starting)
 
 void Bus::fill_instr(uint16_t new_pc)
 {
+    // for (int val : pc_visited)
+    // {
+    //     printf("%x \n", val);
+    //     // std::cout << val << std::endl;
+    // }
+    // for(int i -)
+    // while (!work_list.empty())
+    // {
+    //     work_list.pop();
+    //     /* code */
+    // }
 
     this->pc = new_pc;
+    // pc_visited.insert(new_pc);
+    // work_list.push(new_pc);
     stored_instructions[1] = instr[(pc - reset_vector)];
     stored_instructions[0] = instr[(pc + 1) - reset_vector];
-    pc_visited.insert(new_pc);
     pc++;
 }
+
 uint8_t Bus::get_instr(bool checkifdisassembled)
 {
-    if (checkifdisassembled && this->pc_visited.find(pc) != this->pc_visited.end())
+    if (checkifdisassembled && this->pc_visited.find(pc - 1) != this->pc_visited.end())
     {
         return 0;
     }
-
+    uint16_t current_pc = pc;
+    pc_visited.insert(current_pc - 1);
     uint8_t current_instruction = stored_instructions[1];
     stored_instructions[1] = stored_instructions[0];
-    pc_visited.insert(pc - 1);
     stored_instructions[0] = instr[(this->pc + 1) - reset_vector];
-    // printf("visted oc %x \n", pc - 1);
+    // work_list.push(pc);
+    // printf("visted oc %x \n", pc);
     // printf("current instr %x \n", current_instruction);
     pc++;
 
@@ -88,12 +102,13 @@ uint16_t Bus::get_next_queue()
     // {
     //     printf("pc quee: %x \n", pc_queue[i]);
     // }
-    if (new_pc == pc && new_pc == (pc + 1))
-    {
-        return new_pc;
-    }
+    // if (new_pc == pc && new_pc == (pc + 1))
+    // {
+    //     return new_pc;
+    // }
     if (pc_visited.find(new_pc) != pc_visited.end())
     {
+        // printf("pc %x  is already visted \n", new_pc);
         return get_next_queue();
     }
 

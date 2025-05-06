@@ -24,6 +24,28 @@ reset:
     LDA ($20,X)     ; Indirect,X Mode: Load from address stored at ($20 + X)
     LDA ($20),Y 
     LDA t2
+
+    ; adc #42
+    ; adc $20
+    ; adc $20, X
+    ; adc $20, Y
+    ; adc $2000
+    ; adc nmi
+    ; adc $2000, X 
+    ; adc $2000, Y
+    ; adc ($20,X)     ; Indirect,X Mode: Load from address stored at ($20 + X)
+    ; adc ($20,X)     ; Indirect,X Mode: Load from address stored at ($20 + X)
+
+    ; sbc #42
+    ; sbc $20
+    ; sbc $20, X
+    ; sbc $20, Y
+    ; sbc $2000
+    ; sbc nmi
+    ; sbc $2000, X 
+    ; sbc $2000, Y
+    ; sbc ($20,X)     ; Indirect,X Mode: Load from address stored at ($20 + X)
+    ; sbc ($20,X) 
 ;     LDA #42        ; Immediate Mode: Load the value $42 into A
 ;     LDA $2001       ; Absolute Mode: Load value from memory address $2000
 ;     LDA $20         ; Zero Page Mode: Load value from address $0020
@@ -88,20 +110,30 @@ reset:
 ; lda #1
 ; lda #2
 ; lda #1
-jmp test
+jmp nmi
 nmi:
-lda t2
+lda #1
+
 ; jmp test2
 rti
 t2:
+clv 
   lda #32
+  
+
   lda #11
+  clv
 test:
+
   lda #64
   jmp t2
 
-test2:
-  jmp test
+; test2:
+; lda #1
+;   lda #11
+;   test32:
+;     lda #1
+;     jmp test2
 
 ; l2:      
 ;   lda $01

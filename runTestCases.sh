@@ -8,6 +8,8 @@ RomList=(
         "./games/TestRom1.nes --print-file  -o ./results/TestRom1.s"
         "./games/TestRom4.nes --print-file  -o ./results/TestRom4.s"
         "./games/TestRom2.nes  --print-file  -o ./results/TestRom2.s"
+                "./games/adcSbc.nes  --print-file  -o ./results/adcSbc.s"
+
 )
 
 for p in "${RomList[@]}"; do

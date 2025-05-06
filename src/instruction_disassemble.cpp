@@ -63,6 +63,9 @@ std::string handle_branch(DisAsmState &disasm, int8_t new_branch)
 
 void HandleJMP(DisAsmState &disasm)
 {
+    // disasm.bus.pc_visited.erase(disasm.bus.get_pc());
+    // disasm.bus.pc_visited.erase(disasm.bus.get_pc() - 1);
+
     uint16_t c = disasm.bus.get_next_queue();
     // printf("new_jmppc: %x \n", c);
     // printf("current_pc: %x \n", disasm.bus.get_pc());
@@ -71,6 +74,92 @@ void HandleJMP(DisAsmState &disasm)
     if (c != 0)
         disasm.bus.fill_instr(c);
 }
+
+/*
+for LDA, LDY, ADC, LDX...
+ */
+std::shared_ptr<instr> disassemble_MultiByteInstr(AddressMode addressMode, DisAsmState &disasm, std::string name)
+{
+    auto pc = disasm.bus.get_pc() - 1;
+    auto data_vec = diasm_addressmode(addressMode, disasm);
+    return std::make_shared<MultiByteInstr>(name, addressMode, data_vec, pc);
+}
+
+std::shared_ptr<instr> disassemble_Branch(AddressMode addressMode, DisAsmState &disasm, std::string name)
+{
+    auto pc = disasm.bus.get_pc() - 1;
+    std::vector<uint8_t> data_vec = diasm_addressmode(addressMode, disasm).instr_data;
+    int8_t new_branch = (int8_t)data_vec[0];
+    auto label = handle_branch(disasm, new_branch);
+    return std::make_shared<BranchInstr>(name, label, pc);
+}
+
+std::shared_ptr<instr> disassemble_Onebyte(AddressMode addressMode, DisAsmState &disasm, std::string name)
+{
+    auto pc = disasm.bus.get_pc() - 1;
+
+    return std::make_shared<oneByteInstr>(name, pc);
+}
+
+std::shared_ptr<instr> disassemble_RtsRti(AddressMode addressMode, DisAsmState &disasm, std::string name)
+{
+    auto pc = disasm.bus.get_pc() - 1;
+    HandleJMP(disasm);
+    return std::make_shared<oneByteInstr>(name, pc);
+}
+
+// TODO
+//  what Jump should do instead of pushing the address into the queue
+//  to be disassembled later. jump to the address, if the address is already disassembled
+// goto an address in the queue
+
+// if JMP INDIRECT. if the address is in the rom we will jump to its contents
+//  if not work our way down the queue
+
+std::shared_ptr<instr> JMP(AddressMode addressMode, DisAsmState &disasm, std::string name)
+{
+    auto pc = disasm.bus.get_pc() - 1;
+    // std::vector<uint8_t> data_vec = diasm_addressmode(addressMode, disasm);
+    auto data = diasm_addressmode(addressMode, disasm);
+    if (addressMode == AddressMode::ABSOLUTE)
+    {
+
+        uint16_t jmp_pc = data.instr_data[1] << 8 | data.instr_data[0];
+        // std::string label = handle_labels(disasm, jmp_pc);
+        disasm.bus.pc_visited.erase(disasm.bus.get_pc());
+        disasm.bus.pc_visited.erase(disasm.bus.get_pc() - 1);
+        // disasm.bus.pc_visited.erase(disasm.bus.get_pc() - 2);
+
+        disasm.bus.add_to_queue(jmp_pc);
+        HandleJMP(disasm);
+        // printf("jmp pc:%x \n", jmp_pc + 1);
+        // printf("jmp pc:%x \n", jmp_pc + 1);
+    }
+    return std::make_shared<Jmp>(addressMode, data, pc);
+}
+std::shared_ptr<instr> JSR(AddressMode addressMode, DisAsmState &disasm, std::string name)
+{
+    // printf("jsr \n");
+    auto pc = disasm.bus.get_pc() - 1;
+    // printf("retriving data \n");
+    // printf("retriving data %x \n", pc);
+
+    auto data = diasm_addressmode(addressMode, disasm);
+    uint16_t jmp_pc = data.instr_data[1] << 8 | data.instr_data[0];
+    // std::string label = handle_labels(disasm, jmp_pc);
+    // disasm.bus.add_to_queue(disasm.bus.get_pc() - 1);
+    // printf("added to queue \n");
+
+    disasm.bus.add_to_queue(jmp_pc);
+    // printf("jsr pc instr: %x \n", disasm.bus.instr[(disasm.bus.get_pc()) - 0x8000]);
+
+    // printf("current_pc %x \n", disasm.bus.get_pc() - 1);
+
+    // auto new_pc = disasm.bus.get_next_queue();
+    // disasm.bus.fill_instr(new_pc);
+    return std::make_shared<Jsr>(addressMode, data, pc);
+}
+
 std::shared_ptr<instr> LDA(AddressMode addressMode, DisAsmState &disasm)
 {
     auto pc = disasm.bus.get_pc() - 1;
@@ -94,31 +183,6 @@ std::shared_ptr<instr> LDX(AddressMode addressMode, DisAsmState &disasm)
     return std::make_shared<MultiByteInstr>("ldx", addressMode, data_vec, pc);
 }
 
-// TODO
-//  what Jump should do instead of pushing the address into the queue
-//  to be disassembled later. jump to the address, if the address is already disassembled
-// goto an address in the queue
-
-// if JMP INDIRECT. if the address is in the rom we will jump to its contents
-//  if not work our way down the queue
-
-std::shared_ptr<instr> JMP(AddressMode addressMode, DisAsmState &disasm)
-{
-    auto pc = disasm.bus.get_pc() - 1;
-    // std::vector<uint8_t> data_vec = diasm_addressmode(addressMode, disasm);
-    auto data = diasm_addressmode(addressMode, disasm);
-    if (addressMode == AddressMode::ABSOLUTE)
-    {
-
-        uint16_t jmp_pc = data.instr_data[1] << 8 | data.instr_data[0];
-        // std::string label = handle_labels(disasm, jmp_pc);
-        disasm.bus.add_to_queue(jmp_pc);
-        HandleJMP(disasm);
-        // printf("jmp pc:%x \n", jmp_pc + 1);
-        // printf("jmp pc:%x \n", jmp_pc + 1);
-    }
-    return std::make_shared<Jmp>(addressMode, data, pc);
-}
 std::shared_ptr<instr> RTI(AddressMode addressMode, DisAsmState &disasm)
 {
 
@@ -271,29 +335,6 @@ std::shared_ptr<instr> BVS(AddressMode addressMode, DisAsmState &disasm)
     int8_t new_branch = (int8_t)data_vec[0];
     auto label = handle_branch(disasm, new_branch);
     return std::make_shared<BranchInstr>("bvs", label, pc);
-}
-
-std::shared_ptr<instr> JSR(AddressMode addressMode, DisAsmState &disasm)
-{
-    // printf("jsr \n");
-    auto pc = disasm.bus.get_pc() - 1;
-    // printf("retriving data \n");
-    // printf("retriving data %x \n", pc);
-
-    auto data = diasm_addressmode(addressMode, disasm);
-    uint16_t jmp_pc = data.instr_data[1] << 8 | data.instr_data[0];
-    // std::string label = handle_labels(disasm, jmp_pc);
-    // disasm.bus.add_to_queue(disasm.bus.get_pc() - 1);
-    // printf("added to queue \n");
-
-    disasm.bus.add_to_queue(jmp_pc);
-    // printf("jsr pc instr: %x \n", disasm.bus.instr[(disasm.bus.get_pc()) - 0x8000]);
-
-    // printf("current_pc %x \n", disasm.bus.get_pc() - 1);
-
-    // auto new_pc = disasm.bus.get_next_queue();
-    // disasm.bus.fill_instr(new_pc);
-    return std::make_shared<Jsr>(addressMode, data, pc);
 }
 
 std::shared_ptr<instr> SEI(AddressMode addressMode, DisAsmState &disasm)
