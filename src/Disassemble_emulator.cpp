@@ -78,7 +78,7 @@ std::vector<std::shared_ptr<instr>> computer(DisAsmState &state)
         //     continue;
         // }
         uint8_t instr = state.bus.get_instr(true);
-        printf("%x \n", instr);
+        // printf("%x \n", instr);
         // printf("%x \n", state.bus.get_pc());
 
         if (instr == 0x0 || !InstructionValid(instr))
@@ -152,10 +152,10 @@ void init(NESRom nes, Output o)
         // printf("label pc: %x \n", pc);
     }
     qsort_pc(prg, 0, prg.size() - 1);
-    for (int i = 0; i < prg.size(); i++)
-    {
-        printf("%x \n", prg[i]->pc);
-    }
+    // for (int i = 0; i < prg.size(); i++)
+    // {
+    //     printf("%x \n", prg[i]->pc);
+    // }
     if (o.print_file)
     {
         std::cout << h.disassm() << std::endl;

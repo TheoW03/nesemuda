@@ -88,12 +88,13 @@ reset:
 ; lda #1
 ; lda #2
 ; lda #1
-jmp test
+jmp nmi
 nmi:
 lda #1
 ; jmp test2
 rti
 t2:
+clv 
   lda #32
   
 

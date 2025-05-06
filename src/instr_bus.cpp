@@ -13,11 +13,11 @@ Bus::Bus(std::vector<uint8_t> instr, uint16_t pc_starting)
 
 void Bus::fill_instr(uint16_t new_pc)
 {
-    for (int val : pc_visited)
-    {
-        printf("%x \n", val);
-        // std::cout << val << std::endl;
-    }
+    // for (int val : pc_visited)
+    // {
+    //     printf("%x \n", val);
+    //     // std::cout << val << std::endl;
+    // }
     // for(int i -)
     // while (!work_list.empty())
     // {
@@ -75,13 +75,13 @@ void Bus::add_to_queue(uint16_t addr)
     // printf("%d \n", InstructionValid(instr[new_pc - reset_vector]));
     if (pc_visited.find(new_pc) == pc_visited.end())
     {
-        printf("added: %x\n", new_pc);
+        // printf("added: %x\n", new_pc);
         pc_queue.push_back(addr);
     }
-    else
-    {
-        printf("failed to add: %x\n", new_pc);
-    }
+    // else
+    // {
+    //     printf("failed to add: %x\n", new_pc);
+    // }
 }
 uint16_t Bus::get_next_queue()
 {
@@ -93,9 +93,9 @@ uint16_t Bus::get_next_queue()
     uint16_t new_pc = pc_queue[0];
     // printf("pc == %x \n", new_pc);
 
-    printf("%x %d \n", new_pc, (pc_visited.find(new_pc) != pc_visited.end()));
-    printf("%x \n", pc);
-    printf("%x \n", this->instr[(this->pc - 0x8000) - 1]);
+    // printf("%x %d \n", new_pc, (pc_visited.find(new_pc) != pc_visited.end()));
+    // printf("%x \n", pc);
+    // printf("%x \n", this->instr[(this->pc - 0x8000) - 1]);
     pc_queue.erase(pc_queue.begin());
     // printf("%d \n", pc_queue.size());
     // for (int i = 0; i < pc_queue.size(); i++)
@@ -108,7 +108,7 @@ uint16_t Bus::get_next_queue()
     // }
     if (pc_visited.find(new_pc) != pc_visited.end())
     {
-        printf("pc %x  is already visted \n", new_pc);
+        // printf("pc %x  is already visted \n", new_pc);
         return get_next_queue();
     }
 
