@@ -16,7 +16,10 @@ void initializeInstructionMap()
 {
     using std::make_pair;
 #pragma region LDA
-    instructionMap.insert(make_pair(0xA9, Instruction{(instructionPointer)LDA, AddressMode::IMMEDIATE}));
+    instructionMap.insert(make_pair(0xA9, Instruction{
+                                              (instructionPointer)LDA,
+                                              AddressMode::IMMEDIATE,
+                                          }));
     instructionMap.insert(make_pair(0xA5, Instruction{(instructionPointer)LDA, AddressMode::ZERO_PAGE}));
     instructionMap.insert(make_pair(0xB5, Instruction{(instructionPointer)LDA, AddressMode::ZERO_PAGE_X}));
     instructionMap.insert(make_pair(0xAD, Instruction{(instructionPointer)LDA, AddressMode::ABSOLUTE}));
