@@ -10,6 +10,7 @@ build() {
         "./src/TestRoms/TestRom4.s -o ./games/TestRom4.nes"
         "./src/TestRoms/TestRom2.s -o ./games/TestRom2.nes"
         "./src/TestRoms/sbcAdcTest.s -o ./games/adcSbc.nes"
+        "./src/TestRoms/TestRom5.s -o ./games/TestRom5.nes"
 
     )
 

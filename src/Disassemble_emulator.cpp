@@ -94,6 +94,7 @@ std::vector<std::shared_ptr<instr>> computer(DisAsmState &state)
                 // if they are no more instructions to disassemble
                 // both in the queue and the next PC.
                 // we assume the ROM as fully disassembled
+                state.bus.pc_visited.erase(state.bus.get_pc() - 2);
                 return disassembled_rom;
             }
             state.bus.fill_instr(new_pc);
@@ -113,11 +114,20 @@ std::vector<std::shared_ptr<instr>> computer(DisAsmState &state)
     }
     return disassembled_rom;
 }
-
+int getHighestPC(NESRom nes)
+{
+    for (int i = 0xfffa - 1; i > 0x8000; i--)
+    {
+        if (nes.prg_rom[i - 0x8000] != 0)
+        {
+            printf("this is the ealrist PC: %x \n", i);
+            return i;
+        }
+    }
+    return 0x8000;
+}
 void init(NESRom nes, Output o)
 {
-
-    std::vector<int> data = {10, 80, 30, 90, 40, 50, 70};
 
     if (!o.output_files.has_value())
     {
@@ -143,7 +153,22 @@ void init(NESRom nes, Output o)
 
     dis.bus.add_to_queue(nmi);
 
+    // first thing we do is walk the PC.
+    // get all the addresses that will be visited, by the PC and create a data strcuture of it
     auto prg = computer(dis);
+
+    // since we have the data strcuture. what we do next is gather all the addresses that wont be visited
+    //  we create ".define bytes" for them in the macro assembler.
+    int highestpc = getHighestPC(nes);
+
+    for (int i = 0; (i + 0x8000) < (highestpc); i++)
+    {
+        if (dis.bus.pc_visited.find((i + 0x8000)) == dis.bus.pc_visited.end())
+        {
+            prg.push_back(std::make_shared<DefinedByte>(nes.prg_rom[i], i + 0x8000 + 1));
+        }
+    }
+    // after that we add the lables.
     for (const auto &pair : dis.known_lables)
     {
         uint16_t pc = pair.first;
@@ -153,11 +178,10 @@ void init(NESRom nes, Output o)
         // std::cout << pc << std::endl;
         printf("label pc: %x \n", pc);
     }
+    // sort by PC
     qsort_pc(prg, 0, prg.size() - 1);
-    for (int i = 0; i < prg.size(); i++)
-    {
-        printf("%x \n", prg[i]->pc);
-    }
+
+    // print/write to file :p
     if (o.print_file)
     {
         std::cout << h.disassm() << std::endl;
@@ -177,12 +201,11 @@ void init(NESRom nes, Output o)
     }
     if (o.output_files.has_value())
     {
-
         std::ofstream outputFile(o.output_files.value());
         outputFile << h.disassm();
-        outputFile << ".SEGMENT \"VECTORS\"";
-        outputFile << ".addr reset \n";
+        outputFile << ".SEGMENT \"VECTORS\" \n";
         outputFile << ".addr nmi \n";
+        outputFile << ".addr reset \n";
         outputFile << ".SEGMENT \"STARTUP\" \n";
         for (int i = 0; i < prg.size(); i++)
         {
@@ -190,7 +213,7 @@ void init(NESRom nes, Output o)
         }
         outputFile << ".SEGMENT \"CHARS\" \n";
 
-        if (o.print_file && o.chr_file.has_value())
+        if (o.chr_file.has_value())
         {
             outputFile << ".incbin  \"" << o.chr_file.value() << "\" ; the sprites \n";
         }

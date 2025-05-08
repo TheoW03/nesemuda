@@ -43,3 +43,4 @@ adc $20, X
 nmi:
 lda #1
     rti
+.SEGMENT "CHARS"
