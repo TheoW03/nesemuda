@@ -94,7 +94,7 @@ std::vector<std::shared_ptr<instr>> computer(DisAsmState &state)
             // and all the interrupt vectors and sets the PC
             // to that address if and only if its not already disassembled
             auto new_pc = state.bus.get_next_queue();
-            if (new_pc == 0)
+            if (!new_pc.has_value())
             {
                 // if they are no more instructions to disassemble
                 // both in the queue and the next PC.
@@ -102,7 +102,7 @@ std::vector<std::shared_ptr<instr>> computer(DisAsmState &state)
                 // state.bus.pc_visited.erase(state.bus.get_pc() - 2);
                 return disassembled_rom;
             }
-            state.bus.fill_instr(new_pc);
+            state.bus.fill_instr(new_pc.value());
         }
         else
         {

@@ -44,6 +44,6 @@ test:
   rts
 
 test2:
-  jmp test
+  lda #1
   rts
 .segment "CHARS" ; for graphics

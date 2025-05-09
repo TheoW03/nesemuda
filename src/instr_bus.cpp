@@ -83,11 +83,11 @@ void Bus::add_to_queue(uint16_t addr)
     //     printf("failed to add: %x\n", new_pc);
     // }
 }
-uint16_t Bus::get_next_queue()
+std::optional<uint16_t> Bus::get_next_queue()
 {
     if (pc_queue.size() == 0)
     {
-        return 0;
+        return {};
     }
 
     uint16_t new_pc = pc_queue[0];
