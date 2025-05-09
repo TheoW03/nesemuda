@@ -135,7 +135,11 @@ MultiByteInstr::MultiByteInstr(std::string instr_name, AddressMode address, Inst
 std::string MultiByteInstr::disassm()
 {
     std::string instr = instr_name + " ";
-    if (addressMode == AddressMode::IMMEDIATE)
+    if (addressMode == AddressMode::ACCUMULATOR)
+    {
+        instr += "A \n";
+    }
+    else if (addressMode == AddressMode::IMMEDIATE)
     {
         instr += "#" + std::to_string(data.instr_data[0]) + "\n";
     }

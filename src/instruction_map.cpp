@@ -204,6 +204,12 @@ void initializeInstructionMap()
     instructionMap.insert(make_pair(0xEC, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::ABSOLUTE, "cpx"}));
     instructionMap.insert(make_pair(0x24, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::ZERO_PAGE, "bit"}));
     instructionMap.insert(make_pair(0x2C, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::ABSOLUTE, "bit"}));
+
+    instructionMap.insert(make_pair(0x0A, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::ACCUMULATOR, "asl"}));
+    instructionMap.insert(make_pair(0x06, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::ZERO_PAGE, "asl"}));
+    instructionMap.insert(make_pair(0x16, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::ZERO_PAGE_X, "asl"}));
+    instructionMap.insert(make_pair(0x0E, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::ABSOLUTE, "asl"}));
+    instructionMap.insert(make_pair(0x1E, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::ABSOLUTE_X, "asl"}));
     /*
     #pragma region AND
         instructionMap.insert(make_pair(0x29, Instruction{(instructionPointer)AND, AddressMode::IMMEDIATE}));
