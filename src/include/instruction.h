@@ -49,7 +49,7 @@ public:
     uint16_t pc;
 
     Bus(std::vector<uint8_t> instr, uint16_t pc_starting);
-    uint8_t get_instr(bool checkifdisassembled);
+    std::optional<uint8_t> get_instr(bool checkifdisassembled);
     uint16_t get_pc();
     uint16_t get_next_queue();
     void add_to_queue(uint16_t addr);
@@ -66,7 +66,9 @@ struct DisAsmState
     Bus bus;
     std::map<uint16_t, std::string> known_lables;
     int label;
+    bool is_finished;
 };
+
 #endif
 
 #ifndef HEADER_DISASM_H

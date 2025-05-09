@@ -77,11 +77,16 @@ std::vector<std::shared_ptr<instr>> computer(DisAsmState &state)
         //     state.bus.fill_instr(new_pc);
         //     continue;
         // }
-        uint8_t instr = state.bus.get_instr(true);
+        if (state.is_finished)
+        {
+
+            return disassembled_rom;
+        }
+        auto instr = state.bus.get_instr(true);
         // printf("%x \n", instr);
         // printf("%x \n", state.bus.get_pc());
 
-        if (instr == 0x0 || !InstructionValid(instr))
+        if (!instr.has_value() || !InstructionValid(instr.value()))
         {
             // if the instruction is a BRK,
             // or is inavlid
@@ -94,14 +99,14 @@ std::vector<std::shared_ptr<instr>> computer(DisAsmState &state)
                 // if they are no more instructions to disassemble
                 // both in the queue and the next PC.
                 // we assume the ROM as fully disassembled
-                state.bus.pc_visited.erase(state.bus.get_pc() - 2);
+                // state.bus.pc_visited.erase(state.bus.get_pc() - 2);
                 return disassembled_rom;
             }
             state.bus.fill_instr(new_pc);
         }
         else
         {
-            auto current_instr = GetInstruction(instr);
+            auto current_instr = GetInstruction(instr.value());
             auto disassmble = current_instr.instructionFunction(current_instr.addressmode, state, current_instr.name);
             disassembled_rom.push_back(disassmble);
         }

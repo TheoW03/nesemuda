@@ -33,11 +33,11 @@ void Bus::fill_instr(uint16_t new_pc)
     pc++;
 }
 
-uint8_t Bus::get_instr(bool checkifdisassembled)
+std::optional<uint8_t> Bus::get_instr(bool checkifdisassembled)
 {
     if (checkifdisassembled && this->pc_visited.find(pc - 1) != this->pc_visited.end())
     {
-        return 0;
+        return {};
     }
     uint16_t current_pc = pc;
     pc_visited.insert(current_pc - 1);

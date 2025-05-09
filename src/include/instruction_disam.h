@@ -8,6 +8,8 @@ std::shared_ptr<instr> disassemble_MultiByteInstr(AddressMode addressMode, DisAs
 std::shared_ptr<instr> disassemble_Branch(AddressMode addressMode, DisAsmState &disasm, std::string name);
 std::shared_ptr<instr> disassemble_Onebyte(AddressMode addressMode, DisAsmState &disasm, std::string name);
 std::shared_ptr<instr> disassemble_RtsRti(AddressMode addressMode, DisAsmState &disasm, std::string name);
+std::shared_ptr<instr> disassemble_brk(AddressMode addressMode, DisAsmState &disasm, std::string name);
+
 std::shared_ptr<instr> JSR(AddressMode addressMode, DisAsmState &disasm, std::string name);
 std::shared_ptr<instr> JMP(AddressMode addressMode, DisAsmState &disasm, std::string name);
 

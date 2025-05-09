@@ -210,6 +210,8 @@ void initializeInstructionMap()
     instructionMap.insert(make_pair(0x16, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::ZERO_PAGE_X, "asl"}));
     instructionMap.insert(make_pair(0x0E, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::ABSOLUTE, "asl"}));
     instructionMap.insert(make_pair(0x1E, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::ABSOLUTE_X, "asl"}));
+    instructionMap.insert(make_pair(0x0, Instruction{(InstructionProcedure)disassemble_brk, AddressMode::IMPLIED, "brk"}));
+
     /*
     #pragma region AND
         instructionMap.insert(make_pair(0x29, Instruction{(instructionPointer)AND, AddressMode::IMMEDIATE}));

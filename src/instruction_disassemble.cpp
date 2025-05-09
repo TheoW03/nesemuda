@@ -27,14 +27,14 @@ InstrData diasm_addressmode(AddressMode addressMode, DisAsmState &disasm)
 
     )
     {
-        ret.instr_data.push_back(disasm.bus.get_instr(false));
+        ret.instr_data.push_back(disasm.bus.get_instr(false).value());
         ret.label = {};
     }
     else if (addressMode == AddressMode::ABSOLUTE || addressMode == AddressMode::ABSOLUTE_X || addressMode == AddressMode::ABSOLUTE_Y)
     {
 
-        uint8_t lower_half = disasm.bus.get_instr(false);
-        uint8_t upper_half = disasm.bus.get_instr(false);
+        uint8_t lower_half = disasm.bus.get_instr(false).value();
+        uint8_t upper_half = disasm.bus.get_instr(false).value();
         uint16_t pc = upper_half << 8 | lower_half;
         ret.instr_data.push_back(lower_half);
         ret.instr_data.push_back(upper_half);
@@ -73,6 +73,8 @@ void HandleJMP(DisAsmState &disasm)
 
     if (c != 0)
         disasm.bus.fill_instr(c);
+    else
+        disasm.is_finished = true;
 }
 
 /*
@@ -102,6 +104,13 @@ std::shared_ptr<instr> disassemble_Onebyte(AddressMode addressMode, DisAsmState 
 }
 
 std::shared_ptr<instr> disassemble_RtsRti(AddressMode addressMode, DisAsmState &disasm, std::string name)
+{
+    auto pc = disasm.bus.get_pc() - 1;
+    HandleJMP(disasm);
+    return std::make_shared<oneByteInstr>(name, pc);
+}
+
+std::shared_ptr<instr> disassemble_brk(AddressMode addressMode, DisAsmState &disasm, std::string name)
 {
     auto pc = disasm.bus.get_pc() - 1;
     HandleJMP(disasm);

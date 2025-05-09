@@ -110,7 +110,7 @@ reset:
 ; lda #1
 ; lda #2
 ; lda #1
-jmp nmi
+jmp test
 nmi:
 lda #1
 
