@@ -251,6 +251,16 @@ Label::Label(std::string name, uint16_t pc) : instr(pc)
     this->name = name;
     this->pc = pc;
 }
+Macro::Macro(std::string name, uint16_t address, uint16_t pc) : instr(pc)
+{
+    this->name = name;
+    this->addr = address;
+}
+std::string Macro::disassm()
+{
+    return ".define " + name + " " + byteToHex16(addr) + "\n";
+}
+
 std::string Label::disassm()
 {
     return name + ": \n";

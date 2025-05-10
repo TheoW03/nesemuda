@@ -65,8 +65,10 @@ struct DisAsmState
 {
     Bus bus;
     std::map<uint16_t, std::string> known_lables;
-    int label;
+
     bool is_finished;
+    int label;
+    std::map<uint16_t, std::string> macros;
 };
 
 #endif
@@ -81,6 +83,7 @@ public:
     std::string disassm();
 };
 #endif
+
 #ifndef INSTR_H
 #define INSTR_H
 
@@ -94,6 +97,21 @@ public:
 };
 
 #endif
+
+#ifndef MACRO_H
+#define MACRO_H
+
+class Macro : public instr
+{
+public:
+    std::string name;
+    uint16_t addr;
+    uint16_t pc;
+    Macro(std::string name, uint16_t addr, uint16_t pc);
+    std::string disassm() override;
+};
+#endif
+
 #ifndef LABEL_H
 #define LABEL_H
 

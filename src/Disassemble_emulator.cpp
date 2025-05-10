@@ -148,11 +148,24 @@ void init(NESRom nes, Output o)
     Bus bus = Bus(nes.prg_rom, pc_start);
     bus.fill_instr(pc_start);
     std::map<uint16_t, std::string> known_lables;
-    std::map<uint16_t, std::string> assembled;
+    std::map<uint16_t, std::string> macros;
     known_lables[pc_start] = "reset";
     known_lables[nmi] = "nmi";
 
-    DisAsmState dis = {bus, known_lables, 0};
+    macros.insert(std::make_pair(0x2000, "PPU_CTRL"));
+    macros.insert(std::make_pair(0x2001, "PPU_MASK"));
+    macros.insert(std::make_pair(0x2002, "PPU_STATUS"));
+    macros.insert(std::make_pair(0x2003, "OAM_ADDR"));
+    macros.insert(std::make_pair(0x2004, "OAM_DATA"));
+    macros.insert(std::make_pair(0x2005, "PPU_SCROLL"));
+    macros.insert(std::make_pair(0x2006, "PPU_ADDR"));
+    macros.insert(std::make_pair(0x2007, "PPU_DATA"));
+
+    macros.insert(std::make_pair(0x4014, "OAM_DMA"));
+    macros.insert(std::make_pair(0x4016, "JOYPAD1_BYTE"));
+    macros.insert(std::make_pair(0x4017, "JOYPAD2_BYTE"));
+
+    DisAsmState dis = {bus, known_lables, false, 0, macros};
 
     dis.bus.add_to_queue(nmi);
 
@@ -170,6 +183,17 @@ void init(NESRom nes, Output o)
         {
             prg.push_back(std::make_shared<DefinedByte>(nes.prg_rom[i], i + 0x8000 + 1));
         }
+    }
+
+    // macros for the different addresses the NES uses.
+    // makes the code more readable
+
+    for (const auto &pair : dis.macros)
+    {
+        uint16_t addr = pair.first;
+        std::string n = pair.second;
+        prg.push_back(std::make_shared<Macro>(n, addr, 0));
+        // std::cout << pc << std::endl;
     }
     // after that we add the lables.
     for (const auto &pair : dis.known_lables)
