@@ -201,7 +201,6 @@ void init(NESRom nes, Output o)
         uint16_t pc = pair.first;
         std::string n = pair.second;
         prg.push_back(std::make_shared<Label>(n, pc + 1));
-        std::cout << n << std::endl;
         // std::cout << pc << std::endl;
     }
     // sort by PC
@@ -212,10 +211,9 @@ void init(NESRom nes, Output o)
     {
         std::cout << h.disassm() << std::endl;
         std::cout << ".SEGMENT \"VECTORS\"" << std::endl;
-
         std::cout << "      .addr reset" << std::endl;
-
         std::cout << "      .addr nmi" << std::endl;
+        std::cout << ".SEGMENT \"STARTUP\" " << std::endl;
 
         for (int i = 0; i < prg.size(); i++)
         {

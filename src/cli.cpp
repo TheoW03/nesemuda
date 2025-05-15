@@ -68,7 +68,7 @@ Output parse_cmd(std::vector<std::string> args)
     {
         if (!current.has_value() && args[i].size() < 2)
         {
-            std::cout << "TetroidDisasm: arguement has to little characters to count as an option (they must be atleast 2 characters in length)" << std::endl;
+            std::cout << "nesda: arguement has to little characters to count as an option (they must be atleast 2 characters in length)" << std::endl;
             exit(EXIT_FAILURE);
         }
         if (args[i].at(0) == '-' && args[i].at(1) != '-')
