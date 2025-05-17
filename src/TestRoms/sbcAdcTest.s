@@ -33,6 +33,7 @@ adc $20, X
     sbc ($20,X)     ; Indirect,X Mode: Load from address stored at ($20 + X)
     sbc ($20), Y
     asl A
+    jmp (TEST)
 ;     LDA #$42        ; Immediate Mode: Load the value $42 into A
 ;     LDA $2000       ; Absolute Mode: Load value from memory address $2000
 ;     LDA $20         ; Zero Page Mode: Load value from address $0020
@@ -44,4 +45,7 @@ adc $20, X
 nmi:
 lda #1
     rti
+    
+    TEST:
+    .word nmi
 .SEGMENT "CHARS"

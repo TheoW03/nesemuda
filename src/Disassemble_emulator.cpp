@@ -177,7 +177,7 @@ void init(NESRom nes, Output o)
     //  we create ".define bytes" for them in the macro assembler.
     int highestpc = getHighestPC(nes);
 
-    for (int i = 0; (i + 0x8000) < (highestpc); i++)
+    for (int i = 0; (i + 0x8000) <= (highestpc); i++)
     {
         if (dis.bus.pc_visited.find((i + 0x8000)) == dis.bus.pc_visited.end())
         {

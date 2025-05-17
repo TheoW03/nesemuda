@@ -287,7 +287,25 @@ Jmp::Jmp(AddressMode addressMode, InstrData data, uint16_t pc) : instr(pc)
 
 std::string Jmp::disassm()
 {
-    return "jmp " + data.label.value() + "\n";
+    uint8_t lower_half = data.instr_data[0];
+    uint8_t upper_half = data.instr_data[1];
+    uint16_t adr = upper_half << 8 | lower_half;
+    if (addressMode == AddressMode::ABSOLUTE)
+    {
+        if (data.label.has_value())
+            return "jmp (" + data.label.value() + ")\n";
+        else
+            return "jmp (" + byteToHex16(adr) + ")";
+    }
+    else if (addressMode == AddressMode::INDIRECT)
+    {
+
+        if (data.label.has_value())
+            return "jmp (" + data.label.value() + ")\n";
+        else
+            return "jmp (" + byteToHex16(adr) + ")";
+    }
+    return "";
 }
 
 Rti::Rti(AddressMode addressMode, uint16_t pc) : instr(pc)
@@ -307,6 +325,7 @@ DefinedByte::DefinedByte(uint8_t byte, uint16_t pc) : instr(pc)
 
 std::string DefinedByte::disassm()
 {
+    // return ".byte " + byteToHex8(std::get<0>(bytes)) + ", " + byteToHex8(std::get<1>(bytes)) + ", " + byteToHex8(std::get<2>(bytes)) + "," + byteToHex8(std::get<3>(bytes)) + "\n ";
     return ".byte " + byteToHex8(byte) + "\n";
 }
 

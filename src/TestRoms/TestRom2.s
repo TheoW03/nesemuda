@@ -13,7 +13,6 @@
     ;; When the processor first turns on or is reset, it will jump to the label reset:
     .addr reset ; reset vector
 .segment "STARTUP"
-.define 
 reset:
   jmp test
 nmi:

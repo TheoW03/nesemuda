@@ -30,7 +30,7 @@ InstrData diasm_addressmode(AddressMode addressMode, DisAsmState &disasm)
         ret.instr_data.push_back(disasm.bus.get_instr(false).value());
         ret.label = {};
     }
-    else if (addressMode == AddressMode::ABSOLUTE || addressMode == AddressMode::ABSOLUTE_X || addressMode == AddressMode::ABSOLUTE_Y)
+    else if (addressMode == AddressMode::ABSOLUTE || addressMode == AddressMode::ABSOLUTE_X || addressMode == AddressMode::ABSOLUTE_Y || addressMode == AddressMode::INDIRECT)
     {
 
         uint8_t lower_half = disasm.bus.get_instr(false).value();
@@ -39,7 +39,7 @@ InstrData diasm_addressmode(AddressMode addressMode, DisAsmState &disasm)
         ret.instr_data.push_back(lower_half);
         ret.instr_data.push_back(upper_half);
 
-        if (pc >= 0x8000)
+        if (pc >= disasm.bus.reset_vector)
         {
             ret.label = handle_labels(disasm, pc);
         }
@@ -150,6 +150,18 @@ std::shared_ptr<instr> JMP(AddressMode addressMode, DisAsmState &disasm, std::st
         HandleJMP(disasm);
         // printf("jmp pc:%x \n", jmp_pc + 1);
         // printf("jmp pc:%x \n", jmp_pc + 1);
+    }
+    else if (addressMode == AddressMode::INDIRECT)
+    {
+        uint16_t jmp_addr = data.instr_data[1] << 8 | data.instr_data[0];
+        if (jmp_addr > disasm.bus.reset_vector)
+        {
+            uint16_t jmp_pc = disasm.bus.read_rom_mem(jmp_addr);
+            disasm.bus.add_to_queue(jmp_pc);
+        }
+        disasm.bus.pc_visited.erase(disasm.bus.get_pc());
+        disasm.bus.pc_visited.erase(disasm.bus.get_pc() - 1);
+        HandleJMP(disasm);
     }
     return std::make_shared<Jmp>(addressMode, data, pc);
 }

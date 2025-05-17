@@ -255,9 +255,12 @@ public:
     // std::vector<uint8_t> opcodes;
     uint16_t pc;
     uint8_t byte;
+    std::tuple<uint8_t, uint8_t, uint8_t, uint8_t> bytes;
     // AddressMode addressMode;
     // std::string lable_name;
     DefinedByte(uint8_t byte, uint16_t pc);
+    // DefinedByte(std::tuple<uint8_t, uint8_t, uint8_t, uint8_t> bytes, uint16_t pc);
+
     // BranchInstr(std::string instr_name, std::string label, uint16_t pc);
     std::string disassm() override;
 };

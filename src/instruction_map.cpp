@@ -192,6 +192,33 @@ void initializeInstructionMap()
     instructionMap.insert(make_pair(0x1E, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::ABSOLUTE_X, "asl"}));
     instructionMap.insert(make_pair(0x0, Instruction{(InstructionProcedure)disassemble_brk, AddressMode::IMPLIED, "brk"}));
 
+    instructionMap.insert(make_pair(0x29, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::IMMEDIATE, "and"}));
+    instructionMap.insert(make_pair(0x25, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::ZERO_PAGE, "and"}));
+    instructionMap.insert(make_pair(0x35, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::ZERO_PAGE_X, "and"}));
+    instructionMap.insert(make_pair(0x2D, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::ABSOLUTE, "and"}));
+    instructionMap.insert(make_pair(0x3D, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::ABSOLUTE_X, "and"}));
+    instructionMap.insert(make_pair(0x39, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::ABSOLUTE_Y, "and"}));
+    instructionMap.insert(make_pair(0x21, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::INDIRECT_X, "and"}));
+    instructionMap.insert(make_pair(0x31, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::INDIRECT_Y, "and"}));
+
+    instructionMap.insert(make_pair(0x09, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::IMMEDIATE, "ora"}));
+    instructionMap.insert(make_pair(0x05, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::ZERO_PAGE, "ora"}));
+    instructionMap.insert(make_pair(0x15, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::ZERO_PAGE_X, "ora"}));
+    instructionMap.insert(make_pair(0x0D, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::ABSOLUTE, "ora"}));
+    instructionMap.insert(make_pair(0x1D, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::ABSOLUTE_X, "ora"}));
+    instructionMap.insert(make_pair(0x19, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::ABSOLUTE_Y, "ora"}));
+    instructionMap.insert(make_pair(0x01, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::INDIRECT_X, "ora"}));
+    instructionMap.insert(make_pair(0x11, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::INDIRECT_Y, "ora"}));
+
+    instructionMap.insert(make_pair(0x28, Instruction{(InstructionProcedure)disassemble_Onebyte, AddressMode::IMPLIED, "plp"}));
+
+    instructionMap.insert(make_pair(0x08, Instruction{(InstructionProcedure)disassemble_Onebyte, AddressMode::IMPLIED, "php"}));
+
+    instructionMap.insert(make_pair(0x68, Instruction{(InstructionProcedure)disassemble_Onebyte, AddressMode::IMPLIED, "pla"}));
+
+    instructionMap.insert(make_pair(0x48, Instruction{(InstructionProcedure)disassemble_Onebyte, AddressMode::IMPLIED, "pha"}));
+    instructionMap.insert(make_pair(0x6C, Instruction{(InstructionProcedure)JMP, AddressMode::INDIRECT, "jmp"}));
+
     /*
 
      instructionMap.insert(make_pair(0x40, Instruction{(instructionPointer)RTI, AddressMode::IMPLIED}));
