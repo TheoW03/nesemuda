@@ -133,13 +133,12 @@ int getHighestPC(NESRom nes)
 }
 void init(NESRom nes, Output o)
 {
+    initializeInstructionMap();
 
     if (!o.output_files.has_value())
     {
         o.output_files = "./TestOutPut/Test.s";
     }
-
-    initializeInstructionMap();
 
     Header h = Header(nes.header);
     uint16_t pc_start = nes.prg_rom[0xfffd - 0x8000] << 8 | nes.prg_rom[0xfffc - 0x8000];

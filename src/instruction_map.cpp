@@ -166,6 +166,14 @@ void initializeInstructionMap()
     instructionMap.insert(make_pair(0xEE, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::ABSOLUTE, "inc"}));
     instructionMap.insert(make_pair(0xFE, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::ABSOLUTE_X, "inc"}));
 
+    instructionMap.insert(make_pair(0xCA, Instruction{(InstructionProcedure)disassemble_Onebyte, AddressMode::IMPLIED, "dex"}));
+    instructionMap.insert(make_pair(0x88, Instruction{(InstructionProcedure)disassemble_Onebyte, AddressMode::IMPLIED, "dey"}));
+
+    instructionMap.insert(make_pair(0xC6, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::ZERO_PAGE, "dec"}));
+    instructionMap.insert(make_pair(0xD6, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::ZERO_PAGE_X, "dec"}));
+    instructionMap.insert(make_pair(0xCE, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::ABSOLUTE, "dec"}));
+    instructionMap.insert(make_pair(0xDE, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::ABSOLUTE_X, "dec"}));
+
     instructionMap.insert(make_pair(0xC9, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::IMMEDIATE, "cmp"}));
     instructionMap.insert(make_pair(0xC5, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::ZERO_PAGE, "cmp"}));
     instructionMap.insert(make_pair(0xD5, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::ZERO_PAGE_X, "cmp"}));
@@ -190,6 +198,34 @@ void initializeInstructionMap()
     instructionMap.insert(make_pair(0x16, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::ZERO_PAGE_X, "asl"}));
     instructionMap.insert(make_pair(0x0E, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::ABSOLUTE, "asl"}));
     instructionMap.insert(make_pair(0x1E, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::ABSOLUTE_X, "asl"}));
+
+    instructionMap.insert(make_pair(0x4A, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::ACCUMULATOR, "lsr"}));
+    instructionMap.insert(make_pair(0x46, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::ZERO_PAGE, "lsr"}));
+    instructionMap.insert(make_pair(0x56, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::ZERO_PAGE_X, "lsr"}));
+    instructionMap.insert(make_pair(0x4E, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::ABSOLUTE, "lsr"}));
+    instructionMap.insert(make_pair(0x5E, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::ABSOLUTE_X, "lsr"}));
+
+    instructionMap.insert(make_pair(0x2A, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::ACCUMULATOR, "rol"}));
+    instructionMap.insert(make_pair(0x26, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::ZERO_PAGE, "rol"}));
+    instructionMap.insert(make_pair(0x36, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::ZERO_PAGE_X, "rol"}));
+    instructionMap.insert(make_pair(0x2E, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::ABSOLUTE, "rol"}));
+    instructionMap.insert(make_pair(0x3E, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::ABSOLUTE_X, "rol"}));
+
+    instructionMap.insert(make_pair(0x6A, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::ACCUMULATOR, "ror"}));
+    instructionMap.insert(make_pair(0x66, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::ZERO_PAGE, "ror"}));
+    instructionMap.insert(make_pair(0x76, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::ZERO_PAGE_X, "ror"}));
+    instructionMap.insert(make_pair(0x6E, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::ABSOLUTE, "ror"}));
+    instructionMap.insert(make_pair(0x7E, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::ABSOLUTE_X, "ror"}));
+
+    instructionMap.insert(make_pair(0x49, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::IMMEDIATE, "eor"}));
+    instructionMap.insert(make_pair(0x45, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::ZERO_PAGE, "eor"}));
+    instructionMap.insert(make_pair(0x55, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::ZERO_PAGE_X, "eor"}));
+    instructionMap.insert(make_pair(0x4D, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::ABSOLUTE, "eor"}));
+    instructionMap.insert(make_pair(0x5D, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::ABSOLUTE_X, "eor"}));
+    instructionMap.insert(make_pair(0x59, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::ABSOLUTE_Y, "eor"}));
+    instructionMap.insert(make_pair(0x41, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::INDIRECT_X, "eor"}));
+    instructionMap.insert(make_pair(0x51, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::INDIRECT_Y, "eor"}));
+
     instructionMap.insert(make_pair(0x0, Instruction{(InstructionProcedure)disassemble_brk, AddressMode::IMPLIED, "brk"}));
 
     instructionMap.insert(make_pair(0x29, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::IMMEDIATE, "and"}));
@@ -209,6 +245,7 @@ void initializeInstructionMap()
     instructionMap.insert(make_pair(0x19, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::ABSOLUTE_Y, "ora"}));
     instructionMap.insert(make_pair(0x01, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::INDIRECT_X, "ora"}));
     instructionMap.insert(make_pair(0x11, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::INDIRECT_Y, "ora"}));
+    instructionMap.insert(make_pair(0xea, Instruction{(InstructionProcedure)disassemble_MultiByteInstr, AddressMode::IMPLIED, "nop"}));
 
     instructionMap.insert(make_pair(0x28, Instruction{(InstructionProcedure)disassemble_Onebyte, AddressMode::IMPLIED, "plp"}));
 
@@ -218,6 +255,14 @@ void initializeInstructionMap()
 
     instructionMap.insert(make_pair(0x48, Instruction{(InstructionProcedure)disassemble_Onebyte, AddressMode::IMPLIED, "pha"}));
     instructionMap.insert(make_pair(0x6C, Instruction{(InstructionProcedure)JMP, AddressMode::INDIRECT, "jmp"}));
+
+    instructionMap.insert(make_pair(0xBA, Instruction{(InstructionProcedure)disassemble_Onebyte, AddressMode::IMPLIED, "tsx"}));
+
+    instructionMap.insert(make_pair(0x98, Instruction{(InstructionProcedure)disassemble_Onebyte, AddressMode::IMPLIED, "tya"}));
+
+    instructionMap.insert(make_pair(0xA8, Instruction{(InstructionProcedure)disassemble_Onebyte, AddressMode::IMPLIED, "tay"}));
+    instructionMap.insert(make_pair(0xAA, Instruction{(InstructionProcedure)disassemble_Onebyte, AddressMode::IMPLIED, "tax"}));
+    instructionMap.insert(make_pair(0x8A, Instruction{(InstructionProcedure)disassemble_Onebyte, AddressMode::IMPLIED, "txa"}));
 
     /*
 
@@ -467,5 +512,6 @@ Instruction GetInstruction(uint8_t opcode)
 }
 bool InstructionValid(uint8_t opcode)
 {
+
     return instructionMap.find(opcode) != instructionMap.end();
 }

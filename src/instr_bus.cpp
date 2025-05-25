@@ -54,8 +54,8 @@ std::optional<uint8_t> Bus::get_instr(bool checkifdisassembled)
 
 uint16_t Bus::read_rom_mem(uint16_t mem_address)
 {
-    uint8_t byte1 = instr[(mem_address + 1) - NES_START];
-    uint8_t byte2 = instr[mem_address - NES_START];
+    uint8_t byte1 = instr[(mem_address + 1) - reset_vector];
+    uint8_t byte2 = instr[mem_address - reset_vector];
     return byte1 << 8 | byte2;
 }
 
