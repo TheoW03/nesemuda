@@ -38,8 +38,7 @@ InstrData diasm_addressmode(AddressMode addressMode, DisAsmState &disasm)
         uint16_t pc = upper_half << 8 | lower_half;
         ret.instr_data.push_back(lower_half);
         ret.instr_data.push_back(upper_half);
-
-        if (pc >= disasm.bus.reset_vector)
+        if (pc >= 0x8000)
         {
             ret.label = handle_labels(disasm, pc);
         }
@@ -121,6 +120,7 @@ std::shared_ptr<instr> disassemble_brk(AddressMode addressMode, DisAsmState &dis
 {
     auto pc = disasm.bus.get_pc() - 1;
     HandleJMP(disasm);
+    printf("brk: %x \n", disasm.bus.get_pc());
     return std::make_shared<oneByteInstr>(name, pc);
 }
 
@@ -142,8 +142,8 @@ std::shared_ptr<instr> JMP(AddressMode addressMode, DisAsmState &disasm, std::st
 
         uint16_t jmp_pc = data.instr_data[1] << 8 | data.instr_data[0];
         // std::string label = handle_labels(disasm, jmp_pc);
-        disasm.bus.pc_visited.erase(disasm.bus.get_pc());
-        disasm.bus.pc_visited.erase(disasm.bus.get_pc() - 1);
+        // disasm.bus.pc_visited.erase(disasm.bus.get_pc());
+        // disasm.bus.pc_visited.erase(disasm.bus.get_pc() - 1);
         // disasm.bus.pc_visited.erase(disasm.bus.get_pc() - 2);
 
         disasm.bus.add_to_queue(jmp_pc);
@@ -170,10 +170,18 @@ std::shared_ptr<instr> JSR(AddressMode addressMode, DisAsmState &disasm, std::st
     // printf("jsr \n");
     auto pc = disasm.bus.get_pc() - 1;
     // printf("retriving data \n");
-    // printf("retriving data %x \n", pc);
 
     auto data = diasm_addressmode(addressMode, disasm);
+
     uint16_t jmp_pc = data.instr_data[1] << 8 | data.instr_data[0];
+    if (!data.label.has_value())
+    {
+        printf("pc: %x \n", pc);
+        printf("retriving data %x \n", jmp_pc);
+        printf("retriving data %x \n", addressMode);
+
+        std::cout << name << std::endl;
+    }
     // std::string label = handle_labels(disasm, jmp_pc);
     // disasm.bus.add_to_queue(disasm.bus.get_pc() - 1);
     // printf("added to queue \n");

@@ -293,9 +293,9 @@ std::string Jmp::disassm()
     if (addressMode == AddressMode::ABSOLUTE)
     {
         if (data.label.has_value())
-            return "jmp (" + data.label.value() + ")\n";
+            return "jmp " + data.label.value() + "\n";
         else
-            return "jmp (" + byteToHex16(adr) + ")";
+            return "jmp " + byteToHex16(adr) + "\n";
     }
     else if (addressMode == AddressMode::INDIRECT)
     {

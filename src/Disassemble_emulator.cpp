@@ -83,8 +83,6 @@ std::vector<std::shared_ptr<instr>> computer(DisAsmState &state)
             return disassembled_rom;
         }
         auto instr = state.bus.get_instr(true);
-        // printf("%x \n", instr);
-        // printf("%x \n", state.bus.get_pc());
 
         if (!instr.has_value() || !InstructionValid(instr.value()))
         {
@@ -125,7 +123,6 @@ int getHighestPC(NESRom nes)
     {
         if (nes.prg_rom[i - 0x8000] != 0)
         {
-            printf("this is the ealrist PC: %x \n", i);
             return i;
         }
     }
@@ -143,9 +140,8 @@ void init(NESRom nes, Output o)
     Header h = Header(nes.header);
     uint16_t pc_start = nes.prg_rom[0xfffd - 0x8000] << 8 | nes.prg_rom[0xfffc - 0x8000];
     uint16_t nmi = nes.prg_rom[0xfffb - 0x8000] << 8 | nes.prg_rom[0xfffa - 0x8000];
-
     Bus bus = Bus(nes.prg_rom, pc_start);
-    bus.fill_instr(pc_start);
+    bus.fill_instr(0x8000);
     std::map<uint16_t, std::string> known_lables;
     std::map<uint16_t, std::string> macros;
     known_lables[pc_start] = "reset";
@@ -216,6 +212,7 @@ void init(NESRom nes, Output o)
 
         for (int i = 0; i < prg.size(); i++)
         {
+
             std::cout << prg[i]->disassm();
         }
         std::cout << ".SEGMENT \"CHARS\" " << std::endl;
@@ -232,6 +229,7 @@ void init(NESRom nes, Output o)
         outputFile << ".SEGMENT \"STARTUP\" \n";
         for (int i = 0; i < prg.size(); i++)
         {
+
             outputFile << prg[i]->disassm();
         }
         outputFile << ".SEGMENT \"CHARS\" \n";
