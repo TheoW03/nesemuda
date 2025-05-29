@@ -39,6 +39,7 @@ NESRom load_rom(std::vector<uint8_t> instructions)
 
     NESHeader nes_header;
     NESRom nes_rom;
+
     memcpy(&nes_header, instructions.data(), sizeof(NESHeader));
     if (                                 //
         (nes_header.ident[0] != 'N'      //
@@ -50,6 +51,7 @@ NESRom load_rom(std::vector<uint8_t> instructions)
         std::cout << "nesda: this isnt a iNES version 1.0 header" << std::endl;
         exit(EXIT_FAILURE);
     }
+
     nes_header.flag6.val = instructions[6];
     nes_header.flag7.val = instructions[7];
     nes_header.flag8 = instructions[8];
@@ -62,6 +64,7 @@ NESRom load_rom(std::vector<uint8_t> instructions)
     // this sets the mapper
     size_t prg_rom = nes_header.prg_size * PRG_ROM_SIZE;
     size_t chr_rom = nes_header.chr_size * CHR_ROM_SIZE;
+
     for (size_t i = prg_start; i < prg_rom + prg_start; i++)
     {
         nes_rom.prg_rom.push_back(instructions[i]);

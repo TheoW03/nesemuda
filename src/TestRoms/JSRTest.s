@@ -14,6 +14,9 @@
     .addr reset ; reset vector
 .segment "STARTUP"
 reset:
+    STA $0600,X
+    ldx #1
+    jsr reset
     sei
     cld
     ; reset sound
